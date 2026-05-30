@@ -82,11 +82,14 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Generated `report/tables/validation20_results.md` from the 20-sample runs with corrected MATH scoring. Corrected scores are `MATH/direct=0.85000`, `MATH/cot=0.95000`, `MATH/manual_v1=0.95000`, and `MATH/ablation_single=0.85000`; all HumanEval rows remain `1.00000`.
 - Updated `report/main.tex` and `experiments/README.md` with the 20-sample validation commands, token-aware table, evaluator correction note, and remaining experiment plan.
 - Added generated `tester.txt` files to `.gitignore` after HumanEval execution tests produced a local scratch log.
+- Tightened MATH rescoring again after discovering that SymPy could incorrectly treat `2,-1` as equal to `2`. The evaluator now treats comma-separated answers as unordered lists, keeps thousands separators numeric, and combines multiple boxed reference answers such as `\boxed{-1}` and `\boxed{2}`.
+- Regenerated `report/tables/validation20_results.md` with list-aware MATH scoring. Corrected 20-sample MATH scores are now `direct=0.90000`, `cot=0.95000`, `manual_v1=1.00000`, and `ablation_single=0.90000`; this is the first validation subset where the manual workflow exceeds CoT.
+- Updated `report/main.tex` to describe the MATH manual workflow's 20-sample gain over CoT and the remaining need to validate that gain on larger subsets.
 
 ## Next Steps
 
-1. Improve the MATH workflow so it can exceed the CoT score rather than only match it.
-2. Run larger 30-50 example validation subsets where dataset size and token budget permit.
+1. Run larger 30-50 example validation subsets to check whether the MATH manual workflow remains above CoT.
+2. Add or run full HumanEval validation/test results if token budget remains acceptable.
 3. Run full validation/test evaluations after subset cost and format look acceptable.
 4. Keep pushing each new key commit to GitHub after local validation.
 

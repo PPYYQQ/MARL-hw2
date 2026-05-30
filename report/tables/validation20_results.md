@@ -4,7 +4,7 @@
 | HumanEval | cot | kimi-k2.5 | validate | 20 | 1.00000 | 20 | 2996 | 12632 | 15628 | 0.00000 | experiments/runs/HumanEval/cot/20260530_234418/1.00000_20260530_234603.csv |
 | HumanEval | direct | kimi-k2.5 | validate | 20 | 1.00000 | 20 | 2776 | 3258 | 6034 | 0.00000 | experiments/runs/HumanEval/direct/20260530_234418/1.00000_20260530_234449.csv |
 | HumanEval | manual_v1 | kimi-k2.5 | validate | 20 | 1.00000 | 41 | 8489 | 7952 | 16441 | 0.00000 | experiments/runs/HumanEval/manual_v1/20260530_234710/1.00000_20260530_234757.csv |
-| MATH | ablation_single | kimi-k2.5 | validate | 20 | 0.85000 | 40 | 25883 | 29062 | 54945 | 0.00000 | experiments/runs/MATH/ablation_single/20260530_234710/0.80000_20260530_235424.csv |
+| MATH | ablation_single | kimi-k2.5 | validate | 20 | 0.90000 | 40 | 25883 | 29062 | 54945 | 0.00000 | experiments/runs/MATH/ablation_single/20260530_234710/0.80000_20260530_235424.csv |
 | MATH | cot | kimi-k2.5 | validate | 20 | 0.95000 | 20 | 2260 | 15448 | 17708 | 0.00000 | experiments/runs/MATH/cot/20260530_234418/0.85000_20260530_234639.csv |
-| MATH | direct | kimi-k2.5 | validate | 20 | 0.85000 | 20 | 2100 | 14457 | 16557 | 0.00000 | experiments/runs/MATH/direct/20260530_234418/0.80000_20260530_234630.csv |
-| MATH | manual_v1 | kimi-k2.5 | validate | 20 | 0.95000 | 100 | 79749 | 71368 | 151117 | 0.00000 | experiments/runs/MATH/manual_v1/20260530_235446/0.85000_20260531_000635.csv |
+| MATH | direct | kimi-k2.5 | validate | 20 | 0.90000 | 20 | 2100 | 14457 | 16557 | 0.00000 | experiments/runs/MATH/direct/20260530_234418/0.80000_20260530_234630.csv |
+| MATH | manual_v1 | kimi-k2.5 | validate | 20 | 1.00000 | 100 | 79749 | 71368 | 151117 | 0.00000 | experiments/runs/MATH/manual_v1/20260530_235446/0.85000_20260531_000635.csv |

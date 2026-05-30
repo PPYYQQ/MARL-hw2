@@ -1,7 +1,7 @@
 import inspect
 import re
 from math import isclose
-from typing import Any, Callable, List, Tuple
+from typing import Any, Callable, List, Optional, Tuple
 
 import regex
 from sympy import N, simplify
@@ -28,8 +28,15 @@ class MATHBenchmark(BaseBenchmark):
         sentences = [s.strip() for s in sentences if s.strip()]
         return sentences[-1] if sentences else ""
 
+    def extract_reference_answer(self, text: str) -> str:
+        pattern = r"\\boxed{((?:[^{}]|{[^{}]*})*)}"
+        boxed_matches = [match.strip() for match in re.findall(pattern, text, re.DOTALL) if match.strip()]
+        if len(boxed_matches) > 1:
+            return ",".join(boxed_matches)
+        return self.extract_model_answer(text)
+
     def calculate_score(self, expected_output: str, prediction: str) -> Tuple[int, str]:
-        expected_answer = self.extract_model_answer(expected_output)
+        expected_answer = self.extract_reference_answer(expected_output)
         predicted_answer = self.extract_model_answer(prediction)
 
         if self.math_equal(predicted_answer, expected_answer):
@@ -46,6 +53,31 @@ class MATHBenchmark(BaseBenchmark):
         if prediction == reference:
             return True
 
+        prediction_parts = self.split_answer_list(prediction)
+        reference_parts = self.split_answer_list(reference)
+        if prediction_parts is not None or reference_parts is not None:
+            prediction_parts = prediction_parts or [prediction]
+            reference_parts = reference_parts or [reference]
+            if len(prediction_parts) != len(reference_parts):
+                return False
+            unmatched_references = list(reference_parts)
+            for prediction_part in prediction_parts:
+                match_index = next(
+                    (
+                        index
+                        for index, reference_part in enumerate(unmatched_references)
+                        if self.scalar_math_equal(prediction_part, reference_part)
+                    ),
+                    None,
+                )
+                if match_index is None:
+                    return False
+                unmatched_references.pop(match_index)
+            return True
+
+        return self.scalar_math_equal(prediction, reference)
+
+    def scalar_math_equal(self, prediction: Any, reference: Any) -> bool:
         try:
             if self.is_digit(prediction) and self.is_digit(reference):
                 prediction = self.parse_digits(prediction)
@@ -71,6 +103,15 @@ class MATHBenchmark(BaseBenchmark):
         if re.fullmatch(r"[A-Za-z0-9, ]+", answer_text):
             answer_text = answer_text.replace(" ", "")
         return answer_text
+
+    def split_answer_list(self, answer: str) -> Optional[List[str]]:
+        if "," not in answer or self.is_thousands_number(answer):
+            return None
+        parts = [part.strip() for part in answer.split(",") if part.strip()]
+        return parts if len(parts) > 1 else None
+
+    def is_thousands_number(self, answer: str) -> bool:
+        return bool(re.fullmatch(r"-?\d{1,3}(,\d{3})+(\.\d+)?%?", answer))
 
     def is_digit(self, num):
         return self.parse_digits(num) is not None

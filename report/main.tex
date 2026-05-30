@@ -78,7 +78,7 @@ The project implements reproducible baseline runners in \texttt{experiments/run\
 
 \section{Validation Results}
 
-Table~\ref{tab:validation20} reports 20-sample validation subset tests using sample seed 1. These are not final benchmark results, but they are large enough to reveal initial differences between direct prompting, CoT, manual workflows, and ablations. MATH scores in this table are recomputed from saved predictions with the corrected text-answer normalizer, so CSV filenames may still contain the original pre-fix score.
+Table~\ref{tab:validation20} reports 20-sample validation subset tests using sample seed 1. These are not final benchmark results, but they are large enough to reveal initial differences between direct prompting, CoT, manual workflows, and ablations. MATH scores in this table are recomputed from saved predictions with the corrected text and list-answer normalizer, so CSV filenames may still contain the original pre-fix score.
 
 \begin{table}[t]
 \caption{Twenty-sample validation subset tests.}
@@ -94,26 +94,26 @@ HumanEval & direct & 1.00000 & 20 & 6,034 \\
 HumanEval & CoT & 1.00000 & 20 & 15,628 \\
 HumanEval & manual\_v1 & 1.00000 & 41 & 16,441 \\
 HumanEval & no public test & 1.00000 & 62 & 38,973 \\
-MATH & direct & 0.85000 & 20 & 16,557 \\
+MATH & direct & 0.90000 & 20 & 16,557 \\
 MATH & CoT & 0.95000 & 20 & 17,708 \\
-MATH & manual\_v1 & 0.95000 & 100 & 151,117 \\
-MATH & single candidate & 0.85000 & 40 & 54,945 \\
+MATH & manual\_v1 & 1.00000 & 100 & 151,117 \\
+MATH & single candidate & 0.90000 & 40 & 54,945 \\
 \bottomrule
 \end{tabular}
 \end{small}
 \end{center}
 \end{table}
 
-On MATH, CoT improves over direct prompting from 0.85 to 0.95. The full \texttt{manual\_v1} workflow also reaches 0.95, while the single-candidate ablation remains at 0.85. This suggests that the multi-candidate selection path fixes at least one direct-generation failure, but the current workflow does not yet outperform CoT and costs substantially more tokens. On HumanEval, all methods score 1.00 on this validation subset, so the subset is saturated and cannot distinguish workflow quality. The no-public-test ablation is especially costly because it generates and selects among candidates without early execution-feedback filtering.
+On MATH, CoT improves over direct prompting from 0.90 to 0.95. The full \texttt{manual\_v1} workflow reaches 1.00, while the single-candidate ablation remains at 0.90. This suggests that multi-candidate generation and self-consistency selection fixed failures not solved by a single direct or CoT sample on this subset. The gain comes with substantially higher token usage. On HumanEval, all methods score 1.00 on this validation subset, so the subset is saturated and cannot distinguish workflow quality. The no-public-test ablation is especially costly because it generates and selects among candidates without early execution-feedback filtering.
 
-Failure analysis found that two MATH misses were evaluator false negatives caused by text-answer formatting such as \texttt{MAKE} versus \texttt{\textbackslash text\{MAKE\}} and comma spacing inside text answers. The evaluator now normalizes simple text wrappers and comma spacing before symbolic comparison. Remaining MATH failures are genuine reasoning/counting issues, such as a rectangle-counting problem and an overinclusive vector-projection answer.
+Failure analysis found MATH evaluator false negatives caused by text-answer formatting such as \texttt{MAKE} versus \texttt{\textbackslash text\{MAKE\}}, comma spacing inside text answers, and reference solutions that express multi-answer outputs as multiple \texttt{\textbackslash boxed\{\}} values. The evaluator now normalizes simple text wrappers, compares comma-separated answer lists as unordered lists, and combines multiple boxed reference answers before symbolic comparison. Remaining MATH baseline failures include genuine reasoning/counting issues, such as the rectangle-counting problem solved by \texttt{manual\_v1} but missed by CoT.
 
 \section{Planned Full Experiments}
 
 The next experimental stage is to expand from 20-sample validation tests to larger controlled subsets and then full benchmark runs. The planned sequence is:
 
 \begin{enumerate}
-    \item Run 30--50 validation examples for direct, CoT, and \texttt{manual\_v1} where validation set size permits.
+    \item Run 30--50 validation examples for direct, CoT, and \texttt{manual\_v1} to check whether the 20-sample MATH gain persists.
     \item Inspect failure logs to distinguish model mistakes from formatting or extraction errors.
     \item Tune prompts and workflow branching only on validation data.
     \item Run full MATH-500 and HumanEval test evaluations.
@@ -126,7 +126,7 @@ Current results are validation subsets and should not be interpreted as final be
 
 \section{Conclusion}
 
-The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, ablations, token-aware validation tables, and a report draft. The remaining core work is to scale experiments further and improve the MATH workflow beyond the CoT baseline before final test evaluation.
+The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, ablations, token-aware validation tables, and a report draft. The remaining core work is to scale experiments further and test whether the MATH validation gain over CoT persists before final test evaluation.
 
 \bibliography{references}
 \bibliographystyle{icml2022}
