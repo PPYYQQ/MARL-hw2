@@ -41,10 +41,12 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `AFlow/config/config2.kimi.example.yaml` with Kimi K2.5 model aliases and the Moonshot OpenAI-compatible base URL.
 - Added `experiments/run_baselines.py` for reproducible direct and CoT baselines on MATH and HumanEval with sample-size, seed, index, concurrency, model, and data-path controls.
 - Added `experiments/collect_results.py` and `experiments/README.md` to summarize run CSVs into a report-ready Markdown table.
+- Added `AFlow/workspace/MATH/workflows/manual_v1/` with a three-candidate math solver, self-consistency selection, and final boxed-answer cleanup.
+- Added `AFlow/workspace/HumanEval/workflows/manual_v1/` with two code-generation candidates, optional public-test repair, and ensemble fallback.
 
 ## Next Steps
 
-1. Add manual MATH and HumanEval workflow variants.
+1. Add a workflow evaluation runner for `manual_v1`.
 2. Run local static checks first, then only use API calls for small smoke tests.
 3. Keep pushing each new key commit to GitHub after local validation.
 
