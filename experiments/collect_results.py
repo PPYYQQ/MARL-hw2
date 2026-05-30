@@ -14,6 +14,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runs-dir", type=Path, default=Path("experiments/runs"))
     parser.add_argument("--output", type=Path, default=None)
+    parser.add_argument("--latest-only", action="store_true", help="Keep only the newest CSV per dataset/method/model/split.")
     return parser.parse_args()
 
 
@@ -49,9 +50,20 @@ def find_run_rows(runs_dir: Path) -> list[dict[str, str]]:
                     "score": f"{score:.5f}",
                     "total_cost": f"{total_cost:.5f}",
                     "csv": str(csv_path),
+                    "_mtime": str(csv_path.stat().st_mtime),
                 }
             )
     return rows
+
+
+def keep_latest(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    latest_by_key: dict[tuple[str, str, str, str], dict[str, str]] = {}
+    for row in rows:
+        key = (row["dataset"], row["method"], row["model"], row["split"])
+        previous = latest_by_key.get(key)
+        if previous is None or float(row["_mtime"]) > float(previous["_mtime"]):
+            latest_by_key[key] = row
+    return sorted(latest_by_key.values(), key=lambda row: (row["dataset"], row["method"], row["model"], row["split"]))
 
 
 def render_markdown(rows: list[dict[str, str]]) -> str:
@@ -68,6 +80,8 @@ def render_markdown(rows: list[dict[str, str]]) -> str:
 def main() -> None:
     args = parse_args()
     rows = find_run_rows(args.runs_dir)
+    if args.latest_only:
+        rows = keep_latest(rows)
     markdown = render_markdown(rows)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

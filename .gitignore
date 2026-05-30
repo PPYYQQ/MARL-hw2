@@ -17,6 +17,7 @@ env/
 AFlow/config/config2.yaml
 
 # Large/generated experiment artifacts
+logs/
 AFlow/data/datasets/
 AFlow/experiments/
 AFlow/**/log.json

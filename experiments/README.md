@@ -43,7 +43,7 @@ python experiments/run_workflows.py --dataset HumanEval --workflow manual_v1 --s
 After runs finish:
 
 ```bash
-python experiments/collect_results.py --runs-dir experiments/runs --output report/tables/experiment_summary.md
+python experiments/collect_results.py --runs-dir experiments/runs --latest-only --output report/tables/experiment_summary.md
 ```
 
 The summary table is intended for the report, but always verify the underlying CSV files before citing results.

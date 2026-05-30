@@ -57,6 +57,8 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - A later MATH direct smoke test returned the correct `\boxed{\dfrac{1}{12}}` answer but scored zero because SymPy LaTeX parsing needed `antlr4`; added `antlr4-python3-runtime==4.11.0`.
 - Downloaded AFlow datasets into ignored `AFlow/data/datasets/`. Available counts: `math_validate.jsonl` 119, `math_test.jsonl` 486, `humaneval_validate.jsonl` 33, `humaneval_test.jsonl` 131, `humaneval_public_test.jsonl` 159.
 - Re-ran the same 1-sample MATH direct smoke test after installing `antlr4`; it completed successfully with score `1.00000` at `experiments/runs/MATH/direct/20260530_224550/`.
+- Completed 1-sample smoke tests for MATH direct, MATH CoT, MATH `manual_v1`, HumanEval direct, HumanEval CoT, and HumanEval `manual_v1`; all final smoke runs scored `1.00000`.
+- Added `--latest-only` to `experiments/collect_results.py` so report tables can ignore earlier parameter-debug runs and keep the newest result per dataset/method/model/split.
 
 ## Next Steps
 
