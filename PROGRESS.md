@@ -45,11 +45,16 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `AFlow/workspace/HumanEval/workflows/manual_v1/` with two code-generation candidates, optional public-test repair, and ensemble fallback.
 - Fixed experiment runners so commands launched from the repository root still use `AFlow/config/config2.yaml`.
 - Added `experiments/run_workflows.py` for reproducible evaluation of tracked workflows such as `manual_v1`.
+- Created conda environment `marl_hw2` with Python 3.9, downgraded pip to `24.2` after the default pip failed under Python 3.9, and installed `AFlow/requirements.txt`.
+- Created ignored local config `AFlow/config/config2.yaml` from the Kimi example and verified that `KIMI_API_KEY` loads without printing the secret.
+- Verified syntax for experiment scripts, `async_llm.py`, and both manual workflows in the `marl_hw2` environment.
+- Added `docs/SETUP.md` to preserve the installation and validation commands for the final report.
 
 ## Next Steps
 
-1. Run local static checks first, then only use API calls for small smoke tests.
-2. Keep pushing each new key commit to GitHub after local validation.
+1. Download or prepare benchmark data files.
+2. Run tiny API smoke tests for direct, CoT, and `manual_v1`.
+3. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 
