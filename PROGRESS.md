@@ -49,6 +49,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Created ignored local config `AFlow/config/config2.yaml` from the Kimi example and verified that `KIMI_API_KEY` loads without printing the secret.
 - Verified syntax for experiment scripts, `async_llm.py`, and both manual workflows in the `marl_hw2` environment.
 - Added `docs/SETUP.md` to preserve the installation and validation commands for the final report.
+- Found that AFlow's data downloader imports `requests` even though the imported `requirements.txt` did not include it; added `requests==2.32.3`.
 
 ## Next Steps
 
