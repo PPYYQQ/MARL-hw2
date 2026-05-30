@@ -70,10 +70,12 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `docs/ABLATIONS.md` with tracked ablation variants and exact low-cost/larger validation commands.
 - Ran 3-sample validation ablations with sample seed 1. `MATH/ablation_single` scored `1.00000` using 6 LLM calls and 10,153 tokens. `HumanEval/ablation_no_public_test` scored `1.00000` using 9 LLM calls and 7,882 tokens.
 - Regenerated `report/tables/smoke_results.md` with ablation rows and updated `report/main.tex` to explain that the tiny subset validates code paths but does not yet distinguish workflow quality.
+- Re-ran 3-sample direct baselines after token logging. `MATH/direct` scored `1.00000` using 3 LLM calls and 2,586 tokens. `HumanEval/direct` scored `1.00000` using 3 LLM calls and 1,748 tokens.
+- Refreshed `report/tables/smoke_results.md` and report text with the newly available direct/ablation token counts.
 
 ## Next Steps
 
-1. Rerun selected baseline/manual workflows after token logging if raw usage comparisons are needed.
+1. Rerun CoT/manual workflows after token logging if raw usage comparisons are needed.
 2. Run larger subset experiments on 20-50 validation examples.
 3. Analyze failures and tune workflows.
 4. Keep pushing each new key commit to GitHub after local validation.
