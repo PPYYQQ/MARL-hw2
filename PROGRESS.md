@@ -39,13 +39,14 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Confirmed SSH authentication to GitHub as `PPYYQQ`, switched `origin` to `git@github.com:PPYYQQ/MARL-hw2.git`, and pushed `main`.
 - Updated AFlow LLM config loading so `config2.yaml` can read API keys from an environment variable such as `KIMI_API_KEY` instead of storing secrets in the repository.
 - Added `AFlow/config/config2.kimi.example.yaml` with Kimi K2.5 model aliases and the Moonshot OpenAI-compatible base URL.
+- Added `experiments/run_baselines.py` for reproducible direct and CoT baselines on MATH and HumanEval with sample-size, seed, index, concurrency, model, and data-path controls.
+- Added `experiments/collect_results.py` and `experiments/README.md` to summarize run CSVs into a report-ready Markdown table.
 
 ## Next Steps
 
-1. Add reproducible baseline and workflow experiment scripts.
-2. Add manual MATH and HumanEval workflow variants.
-3. Run local static checks first, then only use API calls for small smoke tests.
-4. Keep pushing each new key commit to GitHub after local validation.
+1. Add manual MATH and HumanEval workflow variants.
+2. Run local static checks first, then only use API calls for small smoke tests.
+3. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 
