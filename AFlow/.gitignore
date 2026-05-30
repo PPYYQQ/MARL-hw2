@@ -1,0 +1,10 @@
+.DS_Store
+config/config2.yaml
+logs
+data/datasets
+optimized
+*/__pycache__
+*.pyc
+workspace/**/workflows/*/log.json
+workspace/**/workflows/processed_experience.json
+workspace/**/workflows/results.json

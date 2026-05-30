@@ -32,17 +32,22 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Confirmed the working directory was not a Git repository yet.
 - Added repository hygiene rules in `.gitignore` so API keys, local config, generated datasets, logs, and report build artifacts are not committed.
 - Started this `PROGRESS.md` file as the canonical work log for future steps.
+- Initialized a local Git repository on branch `main`, added GitHub remote `https://github.com/PPYYQQ/MARL-hw2.git`, and committed the initial workspace state.
+- Tried to push `main` to GitHub, but HTTPS authentication was not available in this non-interactive shell.
+- Imported AFlow source into `AFlow/` from upstream commit `3f457218fc716093fe53f6df8a5d5e6379d66346` and recorded provenance in `AFlow_UPSTREAM.md`.
+- Narrowed AFlow's imported `.gitignore` so future assignment workflows under `AFlow/workspace/` can be tracked while generated logs/results stay ignored.
 
 ## Next Steps
 
-1. Initialize Git, set the GitHub remote, and commit the current assignment materials plus tracking files.
-2. Add AFlow code under `AFlow/` from upstream.
-3. Configure a safe local Kimi config template without exposing secrets.
-4. Add reproducible baseline and workflow experiment scripts.
-5. Run local static checks first, then only use API calls for small smoke tests.
+1. Configure a safe local Kimi config path without exposing secrets.
+2. Add reproducible baseline and workflow experiment scripts.
+3. Add manual MATH and HumanEval workflow variants.
+4. Run local static checks first, then only use API calls for small smoke tests.
+5. Push commits to GitHub after credentials are available.
 
 ## Open Issues
 
 - Full API experiments require a valid `KIMI_API_KEY` in the shell environment.
 - The exact Kimi model identifier and API base URL need to be verified against the account/platform configuration before running paid calls.
 - Complete benchmark runs should wait until small-sample runs show the output format and cost are acceptable.
+- GitHub push currently needs credentials or an SSH remote configured.
