@@ -58,7 +58,7 @@ Observed result:
 kimi-k2.5 https://api.moonshot.cn/v1 True
 ```
 
-The first API smoke test showed that this Kimi endpoint requires `top_p: 0.95` for `kimi-k2.5`, so the example config and local config use that value.
+The first API smoke test showed that this Kimi endpoint requires `top_p: 0.95` for `kimi-k2.5`, so the example config and local config use that value. A later one-sample request stayed open for more than two minutes with default thinking behavior, so the default `kimi-k2.5` alias disables thinking through `extra_body` and sets an explicit request timeout. A separate `kimi-k2.5-thinking` alias is kept for experiments that intentionally use model-side thinking.
 
 ## Local Validation
 

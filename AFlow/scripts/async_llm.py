@@ -18,6 +18,9 @@ class LLMConfig:
         self.key = config.get("key", None)
         self.base_url = config.get("base_url", "https://oneapi.deepwisdom.ai/v1")
         self.top_p = config.get("top_p", 1)
+        self.max_tokens = config.get("max_tokens")
+        self.extra_body = config.get("extra_body")
+        self.request_timeout = config.get("request_timeout", 120)
 
 class LLMsConfig:
     """Configuration manager for multiple LLM configurations"""
@@ -83,7 +86,10 @@ class LLMsConfig:
             "temperature": config.get("temperature", 1),
             "key": api_key,
             "base_url": config.get("base_url", "https://oneapi.deepwisdom.ai/v1"),
-            "top_p": config.get("top_p", 1)  # Add top_p parameter
+            "top_p": config.get("top_p", 1),
+            "max_tokens": config.get("max_tokens"),
+            "extra_body": config.get("extra_body"),
+            "request_timeout": config.get("request_timeout", 120),
         }
         
         # Create and return an LLMConfig instance with the specified configuration
@@ -187,7 +193,11 @@ class AsyncLLM:
         
         # At this point, config should be an LLMConfig instance
         self.config = config
-        self.aclient = AsyncOpenAI(api_key=self.config.key, base_url=self.config.base_url)
+        self.aclient = AsyncOpenAI(
+            api_key=self.config.key,
+            base_url=self.config.base_url,
+            timeout=self.config.request_timeout,
+        )
         self.sys_msg = system_msg
         self.usage_tracker = TokenUsageTracker()
         
@@ -201,12 +211,18 @@ class AsyncLLM:
 
         message.append({"role": "user", "content": prompt})
 
-        response = await self.aclient.chat.completions.create(
-            model=self.config.model,
-            messages=message,
-            temperature=self.config.temperature,
-            top_p = self.config.top_p,
-        )
+        request_kwargs = {
+            "model": self.config.model,
+            "messages": message,
+            "temperature": self.config.temperature,
+            "top_p": self.config.top_p,
+        }
+        if self.config.max_tokens is not None:
+            request_kwargs["max_tokens"] = self.config.max_tokens
+        if self.config.extra_body is not None:
+            request_kwargs["extra_body"] = self.config.extra_body
+
+        response = await self.aclient.chat.completions.create(**request_kwargs)
 
         # Extract token usage from response
         input_tokens = response.usage.prompt_tokens

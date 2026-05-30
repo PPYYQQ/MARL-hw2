@@ -6,11 +6,35 @@ models:
     api_key_env: KIMI_API_KEY
     temperature: 1.0
     top_p: 0.95
+    max_tokens: 4096
+    request_timeout: 120
+    extra_body:
+      thinking:
+        type: disabled
 
   kimi-k2.5-fast:
     api_type: openai
     model: kimi-k2.5
     base_url: https://api.moonshot.cn/v1
     api_key_env: KIMI_API_KEY
-    temperature: 0.6
+    temperature: 1.0
     top_p: 0.95
+    max_tokens: 2048
+    request_timeout: 120
+    extra_body:
+      thinking:
+        type: disabled
+
+  kimi-k2.5-thinking:
+    api_type: openai
+    model: kimi-k2.5
+    base_url: https://api.moonshot.cn/v1
+    api_key_env: KIMI_API_KEY
+    temperature: 1.0
+    top_p: 0.95
+    max_tokens: 32768
+    request_timeout: 300
+    extra_body:
+      thinking:
+        type: enabled
+        keep: all
