@@ -36,6 +36,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Tried to push `main` to GitHub, but HTTPS authentication was not available in this non-interactive shell.
 - Imported AFlow source into `AFlow/` from upstream commit `3f457218fc716093fe53f6df8a5d5e6379d66346` and recorded provenance in `AFlow_UPSTREAM.md`.
 - Narrowed AFlow's imported `.gitignore` so future assignment workflows under `AFlow/workspace/` can be tracked while generated logs/results stay ignored.
+- Confirmed SSH authentication to GitHub as `PPYYQQ`, switched `origin` to `git@github.com:PPYYQQ/MARL-hw2.git`, and pushed `main`.
 
 ## Next Steps
 
@@ -43,11 +44,11 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 2. Add reproducible baseline and workflow experiment scripts.
 3. Add manual MATH and HumanEval workflow variants.
 4. Run local static checks first, then only use API calls for small smoke tests.
-5. Push commits to GitHub after credentials are available.
+5. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 
 - Full API experiments require a valid `KIMI_API_KEY` in the shell environment.
 - The exact Kimi model identifier and API base URL need to be verified against the account/platform configuration before running paid calls.
 - Complete benchmark runs should wait until small-sample runs show the output format and cost are acceptable.
-- GitHub push currently needs credentials or an SSH remote configured.
+- GitHub push works through the SSH remote `git@github.com:PPYYQQ/MARL-hw2.git`.
