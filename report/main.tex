@@ -1,0 +1,128 @@
+\documentclass{article}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage[accepted]{icml2022}
+
+\icmltitlerunning{Multi-Agent Workflow Design with AFlow}
+
+\begin{document}
+
+\twocolumn[
+\icmltitle{Multi-Agent Workflow Design with AFlow for Mathematical and Code Reasoning}
+
+\begin{icmlauthorlist}
+\icmlauthor{Student Name}{pku}
+\end{icmlauthorlist}
+
+\icmlaffiliation{pku}{Student ID: TODO; Course: Multi-Agent Reinforcement Learning}
+\icmlcorrespondingauthor{Student Name}{TODO@example.com}
+
+\icmlkeywords{multi-agent systems, large language models, workflow optimization, AFlow}
+
+\vskip 0.3in
+]
+
+\begin{abstract}
+This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. Initial one-sample smoke tests verify that the evaluation, API, and workflow pipelines run end to end. Full benchmark runs and ablations remain the next step before drawing final performance conclusions.
+\end{abstract}
+
+\section{Introduction}
+
+Large language model agents can improve reasoning by decomposing a task into multiple model calls, critiques, revisions, code execution steps, or ensemble decisions. AFlow formulates this idea as a search problem over code-represented agentic workflows, where reusable operators become nodes in a workflow graph and an optimizer searches for better graph structures \cite{zhang2025aflow}. Related work on multi-agent debate \cite{du2024debate} and optimizable agent graphs \cite{zhuge2024gptswarm} motivates comparing direct model calls against explicit multi-agent reasoning.
+
+The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. The current project focuses first on a reproducible engineering base: safe API configuration, benchmark runners, manual workflows, and smoke tests.
+
+\section{AFlow Engineering Summary}
+
+The imported AFlow snapshot is stored under \texttt{AFlow/}. The main engineering components are:
+
+\begin{itemize}
+    \item \textbf{Nodes and LLM calls}: \texttt{scripts/async\_llm.py} wraps OpenAI-compatible async chat completion APIs and tracks token usage.
+    \item \textbf{Operators}: \texttt{scripts/operators.py} and dataset-specific operator templates provide reusable calls such as generation, self-consistency ensemble, code generation, execution-based testing, and revision.
+    \item \textbf{Workflows}: \texttt{workspace/<Dataset>/workflows/<name>/graph.py} implements callable Python workflow graphs.
+    \item \textbf{Benchmarks}: \texttt{benchmarks/math.py} and \texttt{benchmarks/humaneval.py} evaluate model outputs against ground truth or executable tests.
+    \item \textbf{Optimization}: \texttt{run.py} wires datasets, operators, and the optimizer for automatic workflow search.
+\end{itemize}
+
+\section{Environment Setup}
+
+The environment follows AFlow's Python 3.9 recommendation:
+
+\begin{verbatim}
+conda create -n marl_hw2 python=3.9 -y
+conda install -n marl_hw2 pip=24.2 -y
+conda run -n marl_hw2 python -m pip install -r AFlow/requirements.txt
+\end{verbatim}
+
+Two dependency issues were found during setup. First, the imported downloader required \texttt{requests}, which was not listed in the snapshot requirements. Second, the local SOCKS proxy required \texttt{socksio} for \texttt{httpx}. MATH scoring also needed \texttt{antlr4-python3-runtime} for SymPy's LaTeX parser. These were added to \texttt{AFlow/requirements.txt}.
+
+The local Kimi configuration is created from \texttt{AFlow/config/config2.kimi.example.yaml}; \texttt{AFlow/config/config2.yaml} is ignored by Git and reads the secret from \texttt{KIMI\_API\_KEY}. Initial Kimi API smoke tests established the required non-thinking parameters \texttt{temperature=0.6} and \texttt{top\_p=0.95}. A separate \texttt{kimi-k2.5-thinking} alias is kept for model-side thinking experiments.
+
+\section{Baselines}
+
+The project implements reproducible baseline runners in \texttt{experiments/run\_baselines.py}. Each run records the dataset, model, split, sample indices, concurrency, CSV path, and aggregate score in a generated \texttt{run\_config.json}.
+
+\paragraph{Direct baseline.} The direct math baseline asks Kimi K2.5 to solve the problem and place the final answer in \texttt{\textbackslash boxed\{\}}. The direct HumanEval baseline asks for valid Python code defining the required entry point.
+
+\paragraph{CoT baseline.} The chain-of-thought baseline adds explicit step-by-step reasoning instructions. For HumanEval, the prompt allows analysis but asks the final answer to contain valid Python code, which the evaluator sanitizes before execution.
+
+\section{Manual Workflow Design}
+
+\paragraph{MATH manual\_v1.} The math workflow in \texttt{AFlow/workspace/MATH/workflows/manual\_v1/} creates three independent solution candidates with different reasoning instructions. It then applies self-consistency selection and a final cleanup call that enforces a single \texttt{\textbackslash boxed\{\}} answer. The intended effect is to reduce single-sample reasoning errors while preserving compatibility with AFlow's answer extractor.
+
+\paragraph{HumanEval manual\_v1.} The code workflow in \texttt{AFlow/workspace/HumanEval/workflows/manual\_v1/} creates two independent code candidates. If public tests are available, it runs the dataset-specific \texttt{Test} operator and uses reflection repair for failing candidates. If no candidate passes public tests, the workflow falls back to self-consistency selection over the repaired candidates.
+
+\section{Smoke Results}
+
+Table~\ref{tab:smoke} reports one-sample smoke tests. These are not final benchmark results; they only prove that the API, dataset loader, scoring logic, and workflows are connected correctly.
+
+\begin{table}[t]
+\caption{One-sample smoke tests on validation splits.}
+\label{tab:smoke}
+\vskip 0.08in
+\begin{center}
+\begin{small}
+\begin{tabular}{llllr}
+\toprule
+Dataset & Method & Model & Split & Score \\
+\midrule
+HumanEval & direct & kimi-k2.5 & validate & 1.00000 \\
+HumanEval & CoT & kimi-k2.5 & validate & 1.00000 \\
+HumanEval & manual\_v1 & kimi-k2.5 & validate & 1.00000 \\
+MATH & direct & kimi-k2.5 & validate & 1.00000 \\
+MATH & CoT & kimi-k2.5 & validate & 1.00000 \\
+MATH & manual\_v1 & kimi-k2.5 & validate & 1.00000 \\
+\bottomrule
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+\section{Planned Full Experiments}
+
+The next experimental stage is to expand from one-sample smoke tests to controlled subsets and then full benchmark runs. The planned sequence is:
+
+\begin{enumerate}
+    \item Run 20--50 validation examples for direct, CoT, and \texttt{manual\_v1} on both datasets.
+    \item Inspect failure logs to distinguish model mistakes from formatting or extraction errors.
+    \item Tune prompts and workflow branching only on validation data.
+    \item Run full MATH-500 and HumanEval test evaluations.
+    \item Add ablations: remove ensemble, remove public-test repair, reduce candidate count, and compare non-thinking against thinking-enabled Kimi K2.5.
+\end{enumerate}
+
+\section{Limitations}
+
+Current results are only smoke tests and should not be interpreted as performance gains. The manual workflows increase token usage and latency, especially for MATH where three candidates plus ensemble selection can take around two minutes for one problem. Kimi pricing is not yet reflected in the local cost field because the imported AFlow pricing table does not include Kimi. Future runs should report raw token counts or add a verified Kimi pricing table.
+
+\section{Conclusion}
+
+The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, smoke-test result tracking, and a report draft. The remaining core work is to scale experiments to meaningful sample sizes and use validation failures to improve the workflows before final test evaluation.
+
+\bibliography{references}
+\bibliographystyle{icml2022}
+
+\end{document}

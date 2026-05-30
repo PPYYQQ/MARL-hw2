@@ -59,11 +59,13 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Re-ran the same 1-sample MATH direct smoke test after installing `antlr4`; it completed successfully with score `1.00000` at `experiments/runs/MATH/direct/20260530_224550/`.
 - Completed 1-sample smoke tests for MATH direct, MATH CoT, MATH `manual_v1`, HumanEval direct, HumanEval CoT, and HumanEval `manual_v1`; all final smoke runs scored `1.00000`.
 - Added `--latest-only` to `experiments/collect_results.py` so report tables can ignore earlier parameter-debug runs and keep the newest result per dataset/method/model/split.
+- Started the ICML 2022 report draft in `report/main.tex`, with sections for AFlow structure, environment setup, baseline design, manual workflow design, smoke results, limitations, and planned full experiments.
+- Added report support files from the provided ICML template and `report/references.bib` with AFlow, multi-agent debate, GPTSwarm, HumanEval, and MATH references.
 
 ## Next Steps
 
-1. Run tiny API smoke tests for CoT and `manual_v1`.
-2. Add report scaffold and initial experiment table notes.
+1. Run subset experiments on 20-50 validation examples.
+2. Analyze failures and tune workflows.
 3. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
