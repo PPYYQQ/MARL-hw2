@@ -51,6 +51,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `docs/SETUP.md` to preserve the installation and validation commands for the final report.
 - Found that AFlow's data downloader imports `requests` even though the imported `requirements.txt` did not include it; added `requests==2.32.3`.
 - Found that the local proxy environment requires `socksio` for `httpx`/OpenAI client initialization; added `socksio==1.0.0`.
+- Ran a 1-sample MATH direct smoke test; the API reached Kimi but returned `invalid top_p: only 0.95 is allowed`, so `AFlow/config/config2.kimi.example.yaml` was corrected to `top_p: 0.95`.
 
 ## Next Steps
 

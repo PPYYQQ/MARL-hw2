@@ -58,6 +58,8 @@ Observed result:
 kimi-k2.5 https://api.moonshot.cn/v1 True
 ```
 
+The first API smoke test showed that this Kimi endpoint requires `top_p: 0.95` for `kimi-k2.5`, so the example config and local config use that value.
+
 ## Local Validation
 
 Static checks:
