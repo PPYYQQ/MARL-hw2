@@ -67,5 +67,12 @@ python experiments/collect_results.py --runs-dir experiments/runs --latest-only 
 ```
 
 The summary table is intended for the report, but always verify the underlying CSV files before citing results.
-Use `--rescore-math` when citing MATH results so saved predictions are scored with the current text and list-answer normalizer.
+Use `--rescore-math` when citing MATH results so saved predictions are scored with the current MATH answer normalizer.
+Use `--dataset` and `--sample-size` to keep tables for different validation subsets reproducible, for example:
+
+```bash
+python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --sample-size 20 --output report/tables/validation20_results.md
+python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --dataset MATH --sample-size 50 --output report/tables/math_validation50_results.md
+```
+
 Each new run also writes `llm_usage.json` next to `run_config.json`, with raw input/output token counts and call history. Prefer raw token counts over the `total_cost` field until Kimi pricing is added and verified.

@@ -85,12 +85,16 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Tightened MATH rescoring again after discovering that SymPy could incorrectly treat `2,-1` as equal to `2`. The evaluator now treats comma-separated answers as unordered lists, keeps thousands separators numeric, and combines multiple boxed reference answers such as `\boxed{-1}` and `\boxed{2}`.
 - Regenerated `report/tables/validation20_results.md` with list-aware MATH scoring. Corrected 20-sample MATH scores are now `direct=0.90000`, `cot=0.95000`, `manual_v1=1.00000`, and `ablation_single=0.90000`; this is the first validation subset where the manual workflow exceeds CoT.
 - Updated `report/main.tex` to describe the MATH manual workflow's 20-sample gain over CoT and the remaining need to validate that gain on larger subsets.
+- Tightened MATH rescoring further for nested `\boxed{...}` answers, percent answers such as `28` versus `28%`, variable-assignment prefixes such as `a = -2 + \sqrt{3}`, and grouped coordinate answers. This leaves only one 50-sample `manual_v1` MATH failure after rescoring.
+- Ran 50-sample MATH validation with sample seed 1. Final rescored results are `direct=0.96000`, `cot=0.94000`, `manual_v1=0.98000`, and `ablation_single=0.94000`. `manual_v1` stays above direct, CoT, and the single-candidate ablation, but uses 349,515 tokens.
+- Added `--dataset` and `--sample-size` filters to `experiments/collect_results.py` so 20-sample and 50-sample result tables remain reproducible after later runs.
+- Generated `report/tables/math_validation50_results.md` and updated `report/main.tex`, `experiments/README.md`, and this progress log with the 50-sample MATH validation result.
 
 ## Next Steps
 
-1. Run larger 30-50 example validation subsets to check whether the MATH manual workflow remains above CoT.
+1. Inspect 50-sample MATH failure logs to decide whether a low-cost workflow improvement is obvious.
 2. Add or run full HumanEval validation/test results if token budget remains acceptable.
-3. Run full validation/test evaluations after subset cost and format look acceptable.
+3. Run full MATH validation/test evaluations after accepting the `manual_v1` token cost.
 4. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues

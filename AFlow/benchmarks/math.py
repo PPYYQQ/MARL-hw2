@@ -18,8 +18,7 @@ class MATHBenchmark(BaseBenchmark):
         super().__init__(name, file_path, log_path)
 
     def extract_model_answer(self, text: str) -> str:
-        pattern = r"\\boxed{((?:[^{}]|{[^{}]*})*)}"
-        boxed_matches = re.findall(pattern, text, re.DOTALL)
+        boxed_matches = self.find_boxed_answers(text)
         if boxed_matches:
             return boxed_matches[-1].strip()
 
@@ -29,11 +28,36 @@ class MATHBenchmark(BaseBenchmark):
         return sentences[-1] if sentences else ""
 
     def extract_reference_answer(self, text: str) -> str:
-        pattern = r"\\boxed{((?:[^{}]|{[^{}]*})*)}"
-        boxed_matches = [match.strip() for match in re.findall(pattern, text, re.DOTALL) if match.strip()]
+        boxed_matches = [match.strip() for match in self.find_boxed_answers(text) if match.strip()]
         if len(boxed_matches) > 1:
             return ",".join(boxed_matches)
         return self.extract_model_answer(text)
+
+    def find_boxed_answers(self, text: str) -> List[str]:
+        answers = []
+        marker = r"\boxed{"
+        search_start = 0
+        while True:
+            marker_index = text.find(marker, search_start)
+            if marker_index == -1:
+                break
+            content_start = marker_index + len(marker)
+            depth = 1
+            index = content_start
+            while index < len(text) and depth:
+                char = text[index]
+                escaped = index > 0 and text[index - 1] == "\\"
+                if char == "{" and not escaped:
+                    depth += 1
+                elif char == "}" and not escaped:
+                    depth -= 1
+                index += 1
+            if depth == 0:
+                answers.append(text[content_start : index - 1].strip())
+                search_start = index
+            else:
+                break
+        return answers
 
     def calculate_score(self, expected_output: str, prediction: str) -> Tuple[int, str]:
         expected_answer = self.extract_reference_answer(expected_output)
@@ -79,10 +103,14 @@ class MATHBenchmark(BaseBenchmark):
 
     def scalar_math_equal(self, prediction: Any, reference: Any) -> bool:
         try:
-            if self.is_digit(prediction) and self.is_digit(reference):
-                prediction = self.parse_digits(prediction)
-                reference = self.parse_digits(reference)
-                return isclose(prediction, reference, abs_tol=1e-3)
+            prediction_values = self.parse_numeric_candidates(prediction)
+            reference_values = self.parse_numeric_candidates(reference)
+            if prediction_values is not None and reference_values is not None:
+                return any(
+                    isclose(prediction_value, reference_value, abs_tol=1e-3)
+                    for prediction_value in prediction_values
+                    for reference_value in reference_values
+                )
         except:
             pass
 
@@ -95,20 +123,27 @@ class MATHBenchmark(BaseBenchmark):
 
     def normalize_answer(self, answer: Any) -> str:
         answer_text = str(answer).strip().strip("$")
+        answer_text = answer_text.replace("\\dfrac", "\\frac").replace("\\%", "%")
         wrapper_match = re.fullmatch(r"\\(?:text|mathrm)\{(.+)\}", answer_text)
         if wrapper_match:
             answer_text = wrapper_match.group(1)
+        answer_text = re.sub(r"^[A-Za-z]\s*=\s*", "", answer_text)
         answer_text = re.sub(r"\s*,\s*", ",", answer_text)
         answer_text = re.sub(r"\s+", " ", answer_text).strip()
+        if "\\" in answer_text or re.search(r"[\[\](){}]", answer_text):
+            answer_text = re.sub(r"\s+", "", answer_text)
         if re.fullmatch(r"[A-Za-z0-9, ]+", answer_text):
             answer_text = answer_text.replace(" ", "")
         return answer_text
 
     def split_answer_list(self, answer: str) -> Optional[List[str]]:
-        if "," not in answer or self.is_thousands_number(answer):
+        if "," not in answer or self.is_thousands_number(answer) or self.is_grouped_answer(answer):
             return None
         parts = [part.strip() for part in answer.split(",") if part.strip()]
         return parts if len(parts) > 1 else None
+
+    def is_grouped_answer(self, answer: str) -> bool:
+        return answer.startswith(("(", "[", "\\left(", "\\left["))
 
     def is_thousands_number(self, answer: str) -> bool:
         return bool(re.fullmatch(r"-?\d{1,3}(,\d{3})+(\.\d+)?%?", answer))
@@ -117,16 +152,21 @@ class MATHBenchmark(BaseBenchmark):
         return self.parse_digits(num) is not None
 
     def parse_digits(self, num):
-        num = regex.sub(",", "", str(num))
+        candidates = self.parse_numeric_candidates(num)
+        return candidates[0] if candidates else None
+
+    def parse_numeric_candidates(self, num):
+        num = regex.sub(",", "", str(num)).replace("\\%", "%")
         try:
-            return float(num)
+            return [float(num)]
         except:
             if num.endswith("%"):
                 num = num[:-1]
                 if num.endswith("\\"):
                     num = num[:-1]
                 try:
-                    return float(num) / 100
+                    value = float(num)
+                    return [value, value / 100]
                 except:
                     pass
         return None
