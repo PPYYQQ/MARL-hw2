@@ -53,6 +53,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Found that the local proxy environment requires `socksio` for `httpx`/OpenAI client initialization; added `socksio==1.0.0`.
 - Ran a 1-sample MATH direct smoke test; the API reached Kimi but returned `invalid top_p: only 0.95 is allowed`, so `AFlow/config/config2.kimi.example.yaml` was corrected to `top_p: 0.95`.
 - Retried the 1-sample MATH direct smoke test; default Kimi thinking behavior stayed open for more than two minutes, so `scripts/async_llm.py` now supports `extra_body`, `max_tokens`, and request timeouts, with the default Kimi alias disabling thinking for practical experiments.
+- Retried with thinking disabled; Kimi returned `invalid temperature: only 0.6 is allowed`, so the default non-thinking aliases now use `temperature: 0.6`.
 
 ## Next Steps
 
