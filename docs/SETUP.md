@@ -30,6 +30,8 @@ conda run -n marl_hw2 python -m pip install -r AFlow/requirements.txt
 
 The upstream data downloader imports `requests`, which was missing from the imported requirements snapshot. Added `requests==2.32.3` to `AFlow/requirements.txt` and installed it with the same command above.
 
+The local shell uses a SOCKS proxy. `httpx` requires `socksio` for that proxy mode, so `socksio==1.0.0` was also added to `AFlow/requirements.txt`.
+
 ## Kimi Configuration
 
 Created the local config from the safe example:

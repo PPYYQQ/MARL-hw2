@@ -50,6 +50,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Verified syntax for experiment scripts, `async_llm.py`, and both manual workflows in the `marl_hw2` environment.
 - Added `docs/SETUP.md` to preserve the installation and validation commands for the final report.
 - Found that AFlow's data downloader imports `requests` even though the imported `requirements.txt` did not include it; added `requests==2.32.3`.
+- Found that the local proxy environment requires `socksio` for `httpx`/OpenAI client initialization; added `socksio==1.0.0`.
 
 ## Next Steps
 
