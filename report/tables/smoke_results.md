@@ -1,10 +1,10 @@
 | dataset | method | model | split | samples | score | calls | input_tokens | output_tokens | tokens | total_cost | csv |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | HumanEval | ablation_no_public_test | kimi-k2.5 | validate | 3 | 1.00000 | 9 | 3682 | 4200 | 7882 | 0.00000 | experiments/runs/HumanEval/ablation_no_public_test/20260530_232246/1.00000_20260530_232438.csv |
-| HumanEval | cot | kimi-k2.5 | validate | 3 | 1.00000 |  |  |  |  | 0.00000 | experiments/runs/HumanEval/cot/20260530_230905/1.00000_20260530_231308.csv |
+| HumanEval | cot | kimi-k2.5 | validate | 3 | 1.00000 | 3 | 552 | 2688 | 3240 | 0.00000 | experiments/runs/HumanEval/cot/20260530_233009/1.00000_20260530_233210.csv |
 | HumanEval | direct | kimi-k2.5 | validate | 3 | 1.00000 | 3 | 519 | 1229 | 1748 | 0.00000 | experiments/runs/HumanEval/direct/20260530_232715/1.00000_20260530_232748.csv |
-| HumanEval | manual_v1 | kimi-k2.5 | validate | 3 | 1.00000 |  |  |  |  | 0.00000 | experiments/runs/HumanEval/manual_v1/20260530_231315/1.00000_20260530_231359.csv |
+| HumanEval | manual_v1 | kimi-k2.5 | validate | 3 | 1.00000 | 6 | 1374 | 1901 | 3275 | 0.00000 | experiments/runs/HumanEval/manual_v1/20260530_233237/1.00000_20260530_233311.csv |
 | MATH | ablation_single | kimi-k2.5 | validate | 3 | 1.00000 | 6 | 4559 | 5594 | 10153 | 0.00000 | experiments/runs/MATH/ablation_single/20260530_231938/1.00000_20260530_232237.csv |
-| MATH | cot | kimi-k2.5 | validate | 3 | 1.00000 |  |  |  |  | 0.00000 | experiments/runs/MATH/cot/20260530_225804/1.00000_20260530_230125.csv |
+| MATH | cot | kimi-k2.5 | validate | 3 | 1.00000 | 3 | 184 | 3260 | 3444 | 0.00000 | experiments/runs/MATH/cot/20260530_233432/1.00000_20260530_233546.csv |
 | MATH | direct | kimi-k2.5 | validate | 3 | 1.00000 | 3 | 160 | 2426 | 2586 | 0.00000 | experiments/runs/MATH/direct/20260530_232609/1.00000_20260530_232704.csv |
-| MATH | manual_v1 | kimi-k2.5 | validate | 3 | 1.00000 |  |  |  |  | 0.00000 | experiments/runs/MATH/manual_v1/20260530_230137/1.00000_20260530_230757.csv |
+| MATH | manual_v1 | kimi-k2.5 | validate | 3 | 1.00000 | 15 | 15066 | 15169 | 30235 | 0.00000 | experiments/runs/MATH/manual_v1/20260530_233557/1.00000_20260530_234211.csv |

@@ -104,7 +104,7 @@ MATH & single candidate & kimi-k2.5 & validate & 1.00000 \\
 \end{center}
 \end{table}
 
-The ablation rows are intentionally lightweight. MATH \texttt{single candidate} removes multi-candidate self-consistency from \texttt{manual\_v1}; HumanEval \texttt{no public test} removes execution-feedback repair. Both still score perfectly on this tiny subset, so they do not yet distinguish workflow quality. They do validate that the ablation code paths run and can be scaled to larger subsets. After raw usage logging was added, the 3-sample direct runs used 2,586 tokens on MATH and 1,748 tokens on HumanEval; the corresponding ablation rows used 10,153 and 7,882 tokens respectively.
+The ablation rows are intentionally lightweight. MATH \texttt{single candidate} removes multi-candidate self-consistency from \texttt{manual\_v1}; HumanEval \texttt{no public test} removes execution-feedback repair. Both still score perfectly on this tiny subset, so they do not yet distinguish workflow quality. They do validate that the ablation code paths run and can be scaled to larger subsets. After raw usage logging was added, all eight 3-sample rows were rerun or refreshed: MATH direct, CoT, manual, and single-candidate runs used 2,586, 3,444, 30,235, and 10,153 tokens respectively; HumanEval direct, CoT, manual, and no-public-test runs used 1,748, 3,240, 3,275, and 7,882 tokens respectively.
 
 \section{Planned Full Experiments}
 

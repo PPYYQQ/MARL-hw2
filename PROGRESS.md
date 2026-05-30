@@ -72,12 +72,15 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Regenerated `report/tables/smoke_results.md` with ablation rows and updated `report/main.tex` to explain that the tiny subset validates code paths but does not yet distinguish workflow quality.
 - Re-ran 3-sample direct baselines after token logging. `MATH/direct` scored `1.00000` using 3 LLM calls and 2,586 tokens. `HumanEval/direct` scored `1.00000` using 3 LLM calls and 1,748 tokens.
 - Refreshed `report/tables/smoke_results.md` and report text with the newly available direct/ablation token counts.
+- Re-ran 3-sample CoT baselines after token logging. `MATH/cot` scored `1.00000` using 3 LLM calls and 3,444 tokens. `HumanEval/cot` scored `1.00000` using 3 LLM calls and 3,240 tokens.
+- Re-ran 3-sample manual workflows after token logging. `MATH/manual_v1` scored `1.00000` using 15 LLM calls and 30,235 tokens. `HumanEval/manual_v1` scored `1.00000` using 6 LLM calls and 3,275 tokens.
+- Refreshed `report/tables/smoke_results.md` and `report/main.tex` so all eight 3-sample result rows now include raw call and token usage.
 
 ## Next Steps
 
-1. Rerun CoT/manual workflows after token logging if raw usage comparisons are needed.
-2. Run larger subset experiments on 20-50 validation examples.
-3. Analyze failures and tune workflows.
+1. Run larger subset experiments on 20-50 validation examples.
+2. Analyze failures and tune workflows.
+3. Run full validation/test evaluations after subset cost and format look acceptable.
 4. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
