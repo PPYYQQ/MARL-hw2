@@ -37,18 +37,19 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Imported AFlow source into `AFlow/` from upstream commit `3f457218fc716093fe53f6df8a5d5e6379d66346` and recorded provenance in `AFlow_UPSTREAM.md`.
 - Narrowed AFlow's imported `.gitignore` so future assignment workflows under `AFlow/workspace/` can be tracked while generated logs/results stay ignored.
 - Confirmed SSH authentication to GitHub as `PPYYQQ`, switched `origin` to `git@github.com:PPYYQQ/MARL-hw2.git`, and pushed `main`.
+- Updated AFlow LLM config loading so `config2.yaml` can read API keys from an environment variable such as `KIMI_API_KEY` instead of storing secrets in the repository.
+- Added `AFlow/config/config2.kimi.example.yaml` with Kimi K2.5 model aliases and the Moonshot OpenAI-compatible base URL.
 
 ## Next Steps
 
-1. Configure a safe local Kimi config path without exposing secrets.
-2. Add reproducible baseline and workflow experiment scripts.
-3. Add manual MATH and HumanEval workflow variants.
-4. Run local static checks first, then only use API calls for small smoke tests.
-5. Keep pushing each new key commit to GitHub after local validation.
+1. Add reproducible baseline and workflow experiment scripts.
+2. Add manual MATH and HumanEval workflow variants.
+3. Run local static checks first, then only use API calls for small smoke tests.
+4. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 
 - Full API experiments require a valid `KIMI_API_KEY` in the shell environment.
-- The exact Kimi model identifier and API base URL need to be verified against the account/platform configuration before running paid calls.
+- The example config uses the official Kimi K2.5 model id `kimi-k2.5` and Moonshot OpenAI-compatible base URL `https://api.moonshot.cn/v1`; account availability still needs to be confirmed before paid runs.
 - Complete benchmark runs should wait until small-sample runs show the output format and cost are acceptable.
 - GitHub push works through the SSH remote `git@github.com:PPYYQQ/MARL-hw2.git`.

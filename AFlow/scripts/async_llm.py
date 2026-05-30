@@ -6,6 +6,7 @@
 from openai import AsyncOpenAI
 from scripts.formatter import BaseFormatter, FormatError
 
+import os
 import yaml
 from pathlib import Path
 from typing import Dict, Optional, Any
@@ -68,10 +69,19 @@ class LLMsConfig:
         config = self.configs[llm_name]
         
         # Create a config dictionary with the expected keys for LLMConfig
+        api_key = config.get("api_key")
+        api_key_env = config.get("api_key_env")
+        if api_key is None and api_key_env:
+            api_key = os.environ.get(api_key_env)
+            if api_key is None:
+                raise ValueError(
+                    f"Environment variable '{api_key_env}' is required for LLM configuration '{llm_name}'"
+                )
+
         llm_config = {
-            "model": llm_name,  # Use the key as the model name
+            "model": config.get("model", llm_name),
             "temperature": config.get("temperature", 1),
-            "key": config.get("api_key"),  # Map api_key to key
+            "key": api_key,
             "base_url": config.get("base_url", "https://oneapi.deepwisdom.ai/v1"),
             "top_p": config.get("top_p", 1)  # Add top_p parameter
         }

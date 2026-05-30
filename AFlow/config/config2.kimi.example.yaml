@@ -1,0 +1,16 @@
+models:
+  kimi-k2.5:
+    api_type: openai
+    model: kimi-k2.5
+    base_url: https://api.moonshot.cn/v1
+    api_key_env: KIMI_API_KEY
+    temperature: 1.0
+    top_p: 1.0
+
+  kimi-k2.5-fast:
+    api_type: openai
+    model: kimi-k2.5
+    base_url: https://api.moonshot.cn/v1
+    api_key_env: KIMI_API_KEY
+    temperature: 0.6
+    top_p: 1.0
