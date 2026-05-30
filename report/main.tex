@@ -78,7 +78,7 @@ The project implements reproducible baseline runners in \texttt{experiments/run\
 
 \section{Small-Subset Results}
 
-Table~\ref{tab:smoke} reports three-sample validation subset tests. These are not final benchmark results; they primarily prove that the API, dataset loader, scoring logic, and workflows are connected correctly. The subset uses sample seed 1 and indices [17,72,108] for MATH and [4,8,16] for HumanEval.
+Table~\ref{tab:smoke} reports three-sample validation subset tests. These are not final benchmark results; they primarily prove that the API, dataset loader, scoring logic, workflows, and ablation variants are connected correctly. The subset uses sample seed 1 and indices [17,72,108] for MATH and [4,8,16] for HumanEval.
 
 \begin{table}[t]
 \caption{Three-sample validation subset tests.}
@@ -93,14 +93,18 @@ Dataset & Method & Model & Split & Score \\
 HumanEval & direct & kimi-k2.5 & validate & 1.00000 \\
 HumanEval & CoT & kimi-k2.5 & validate & 1.00000 \\
 HumanEval & manual\_v1 & kimi-k2.5 & validate & 1.00000 \\
+HumanEval & no public test & kimi-k2.5 & validate & 1.00000 \\
 MATH & direct & kimi-k2.5 & validate & 1.00000 \\
 MATH & CoT & kimi-k2.5 & validate & 1.00000 \\
 MATH & manual\_v1 & kimi-k2.5 & validate & 1.00000 \\
+MATH & single candidate & kimi-k2.5 & validate & 1.00000 \\
 \bottomrule
 \end{tabular}
 \end{small}
 \end{center}
 \end{table}
+
+The ablation rows are intentionally lightweight. MATH \texttt{single candidate} removes multi-candidate self-consistency from \texttt{manual\_v1}; HumanEval \texttt{no public test} removes execution-feedback repair. Both still score perfectly on this tiny subset, so they do not yet distinguish workflow quality. They do validate that the ablation code paths run and can be scaled to larger subsets.
 
 \section{Planned Full Experiments}
 
@@ -111,7 +115,7 @@ The next experimental stage is to expand from three-sample validation tests to l
     \item Inspect failure logs to distinguish model mistakes from formatting or extraction errors.
     \item Tune prompts and workflow branching only on validation data.
     \item Run full MATH-500 and HumanEval test evaluations.
-    \item Add ablations: remove ensemble, remove public-test repair, reduce candidate count, and compare non-thinking against thinking-enabled Kimi K2.5.
+    \item Add larger ablations: remove ensemble, remove public-test repair, reduce candidate count, and compare non-thinking against thinking-enabled Kimi K2.5.
 \end{enumerate}
 
 \section{Limitations}

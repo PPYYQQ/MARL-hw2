@@ -68,10 +68,12 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added MATH workflow `ablation_single`, which uses one solution candidate plus final formatting to isolate the effect of multi-candidate generation and self-consistency.
 - Added HumanEval workflow `ablation_no_public_test`, which removes public-test repair to isolate the effect of execution feedback.
 - Added `docs/ABLATIONS.md` with tracked ablation variants and exact low-cost/larger validation commands.
+- Ran 3-sample validation ablations with sample seed 1. `MATH/ablation_single` scored `1.00000` using 6 LLM calls and 10,153 tokens. `HumanEval/ablation_no_public_test` scored `1.00000` using 9 LLM calls and 7,882 tokens.
+- Regenerated `report/tables/smoke_results.md` with ablation rows and updated `report/main.tex` to explain that the tiny subset validates code paths but does not yet distinguish workflow quality.
 
 ## Next Steps
 
-1. Run ablation smoke tests on the existing 3-sample validation subset.
+1. Rerun selected baseline/manual workflows after token logging if raw usage comparisons are needed.
 2. Run larger subset experiments on 20-50 validation examples.
 3. Analyze failures and tune workflows.
 4. Keep pushing each new key commit to GitHub after local validation.
