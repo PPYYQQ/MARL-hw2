@@ -75,11 +75,18 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Re-ran 3-sample CoT baselines after token logging. `MATH/cot` scored `1.00000` using 3 LLM calls and 3,444 tokens. `HumanEval/cot` scored `1.00000` using 3 LLM calls and 3,240 tokens.
 - Re-ran 3-sample manual workflows after token logging. `MATH/manual_v1` scored `1.00000` using 15 LLM calls and 30,235 tokens. `HumanEval/manual_v1` scored `1.00000` using 6 LLM calls and 3,275 tokens.
 - Refreshed `report/tables/smoke_results.md` and `report/main.tex` so all eight 3-sample result rows now include raw call and token usage.
+- Ran 20-sample validation baselines with sample seed 1. Raw saved scores before MATH text-answer rescoring were `MATH/direct=0.80000`, `MATH/cot=0.85000`, `HumanEval/direct=1.00000`, and `HumanEval/cot=1.00000`.
+- Ran 20-sample validation workflows and ablations with sample seed 1. Raw saved scores before MATH text-answer rescoring were `MATH/manual_v1=0.85000`, `MATH/ablation_single=0.80000`, `HumanEval/manual_v1=1.00000`, and `HumanEval/ablation_no_public_test=1.00000`.
+- Found MATH evaluator false negatives for simple text answers such as `MAKE` versus `\text{MAKE}` and comma spacing in `\text{C,E}`. Updated `AFlow/benchmarks/math.py` to normalize simple text wrappers and comma spacing.
+- Updated `experiments/collect_results.py` with `--rescore-math`, allowing saved MATH predictions to be rescored without repeating expensive API calls.
+- Generated `report/tables/validation20_results.md` from the 20-sample runs with corrected MATH scoring. Corrected scores are `MATH/direct=0.85000`, `MATH/cot=0.95000`, `MATH/manual_v1=0.95000`, and `MATH/ablation_single=0.85000`; all HumanEval rows remain `1.00000`.
+- Updated `report/main.tex` and `experiments/README.md` with the 20-sample validation commands, token-aware table, evaluator correction note, and remaining experiment plan.
+- Added generated `tester.txt` files to `.gitignore` after HumanEval execution tests produced a local scratch log.
 
 ## Next Steps
 
-1. Run larger subset experiments on 20-50 validation examples.
-2. Analyze failures and tune workflows.
+1. Improve the MATH workflow so it can exceed the CoT score rather than only match it.
+2. Run larger 30-50 example validation subsets where dataset size and token budget permit.
 3. Run full validation/test evaluations after subset cost and format look acceptable.
 4. Keep pushing each new key commit to GitHub after local validation.
 

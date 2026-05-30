@@ -41,6 +41,11 @@ class MATHBenchmark(BaseBenchmark):
         if str(prediction) == str(reference):
             return True
 
+        prediction = self.normalize_answer(prediction)
+        reference = self.normalize_answer(reference)
+        if prediction == reference:
+            return True
+
         try:
             if self.is_digit(prediction) and self.is_digit(reference):
                 prediction = self.parse_digits(prediction)
@@ -55,6 +60,17 @@ class MATHBenchmark(BaseBenchmark):
             pass
 
         return False
+
+    def normalize_answer(self, answer: Any) -> str:
+        answer_text = str(answer).strip().strip("$")
+        wrapper_match = re.fullmatch(r"\\(?:text|mathrm)\{(.+)\}", answer_text)
+        if wrapper_match:
+            answer_text = wrapper_match.group(1)
+        answer_text = re.sub(r"\s*,\s*", ",", answer_text)
+        answer_text = re.sub(r"\s+", " ", answer_text).strip()
+        if re.fullmatch(r"[A-Za-z0-9, ]+", answer_text):
+            answer_text = answer_text.replace(" ", "")
+        return answer_text
 
     def is_digit(self, num):
         return self.parse_digits(num) is not None

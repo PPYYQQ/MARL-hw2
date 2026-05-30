@@ -47,11 +47,25 @@ python experiments/run_workflows.py --dataset MATH --workflow ablation_single --
 python experiments/run_workflows.py --dataset HumanEval --workflow ablation_no_public_test --sample-size 3 --sample-seed 1 --max-concurrency 1
 ```
 
+Run the current 20-sample validation subset:
+
+```bash
+python experiments/run_baselines.py --dataset MATH --baseline direct --sample-size 20 --sample-seed 1 --max-concurrency 4
+python experiments/run_baselines.py --dataset MATH --baseline cot --sample-size 20 --sample-seed 1 --max-concurrency 4
+python experiments/run_baselines.py --dataset HumanEval --baseline direct --sample-size 20 --sample-seed 1 --max-concurrency 4
+python experiments/run_baselines.py --dataset HumanEval --baseline cot --sample-size 20 --sample-seed 1 --max-concurrency 4
+python experiments/run_workflows.py --dataset MATH --workflow manual_v1 --sample-size 20 --sample-seed 1 --max-concurrency 2
+python experiments/run_workflows.py --dataset MATH --workflow ablation_single --sample-size 20 --sample-seed 1 --max-concurrency 2
+python experiments/run_workflows.py --dataset HumanEval --workflow manual_v1 --sample-size 20 --sample-seed 1 --max-concurrency 4
+python experiments/run_workflows.py --dataset HumanEval --workflow ablation_no_public_test --sample-size 20 --sample-seed 1 --max-concurrency 4
+```
+
 After runs finish:
 
 ```bash
-python experiments/collect_results.py --runs-dir experiments/runs --latest-only --output report/tables/experiment_summary.md
+python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --output report/tables/experiment_summary.md
 ```
 
 The summary table is intended for the report, but always verify the underlying CSV files before citing results.
+Use `--rescore-math` when citing MATH results so saved predictions are scored with the current text-answer normalizer.
 Each new run also writes `llm_usage.json` next to `run_config.json`, with raw input/output token counts and call history. Prefer raw token counts over the `total_cost` field until Kimi pricing is added and verified.

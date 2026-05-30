@@ -27,14 +27,14 @@
 ]
 
 \begin{abstract}
-This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. Initial three-sample validation runs verify that the evaluation, API, and workflow pipelines run end to end. Full benchmark runs and ablations remain the next step before drawing final performance conclusions.
+This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. Twenty-sample validation runs verify the evaluation, API, workflow, token logging, and ablation pipelines end to end. Full benchmark runs remain the next step before drawing final performance conclusions.
 \end{abstract}
 
 \section{Introduction}
 
 Large language model agents can improve reasoning by decomposing a task into multiple model calls, critiques, revisions, code execution steps, or ensemble decisions. AFlow formulates this idea as a search problem over code-represented agentic workflows, where reusable operators become nodes in a workflow graph and an optimizer searches for better graph structures \cite{zhang2025aflow}. Related work on multi-agent debate \cite{du2024debate} and optimizable agent graphs \cite{zhuge2024gptswarm} motivates comparing direct model calls against explicit multi-agent reasoning.
 
-The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. The current project focuses first on a reproducible engineering base: safe API configuration, benchmark runners, manual workflows, and smoke tests.
+The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. The current project focuses first on a reproducible engineering base: safe API configuration, benchmark runners, manual workflows, validation subsets, and result tables.
 
 \section{AFlow Engineering Summary}
 
@@ -76,42 +76,44 @@ The project implements reproducible baseline runners in \texttt{experiments/run\
 
 \paragraph{HumanEval manual\_v1.} The code workflow in \texttt{AFlow/workspace/HumanEval/workflows/manual\_v1/} creates two independent code candidates. If public tests are available, it runs the dataset-specific \texttt{Test} operator and uses reflection repair for failing candidates. If no candidate passes public tests, the workflow falls back to self-consistency selection over the repaired candidates.
 
-\section{Small-Subset Results}
+\section{Validation Results}
 
-Table~\ref{tab:smoke} reports three-sample validation subset tests. These are not final benchmark results; they primarily prove that the API, dataset loader, scoring logic, workflows, and ablation variants are connected correctly. The subset uses sample seed 1 and indices [17,72,108] for MATH and [4,8,16] for HumanEval.
+Table~\ref{tab:validation20} reports 20-sample validation subset tests using sample seed 1. These are not final benchmark results, but they are large enough to reveal initial differences between direct prompting, CoT, manual workflows, and ablations. MATH scores in this table are recomputed from saved predictions with the corrected text-answer normalizer, so CSV filenames may still contain the original pre-fix score.
 
 \begin{table}[t]
-\caption{Three-sample validation subset tests.}
-\label{tab:smoke}
+\caption{Twenty-sample validation subset tests.}
+\label{tab:validation20}
 \vskip 0.08in
 \begin{center}
 \begin{small}
-\begin{tabular}{llllr}
+\begin{tabular}{llrrr}
 \toprule
-Dataset & Method & Model & Split & Score \\
+Dataset & Method & Score & Calls & Tokens \\
 \midrule
-HumanEval & direct & kimi-k2.5 & validate & 1.00000 \\
-HumanEval & CoT & kimi-k2.5 & validate & 1.00000 \\
-HumanEval & manual\_v1 & kimi-k2.5 & validate & 1.00000 \\
-HumanEval & no public test & kimi-k2.5 & validate & 1.00000 \\
-MATH & direct & kimi-k2.5 & validate & 1.00000 \\
-MATH & CoT & kimi-k2.5 & validate & 1.00000 \\
-MATH & manual\_v1 & kimi-k2.5 & validate & 1.00000 \\
-MATH & single candidate & kimi-k2.5 & validate & 1.00000 \\
+HumanEval & direct & 1.00000 & 20 & 6,034 \\
+HumanEval & CoT & 1.00000 & 20 & 15,628 \\
+HumanEval & manual\_v1 & 1.00000 & 41 & 16,441 \\
+HumanEval & no public test & 1.00000 & 62 & 38,973 \\
+MATH & direct & 0.85000 & 20 & 16,557 \\
+MATH & CoT & 0.95000 & 20 & 17,708 \\
+MATH & manual\_v1 & 0.95000 & 100 & 151,117 \\
+MATH & single candidate & 0.85000 & 40 & 54,945 \\
 \bottomrule
 \end{tabular}
 \end{small}
 \end{center}
 \end{table}
 
-The ablation rows are intentionally lightweight. MATH \texttt{single candidate} removes multi-candidate self-consistency from \texttt{manual\_v1}; HumanEval \texttt{no public test} removes execution-feedback repair. Both still score perfectly on this tiny subset, so they do not yet distinguish workflow quality. They do validate that the ablation code paths run and can be scaled to larger subsets. After raw usage logging was added, all eight 3-sample rows were rerun or refreshed: MATH direct, CoT, manual, and single-candidate runs used 2,586, 3,444, 30,235, and 10,153 tokens respectively; HumanEval direct, CoT, manual, and no-public-test runs used 1,748, 3,240, 3,275, and 7,882 tokens respectively.
+On MATH, CoT improves over direct prompting from 0.85 to 0.95. The full \texttt{manual\_v1} workflow also reaches 0.95, while the single-candidate ablation remains at 0.85. This suggests that the multi-candidate selection path fixes at least one direct-generation failure, but the current workflow does not yet outperform CoT and costs substantially more tokens. On HumanEval, all methods score 1.00 on this validation subset, so the subset is saturated and cannot distinguish workflow quality. The no-public-test ablation is especially costly because it generates and selects among candidates without early execution-feedback filtering.
+
+Failure analysis found that two MATH misses were evaluator false negatives caused by text-answer formatting such as \texttt{MAKE} versus \texttt{\textbackslash text\{MAKE\}} and comma spacing inside text answers. The evaluator now normalizes simple text wrappers and comma spacing before symbolic comparison. Remaining MATH failures are genuine reasoning/counting issues, such as a rectangle-counting problem and an overinclusive vector-projection answer.
 
 \section{Planned Full Experiments}
 
-The next experimental stage is to expand from three-sample validation tests to larger controlled subsets and then full benchmark runs. The planned sequence is:
+The next experimental stage is to expand from 20-sample validation tests to larger controlled subsets and then full benchmark runs. The planned sequence is:
 
 \begin{enumerate}
-    \item Run 20--50 validation examples for direct, CoT, and \texttt{manual\_v1} on both datasets.
+    \item Run 30--50 validation examples for direct, CoT, and \texttt{manual\_v1} where validation set size permits.
     \item Inspect failure logs to distinguish model mistakes from formatting or extraction errors.
     \item Tune prompts and workflow branching only on validation data.
     \item Run full MATH-500 and HumanEval test evaluations.
@@ -120,11 +122,11 @@ The next experimental stage is to expand from three-sample validation tests to l
 
 \section{Limitations}
 
-Current results are small validation subsets and should not be interpreted as performance gains. The manual workflows increase token usage and latency, especially for MATH where three candidates plus ensemble selection can take several minutes for three problems. Kimi pricing is not yet reflected in the local cost field because the imported AFlow pricing table does not include Kimi. Future runs should report raw token counts or add a verified Kimi pricing table.
+Current results are validation subsets and should not be interpreted as final benchmark gains. The manual workflows increase token usage and latency, especially for MATH where three candidates plus ensemble selection used 151,117 tokens on 20 problems. Kimi pricing is not yet reflected in the local cost field because the imported AFlow pricing table does not include Kimi. Future runs should report raw token counts or add a verified Kimi pricing table.
 
 \section{Conclusion}
 
-The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, small-subset result tracking, and a report draft. The remaining core work is to scale experiments to meaningful sample sizes and use validation failures to improve the workflows before final test evaluation.
+The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, ablations, token-aware validation tables, and a report draft. The remaining core work is to scale experiments further and improve the MATH workflow beyond the CoT baseline before final test evaluation.
 
 \bibliography{references}
 \bibliographystyle{icml2022}
