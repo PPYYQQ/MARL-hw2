@@ -47,3 +47,4 @@ python experiments/collect_results.py --runs-dir experiments/runs --latest-only 
 ```
 
 The summary table is intended for the report, but always verify the underlying CSV files before citing results.
+Each new run also writes `llm_usage.json` next to `run_config.json`, with raw input/output token counts and call history. Prefer raw token counts over the `total_cost` field until Kimi pricing is added and verified.

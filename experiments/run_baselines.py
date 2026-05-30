@@ -127,6 +127,15 @@ def build_workflow(dataset: str, llm_config: Any, baseline: str):
     raise ValueError(f"Unsupported dataset: {dataset}")
 
 
+def save_usage_summary(workflow: Any, run_dir: Path) -> dict[str, Any]:
+    llm = getattr(workflow, "llm", None)
+    if llm is None:
+        return {}
+    usage_summary = llm.get_usage_summary()
+    (run_dir / "llm_usage.json").write_text(json.dumps(usage_summary, indent=2), encoding="utf-8")
+    return usage_summary
+
+
 async def run(args: argparse.Namespace) -> None:
     from scripts.async_llm import LLMsConfig
 
@@ -151,6 +160,7 @@ async def run(args: argparse.Namespace) -> None:
     workflow = build_workflow(args.dataset, llm_config, args.baseline)
     results = await benchmark.evaluate_all_problems(data, workflow, max_concurrent_tasks=args.max_concurrency)
     average_score, average_cost, total_cost = benchmark.save_results_to_csv(results, benchmark.get_result_columns())
+    usage_summary = save_usage_summary(workflow, run_dir)
 
     config = {
         "dataset": args.dataset,
@@ -165,6 +175,12 @@ async def run(args: argparse.Namespace) -> None:
         "average_score": average_score,
         "average_cost": average_cost,
         "total_cost": total_cost,
+        "total_input_tokens": usage_summary.get("total_input_tokens"),
+        "total_output_tokens": usage_summary.get("total_output_tokens"),
+        "total_tokens": usage_summary.get("total_tokens"),
+        "llm_call_count": usage_summary.get("call_count"),
+        "llm_total_cost": usage_summary.get("total_cost"),
+        "llm_usage_path": str(run_dir / "llm_usage.json") if usage_summary else None,
     }
     (run_dir / "run_config.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
     print(json.dumps(config, indent=2))

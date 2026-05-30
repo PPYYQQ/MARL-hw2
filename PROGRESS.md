@@ -63,6 +63,8 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added report support files from the provided ICML template and `report/references.bib` with AFlow, multi-agent debate, GPTSwarm, HumanEval, and MATH references.
 - Ran 3-sample validation subsets for MATH and HumanEval direct, CoT, and `manual_v1`; all six runs scored `1.00000`.
 - Regenerated `report/tables/smoke_results.md` with the latest 3-sample runs and updated the report text from one-sample smoke tests to small-subset results.
+- Updated experiment runners to save `llm_usage.json` for each new run and copy raw input/output token totals plus call counts into `run_config.json`.
+- Updated `experiments/collect_results.py` so future tables include `calls`, `input_tokens`, `output_tokens`, and total `tokens`; this avoids relying on the currently unpriced Kimi `total_cost` field.
 
 ## Next Steps
 

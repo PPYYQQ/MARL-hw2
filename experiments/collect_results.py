@@ -49,6 +49,10 @@ def find_run_rows(runs_dir: Path) -> list[dict[str, str]]:
                     "samples": str(sample_count),
                     "score": f"{score:.5f}",
                     "total_cost": f"{total_cost:.5f}",
+                    "calls": str(config.get("llm_call_count") or ""),
+                    "input_tokens": str(config.get("total_input_tokens") or ""),
+                    "output_tokens": str(config.get("total_output_tokens") or ""),
+                    "tokens": str(config.get("total_tokens") or ""),
                     "csv": str(csv_path),
                     "_mtime": str(csv_path.stat().st_mtime),
                 }
@@ -67,7 +71,20 @@ def keep_latest(rows: list[dict[str, str]]) -> list[dict[str, str]]:
 
 
 def render_markdown(rows: list[dict[str, str]]) -> str:
-    headers = ["dataset", "method", "model", "split", "samples", "score", "total_cost", "csv"]
+    headers = [
+        "dataset",
+        "method",
+        "model",
+        "split",
+        "samples",
+        "score",
+        "calls",
+        "input_tokens",
+        "output_tokens",
+        "tokens",
+        "total_cost",
+        "csv",
+    ]
     lines = [
         "| " + " | ".join(headers) + " |",
         "| " + " | ".join(["---"] * len(headers)) + " |",
