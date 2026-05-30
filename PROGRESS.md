@@ -89,12 +89,15 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Ran 50-sample MATH validation with sample seed 1. Final rescored results are `direct=0.96000`, `cot=0.94000`, `manual_v1=0.98000`, and `ablation_single=0.94000`. `manual_v1` stays above direct, CoT, and the single-candidate ablation, but uses 349,515 tokens.
 - Added `--dataset` and `--sample-size` filters to `experiments/collect_results.py` so 20-sample and 50-sample result tables remain reproducible after later runs.
 - Generated `report/tables/math_validation50_results.md` and updated `report/main.tex`, `experiments/README.md`, and this progress log with the 50-sample MATH validation result.
+- Ran full HumanEval test split evaluations. Results are `direct=0.97710` with 48,941 tokens, `cot=0.98473` with 120,573 tokens, `manual_v1=0.98473` with 134,751 tokens, and `ablation_no_public_test=0.99237` with 303,127 tokens.
+- Added `--split` filtering to `experiments/collect_results.py`, generated `report/tables/humaneval_test_results.md`, and updated `report/main.tex` with the full HumanEval test table.
+- Added generated `error.log` files to `.gitignore` after HumanEval execution tests produced local failure logs.
 
 ## Next Steps
 
 1. Inspect 50-sample MATH failure logs to decide whether a low-cost workflow improvement is obvious.
-2. Add or run full HumanEval validation/test results if token budget remains acceptable.
-3. Run full MATH validation/test evaluations after accepting the `manual_v1` token cost.
+2. Run full MATH validation/test evaluations after accepting the `manual_v1` token cost.
+3. Consider a lower-token MATH workflow variant because `manual_v1` is accurate but expensive.
 4. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues

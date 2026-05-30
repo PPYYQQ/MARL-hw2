@@ -22,6 +22,7 @@ AFlow/data/datasets/
 AFlow/experiments/
 AFlow/**/log.json
 AFlow/**/results/*.csv
+error.log
 tester.txt
 experiments/**/*.csv
 experiments/**/*.jsonl

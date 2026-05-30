@@ -17,6 +17,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--runs-dir", type=Path, default=Path("experiments/runs"))
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--dataset", choices=["MATH", "HumanEval"], default=None)
+    parser.add_argument("--split", choices=["validate", "test"], default=None)
     parser.add_argument("--sample-size", type=int, default=None)
     parser.add_argument("--latest-only", action="store_true", help="Keep only the newest CSV per dataset/method/model/split.")
     parser.add_argument(
@@ -93,10 +94,17 @@ def keep_latest(rows: list[dict[str, str]]) -> list[dict[str, str]]:
     return sorted(latest_by_key.values(), key=lambda row: (row["dataset"], row["method"], row["model"], row["split"]))
 
 
-def filter_rows(rows: list[dict[str, str]], dataset: str | None, sample_size: int | None) -> list[dict[str, str]]:
+def filter_rows(
+    rows: list[dict[str, str]],
+    dataset: str | None,
+    split: str | None,
+    sample_size: int | None,
+) -> list[dict[str, str]]:
     filtered_rows = rows
     if dataset:
         filtered_rows = [row for row in filtered_rows if row["dataset"] == dataset]
+    if split:
+        filtered_rows = [row for row in filtered_rows if row["split"] == split]
     if sample_size is not None:
         filtered_rows = [row for row in filtered_rows if row["samples"] == str(sample_size)]
     return filtered_rows
@@ -129,7 +137,7 @@ def render_markdown(rows: list[dict[str, str]]) -> str:
 def main() -> None:
     args = parse_args()
     rows = find_run_rows(args.runs_dir, args.rescore_math)
-    rows = filter_rows(rows, args.dataset, args.sample_size)
+    rows = filter_rows(rows, args.dataset, args.split, args.sample_size)
     if args.latest_only:
         rows = keep_latest(rows)
     markdown = render_markdown(rows)

@@ -73,6 +73,7 @@ Use `--dataset` and `--sample-size` to keep tables for different validation subs
 ```bash
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --sample-size 20 --output report/tables/validation20_results.md
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --dataset MATH --sample-size 50 --output report/tables/math_validation50_results.md
+python experiments/collect_results.py --runs-dir experiments/runs --latest-only --dataset HumanEval --split test --output report/tables/humaneval_test_results.md
 ```
 
 Each new run also writes `llm_usage.json` next to `run_config.json`, with raw input/output token counts and call history. Prefer raw token counts over the `total_cost` field until Kimi pricing is added and verified.

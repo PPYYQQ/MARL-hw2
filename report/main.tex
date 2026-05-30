@@ -130,6 +130,28 @@ single candidate & 0.94000 & 100 & 114,590 \\
 \end{center}
 \end{table}
 
+\begin{table}[t]
+\caption{HumanEval full test split results.}
+\label{tab:humanevaltest}
+\vskip 0.08in
+\begin{center}
+\begin{small}
+\begin{tabular}{lrrr}
+\toprule
+Method & Score & Calls & Tokens \\
+\midrule
+direct & 0.97710 & 131 & 48,941 \\
+CoT & 0.98473 & 131 & 120,573 \\
+manual\_v1 & 0.98473 & 287 & 134,751 \\
+no public test & 0.99237 & 409 & 303,127 \\
+\bottomrule
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+Table~\ref{tab:humanevaltest} reports full HumanEval test split results. The direct baseline is already strong at 0.97710. CoT and \texttt{manual\_v1} both improve to 0.98473, while the no-public-test ablation reaches 0.99237 through additional candidate generation and ensemble selection. This result suggests that, on this Kimi setup, candidate diversity matters at least as much as execution-feedback repair for the tested HumanEval split, although the best ablation uses more than six times the direct baseline token count.
+
 \section{Planned Full Experiments}
 
 The next experimental stage is to move from validation subsets to full benchmark runs and workflow refinement. The planned sequence is:
@@ -137,7 +159,6 @@ The next experimental stage is to move from validation subsets to full benchmark
 \begin{enumerate}
     \item Inspect the 50-sample MATH failure logs to identify whether direct-only and workflow-only failures are systematic.
     \item Tune MATH prompts or add verification only on validation data if a low-cost fix is clear.
-    \item Run full HumanEval test evaluations, since the 20-sample validation subset is saturated.
     \item Run full MATH validation/test evaluations only after accepting the token cost of \texttt{manual\_v1}.
     \item Add larger ablations: remove ensemble, reduce candidate count, and compare non-thinking against thinking-enabled Kimi K2.5.
 \end{enumerate}
