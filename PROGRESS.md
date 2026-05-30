@@ -65,12 +65,16 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Regenerated `report/tables/smoke_results.md` with the latest 3-sample runs and updated the report text from one-sample smoke tests to small-subset results.
 - Updated experiment runners to save `llm_usage.json` for each new run and copy raw input/output token totals plus call counts into `run_config.json`.
 - Updated `experiments/collect_results.py` so future tables include `calls`, `input_tokens`, `output_tokens`, and total `tokens`; this avoids relying on the currently unpriced Kimi `total_cost` field.
+- Added MATH workflow `ablation_single`, which uses one solution candidate plus final formatting to isolate the effect of multi-candidate generation and self-consistency.
+- Added HumanEval workflow `ablation_no_public_test`, which removes public-test repair to isolate the effect of execution feedback.
+- Added `docs/ABLATIONS.md` with tracked ablation variants and exact low-cost/larger validation commands.
 
 ## Next Steps
 
-1. Run larger subset experiments on 20-50 validation examples.
-2. Analyze failures and tune workflows.
-3. Keep pushing each new key commit to GitHub after local validation.
+1. Run ablation smoke tests on the existing 3-sample validation subset.
+2. Run larger subset experiments on 20-50 validation examples.
+3. Analyze failures and tune workflows.
+4. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 

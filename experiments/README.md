@@ -40,6 +40,13 @@ python experiments/run_workflows.py --dataset MATH --workflow manual_v1 --sample
 python experiments/run_workflows.py --dataset HumanEval --workflow manual_v1 --sample-size 3 --max-concurrency 1
 ```
 
+Run ablation workflows on the same sampled indices:
+
+```bash
+python experiments/run_workflows.py --dataset MATH --workflow ablation_single --sample-size 3 --sample-seed 1 --max-concurrency 1
+python experiments/run_workflows.py --dataset HumanEval --workflow ablation_no_public_test --sample-size 3 --sample-seed 1 --max-concurrency 1
+```
+
 After runs finish:
 
 ```bash
