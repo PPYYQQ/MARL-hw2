@@ -61,10 +61,12 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `--latest-only` to `experiments/collect_results.py` so report tables can ignore earlier parameter-debug runs and keep the newest result per dataset/method/model/split.
 - Started the ICML 2022 report draft in `report/main.tex`, with sections for AFlow structure, environment setup, baseline design, manual workflow design, smoke results, limitations, and planned full experiments.
 - Added report support files from the provided ICML template and `report/references.bib` with AFlow, multi-agent debate, GPTSwarm, HumanEval, and MATH references.
+- Ran 3-sample validation subsets for MATH and HumanEval direct, CoT, and `manual_v1`; all six runs scored `1.00000`.
+- Regenerated `report/tables/smoke_results.md` with the latest 3-sample runs and updated the report text from one-sample smoke tests to small-subset results.
 
 ## Next Steps
 
-1. Run subset experiments on 20-50 validation examples.
+1. Run larger subset experiments on 20-50 validation examples.
 2. Analyze failures and tune workflows.
 3. Keep pushing each new key commit to GitHub after local validation.
 

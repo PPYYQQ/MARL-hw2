@@ -27,7 +27,7 @@
 ]
 
 \begin{abstract}
-This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. Initial one-sample smoke tests verify that the evaluation, API, and workflow pipelines run end to end. Full benchmark runs and ablations remain the next step before drawing final performance conclusions.
+This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. Initial three-sample validation runs verify that the evaluation, API, and workflow pipelines run end to end. Full benchmark runs and ablations remain the next step before drawing final performance conclusions.
 \end{abstract}
 
 \section{Introduction}
@@ -76,12 +76,12 @@ The project implements reproducible baseline runners in \texttt{experiments/run\
 
 \paragraph{HumanEval manual\_v1.} The code workflow in \texttt{AFlow/workspace/HumanEval/workflows/manual\_v1/} creates two independent code candidates. If public tests are available, it runs the dataset-specific \texttt{Test} operator and uses reflection repair for failing candidates. If no candidate passes public tests, the workflow falls back to self-consistency selection over the repaired candidates.
 
-\section{Smoke Results}
+\section{Small-Subset Results}
 
-Table~\ref{tab:smoke} reports one-sample smoke tests. These are not final benchmark results; they only prove that the API, dataset loader, scoring logic, and workflows are connected correctly.
+Table~\ref{tab:smoke} reports three-sample validation subset tests. These are not final benchmark results; they primarily prove that the API, dataset loader, scoring logic, and workflows are connected correctly. The subset uses sample seed 1 and indices [17,72,108] for MATH and [4,8,16] for HumanEval.
 
 \begin{table}[t]
-\caption{One-sample smoke tests on validation splits.}
+\caption{Three-sample validation subset tests.}
 \label{tab:smoke}
 \vskip 0.08in
 \begin{center}
@@ -104,7 +104,7 @@ MATH & manual\_v1 & kimi-k2.5 & validate & 1.00000 \\
 
 \section{Planned Full Experiments}
 
-The next experimental stage is to expand from one-sample smoke tests to controlled subsets and then full benchmark runs. The planned sequence is:
+The next experimental stage is to expand from three-sample validation tests to larger controlled subsets and then full benchmark runs. The planned sequence is:
 
 \begin{enumerate}
     \item Run 20--50 validation examples for direct, CoT, and \texttt{manual\_v1} on both datasets.
@@ -116,11 +116,11 @@ The next experimental stage is to expand from one-sample smoke tests to controll
 
 \section{Limitations}
 
-Current results are only smoke tests and should not be interpreted as performance gains. The manual workflows increase token usage and latency, especially for MATH where three candidates plus ensemble selection can take around two minutes for one problem. Kimi pricing is not yet reflected in the local cost field because the imported AFlow pricing table does not include Kimi. Future runs should report raw token counts or add a verified Kimi pricing table.
+Current results are small validation subsets and should not be interpreted as performance gains. The manual workflows increase token usage and latency, especially for MATH where three candidates plus ensemble selection can take several minutes for three problems. Kimi pricing is not yet reflected in the local cost field because the imported AFlow pricing table does not include Kimi. Future runs should report raw token counts or add a verified Kimi pricing table.
 
 \section{Conclusion}
 
-The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, smoke-test result tracking, and a report draft. The remaining core work is to scale experiments to meaningful sample sizes and use validation failures to improve the workflows before final test evaluation.
+The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, small-subset result tracking, and a report draft. The remaining core work is to scale experiments to meaningful sample sizes and use validation failures to improve the workflows before final test evaluation.
 
 \bibliography{references}
 \bibliographystyle{icml2022}
