@@ -42,7 +42,7 @@ def find_run_rows(runs_dir: Path) -> list[dict[str, str]]:
             rows.append(
                 {
                     "dataset": config.get("dataset", ""),
-                    "baseline": config.get("baseline", ""),
+                    "method": config.get("baseline") or config.get("workflow", ""),
                     "model": config.get("model", ""),
                     "split": config.get("split", ""),
                     "samples": str(sample_count),
@@ -55,7 +55,7 @@ def find_run_rows(runs_dir: Path) -> list[dict[str, str]]:
 
 
 def render_markdown(rows: list[dict[str, str]]) -> str:
-    headers = ["dataset", "baseline", "model", "split", "samples", "score", "total_cost", "csv"]
+    headers = ["dataset", "method", "model", "split", "samples", "score", "total_cost", "csv"]
     lines = [
         "| " + " | ".join(headers) + " |",
         "| " + " | ".join(["---"] * len(headers)) + " |",

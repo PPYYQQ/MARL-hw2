@@ -43,12 +43,13 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/collect_results.py` and `experiments/README.md` to summarize run CSVs into a report-ready Markdown table.
 - Added `AFlow/workspace/MATH/workflows/manual_v1/` with a three-candidate math solver, self-consistency selection, and final boxed-answer cleanup.
 - Added `AFlow/workspace/HumanEval/workflows/manual_v1/` with two code-generation candidates, optional public-test repair, and ensemble fallback.
+- Fixed experiment runners so commands launched from the repository root still use `AFlow/config/config2.yaml`.
+- Added `experiments/run_workflows.py` for reproducible evaluation of tracked workflows such as `manual_v1`.
 
 ## Next Steps
 
-1. Add a workflow evaluation runner for `manual_v1`.
-2. Run local static checks first, then only use API calls for small smoke tests.
-3. Keep pushing each new key commit to GitHub after local validation.
+1. Run local static checks first, then only use API calls for small smoke tests.
+2. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 

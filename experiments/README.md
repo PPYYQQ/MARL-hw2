@@ -33,6 +33,13 @@ Use `--data-path` if the downloaded dataset is not at AFlow's default path. Keep
 
 ## Result Summary
 
+Run the manual workflow after baseline smoke tests:
+
+```bash
+python experiments/run_workflows.py --dataset MATH --workflow manual_v1 --sample-size 3 --max-concurrency 1
+python experiments/run_workflows.py --dataset HumanEval --workflow manual_v1 --sample-size 3 --max-concurrency 1
+```
+
 After runs finish:
 
 ```bash

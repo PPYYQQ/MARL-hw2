@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Run direct and CoT baselines for MATH and HumanEval."""
+"""Run a tracked AFlow workflow on an assignment benchmark."""
 
 from __future__ import annotations
 
 import argparse
 import asyncio
+import importlib
 import json
 import os
 import random
@@ -19,67 +20,11 @@ AFLOW_ROOT = REPO_ROOT / "AFlow"
 if str(AFLOW_ROOT) not in sys.path:
     sys.path.insert(0, str(AFLOW_ROOT))
 
-MATH_PROMPTS = {
-    "direct": """Solve the math problem. Put the final answer in \\boxed{{...}}.
-
-Problem:
-{problem}
-""",
-    "cot": """Solve the math problem step by step. Check your reasoning, then put the final answer in \\boxed{{...}}.
-
-Problem:
-{problem}
-""",
-}
-
-
-HUMANEVAL_PROMPTS = {
-    "direct": """Complete the Python function for the programming task.
-Return only valid Python code.
-The solution must define the function `{entry_point}`.
-
-Task:
-{problem}
-""",
-    "cot": """Analyze the programming task and edge cases step by step, then provide the final implementation.
-Return the final answer as valid Python code. The solution must define the function `{entry_point}`.
-
-Task:
-{problem}
-""",
-}
-
-
-class MathBaselineWorkflow:
-    def __init__(self, llm_config: Any, baseline: str) -> None:
-        from scripts.async_llm import create_llm_instance
-
-        self.llm = create_llm_instance(llm_config)
-        self.baseline = baseline
-
-    async def __call__(self, problem: str) -> tuple[str, float]:
-        prompt = MATH_PROMPTS[self.baseline].format(problem=problem)
-        response = await self.llm(prompt)
-        return response, self.llm.get_usage_summary()["total_cost"]
-
-
-class HumanEvalBaselineWorkflow:
-    def __init__(self, llm_config: Any, baseline: str) -> None:
-        from scripts.async_llm import create_llm_instance
-
-        self.llm = create_llm_instance(llm_config)
-        self.baseline = baseline
-
-    async def __call__(self, problem: str, entry_point: str) -> tuple[str, float]:
-        prompt = HUMANEVAL_PROMPTS[self.baseline].format(problem=problem, entry_point=entry_point)
-        response = await self.llm(prompt)
-        return response, self.llm.get_usage_summary()["total_cost"]
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", choices=["MATH", "HumanEval"], required=True)
-    parser.add_argument("--baseline", choices=["direct", "cot"], required=True)
+    parser.add_argument("--workflow", default="manual_v1")
     parser.add_argument("--model", default="kimi-k2.5")
     parser.add_argument("--split", choices=["validate", "test"], default="validate")
     parser.add_argument("--data-path", type=Path, default=None)
@@ -119,12 +64,10 @@ def build_benchmark(dataset: str, data_path: Path, log_path: Path):
     raise ValueError(f"Unsupported dataset: {dataset}")
 
 
-def build_workflow(dataset: str, llm_config: Any, baseline: str):
-    if dataset == "MATH":
-        return MathBaselineWorkflow(llm_config=llm_config, baseline=baseline)
-    if dataset == "HumanEval":
-        return HumanEvalBaselineWorkflow(llm_config=llm_config, baseline=baseline)
-    raise ValueError(f"Unsupported dataset: {dataset}")
+def load_workflow_class(dataset: str, workflow: str):
+    module_name = f"workspace.{dataset}.workflows.{workflow}.graph"
+    module = importlib.import_module(module_name)
+    return module.Workflow
 
 
 async def run(args: argparse.Namespace) -> None:
@@ -138,7 +81,7 @@ async def run(args: argparse.Namespace) -> None:
 
     output_dir = args.output_dir if args.output_dir.is_absolute() else REPO_ROOT / args.output_dir
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_dir = output_dir / args.dataset / args.baseline / timestamp
+    run_dir = output_dir / args.dataset / args.workflow / timestamp
     run_dir.mkdir(parents=True, exist_ok=True)
 
     os.chdir(AFLOW_ROOT)
@@ -148,13 +91,14 @@ async def run(args: argparse.Namespace) -> None:
     data = await benchmark.load_data(selected_indices)
 
     llm_config = LLMsConfig.default().get(args.model)
-    workflow = build_workflow(args.dataset, llm_config, args.baseline)
+    workflow_class = load_workflow_class(args.dataset, args.workflow)
+    workflow = workflow_class(name=args.workflow, llm_config=llm_config, dataset=args.dataset)
     results = await benchmark.evaluate_all_problems(data, workflow, max_concurrent_tasks=args.max_concurrency)
     average_score, average_cost, total_cost = benchmark.save_results_to_csv(results, benchmark.get_result_columns())
 
     config = {
         "dataset": args.dataset,
-        "baseline": args.baseline,
+        "workflow": args.workflow,
         "model": args.model,
         "split": args.split,
         "data_path": str(data_path),
