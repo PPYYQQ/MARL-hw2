@@ -1,0 +1,36 @@
+.DS_Store
+~$*
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Secrets and local API configuration
+.env
+*.env
+AFlow/config/config2.yaml
+
+# Large/generated experiment artifacts
+AFlow/data/datasets/
+AFlow/experiments/
+AFlow/**/log.json
+AFlow/**/results/*.csv
+experiments/**/*.csv
+experiments/**/*.jsonl
+experiments/**/*.log
+experiments/runs/
+
+# Report build outputs
+report/**/*.aux
+report/**/*.bbl
+report/**/*.blg
+report/**/*.log
+report/**/*.out
+report/**/*.toc
+report/**/*.synctex.gz
