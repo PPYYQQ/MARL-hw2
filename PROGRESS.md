@@ -54,11 +54,14 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Ran a 1-sample MATH direct smoke test; the API reached Kimi but returned `invalid top_p: only 0.95 is allowed`, so `AFlow/config/config2.kimi.example.yaml` was corrected to `top_p: 0.95`.
 - Retried the 1-sample MATH direct smoke test; default Kimi thinking behavior stayed open for more than two minutes, so `scripts/async_llm.py` now supports `extra_body`, `max_tokens`, and request timeouts, with the default Kimi alias disabling thinking for practical experiments.
 - Retried with thinking disabled; Kimi returned `invalid temperature: only 0.6 is allowed`, so the default non-thinking aliases now use `temperature: 0.6`.
+- A later MATH direct smoke test returned the correct `\boxed{\dfrac{1}{12}}` answer but scored zero because SymPy LaTeX parsing needed `antlr4`; added `antlr4-python3-runtime==4.11.0`.
+- Downloaded AFlow datasets into ignored `AFlow/data/datasets/`. Available counts: `math_validate.jsonl` 119, `math_test.jsonl` 486, `humaneval_validate.jsonl` 33, `humaneval_test.jsonl` 131, `humaneval_public_test.jsonl` 159.
+- Re-ran the same 1-sample MATH direct smoke test after installing `antlr4`; it completed successfully with score `1.00000` at `experiments/runs/MATH/direct/20260530_224550/`.
 
 ## Next Steps
 
-1. Download or prepare benchmark data files.
-2. Run tiny API smoke tests for direct, CoT, and `manual_v1`.
+1. Run tiny API smoke tests for CoT and `manual_v1`.
+2. Add report scaffold and initial experiment table notes.
 3. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues

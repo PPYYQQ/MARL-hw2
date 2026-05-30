@@ -32,6 +32,8 @@ The upstream data downloader imports `requests`, which was missing from the impo
 
 The local shell uses a SOCKS proxy. `httpx` requires `socksio` for that proxy mode, so `socksio==1.0.0` was also added to `AFlow/requirements.txt`.
 
+MATH scoring uses SymPy's LaTeX parser. A smoke test produced the correct answer but scored zero because `antlr4` was missing, so `antlr4-python3-runtime==4.11.0` was added.
+
 ## Kimi Configuration
 
 Created the local config from the safe example:
