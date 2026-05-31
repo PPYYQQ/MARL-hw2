@@ -170,6 +170,12 @@ Create and verify the default zip in one command:
 make final-package-check
 ```
 
+Run all local no-API handoff gates:
+
+```bash
+make handoff-check
+```
+
 After filling report metadata, preview the course-style named zip:
 
 ```bash

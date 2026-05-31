@@ -123,6 +123,7 @@ make package
 make verify-package
 make finalize-dry-run
 make final-package-check
+make handoff-check
 ```
 
 Equivalent expanded commands:
@@ -143,6 +144,7 @@ python experiments/finalize_submission.py --name "Test Student" --student-id "TE
 
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
 `make finalize-dry-run` previews the final filled-metadata path with overrideable `FINALIZE_DRY_RUN_*` Make variables and writes no files.
+`make handoff-check` runs all local no-API gates: audit/dry-run packaging, MATH chunk-plan verification, finalization dry-run, and final package verification.
 Default packaging refuses uncommitted tracked changes; use `experiments/finalize_submission.py` for the final filled-metadata archive because it allows only the temporary `report/main.tex` metadata edit.
 
 Equivalent one-command finalization after metadata is known:

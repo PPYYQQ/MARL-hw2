@@ -41,6 +41,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make verify-package` | Verifies the zip against tracked files, current commit, included PDF, manifest checksums, zero-failure audit summary, and forbidden secret/run paths |
 | `make finalize-dry-run` | Previews finalization with test metadata without writing files |
 | `make final-package-check` | Creates the default zip and verifies it in one local gate |
+| `make handoff-check` | Runs all local no-API handoff gates in one target |
 | `experiments/finalize_submission.py --dry-run ...` | Previews final metadata lines and named package contents without writing |
 | `experiments/finalize_submission.py ...` | Requires a clean tracked worktree, builds and verifies a filled-metadata zip/PDF, checks report metadata inside the archive, then restores local `report/main.tex` and `report/main.pdf` placeholders unless `--keep-filled-report` is passed |
 

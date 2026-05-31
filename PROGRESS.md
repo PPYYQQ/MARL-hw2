@@ -130,6 +130,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Refreshed `docs/SUBMISSION_STATUS.md` so its deliverable list and expanded compile command include the latest local verifiers and explain the current package verification coverage.
 - Tightened `experiments/finalize_submission.py` so finalization refuses to start when tracked files already have uncommitted changes, while still allowing its own temporary report metadata edit during packaging.
 - Added `make finalize-dry-run` with overrideable test metadata variables so the finalization command path can be previewed without writing files.
+- Added `make handoff-check` to run all local no-API handoff gates in one command: final audit/package dry-run, MATH chunk-plan verification, finalization dry-run, and final package verification.
 
 ## Next Steps
 

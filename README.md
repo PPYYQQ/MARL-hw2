@@ -59,6 +59,12 @@ Create and verify the default local submission zip in one step:
 make final-package-check
 ```
 
+Run every local no-API handoff gate:
+
+```bash
+make handoff-check
+```
+
 After filling report metadata, create the course-style named zip:
 
 ```bash
