@@ -117,15 +117,15 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Polished `report/main.tex` path formatting and narrow tables so the Tectonic build no longer reports overfull boxes.
 - Extended `experiments/package_submission.py` with optional student ID, name, and assignment arguments so the final zip can follow the course naming convention once metadata is known.
 - Added `experiments/estimate_math_manual_test.py` and `report/tables/math_manual_test_estimate.md`, estimating the missing full MATH `manual_v1` run at about 2,430 calls and 3.40M raw tokens.
+- Added `experiments/finalize_submission.py` to run the final metadata fill, report PDF rebuild, and named submission packaging once student metadata is available.
 
 ## Next Steps
 
 1. Inspect 50-sample MATH failure logs to decide whether a low-cost workflow improvement is obvious.
 2. Use the chunked runner to resume full MATH `manual_v1` in 20-example chunks.
 3. Consider a lower-token MATH workflow variant because `manual_v1` is accurate but expensive.
-4. Fill student metadata in `report/main.tex` before final submission.
-5. Rebuild `report/main.pdf` with `make build-report`.
-6. Keep pushing each new key commit to GitHub after local validation.
+4. Run `experiments/finalize_submission.py` with final student metadata before submission.
+5. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 

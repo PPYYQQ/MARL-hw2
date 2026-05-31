@@ -21,6 +21,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
   experiments/fill_report_metadata.py \
+  experiments/finalize_submission.py \
   experiments/analyze_math_failures.py \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
@@ -125,4 +126,10 @@ cd report && conda run -n marl_hw2 tectonic main.tex
 python experiments/audit_submission.py
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
+```
+
+Equivalent one-command finalization after metadata is known:
+
+```bash
+python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com" --assignment "MARL-hw2"
 ```

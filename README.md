@@ -53,6 +53,12 @@ After filling report metadata, create the course-style named zip:
 conda run -n marl_hw2 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
 ```
 
+Or run the final no-API metadata/PDF/package sequence in one command:
+
+```bash
+conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
+```
+
 The equivalent packaging shortcut is:
 
 ```bash

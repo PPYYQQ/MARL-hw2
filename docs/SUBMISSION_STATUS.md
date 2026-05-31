@@ -17,6 +17,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
 - `experiments/verify_evidence.py`: verifies tracked evidence against cited scores, row counts, calls, and token totals.
 - `experiments/fill_report_metadata.py`: fills author name, student ID, and email when provided.
+- `experiments/finalize_submission.py`: orchestrates final metadata fill, PDF rebuild, and named zip packaging.
 - `experiments/analyze_math_failures.py`: problem-level MATH run comparison utility.
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
@@ -62,6 +63,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
   experiments/fill_report_metadata.py \
+  experiments/finalize_submission.py \
   experiments/analyze_math_failures.py \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
@@ -141,6 +143,12 @@ After filling report metadata, preview the course-style named zip:
 conda run -n marl_hw2 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
 ```
 
+After metadata is known, run finalization in one command:
+
+```bash
+conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com" --assignment "MARL-hw2"
+```
+
 After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 
 ```bash
@@ -167,6 +175,4 @@ Rerun the same command to process the next incomplete chunk. Remove `--max-chunk
 1. Recharge the Kimi account or provide another valid `KIMI_API_KEY`.
 2. Resume full MATH `manual_v1` with the chunked runner.
 3. Collect the chunked MATH result table after enough chunks complete.
-4. Fill student metadata in `report/main.tex` with `experiments/fill_report_metadata.py`.
-5. Rebuild `report/main.pdf` with `make build-report`.
-6. Run `experiments/package_submission.py --student-id ... --name ... --assignment "MARL-hw2"` to create the final named zip.
+4. Run `experiments/finalize_submission.py --name ... --student-id ... --email ...` to fill metadata, rebuild the PDF, and create the final named zip.
