@@ -7,6 +7,7 @@ PY_COMPILE_FILES = \
 	experiments/run_chunked_workflows.py \
 	experiments/collect_results.py \
 	experiments/analyze_efficiency.py \
+	experiments/estimate_math_manual_test.py \
 	experiments/export_evidence.py \
 	experiments/verify_evidence.py \
 	experiments/fill_report_metadata.py \
@@ -16,13 +17,16 @@ PY_COMPILE_FILES = \
 	experiments/package_submission.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence audit refresh-evidence build-report package-dry-run package final-check
+.PHONY: py-compile verify-evidence estimate-math-manual audit refresh-evidence build-report package-dry-run package final-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
 
 verify-evidence:
 	$(PYTHON) experiments/verify_evidence.py --output report/tables/evidence_verification.md
+
+estimate-math-manual:
+	$(PYTHON) experiments/estimate_math_manual_test.py --output report/tables/math_manual_test_estimate.md
 
 audit: py-compile verify-evidence
 	$(PYTHON) experiments/audit_submission.py

@@ -34,6 +34,7 @@ REQUIRED_FILES = [
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
     "experiments/analyze_efficiency.py",
+    "experiments/estimate_math_manual_test.py",
     "experiments/export_evidence.py",
     "experiments/verify_evidence.py",
     "experiments/fill_report_metadata.py",
@@ -52,6 +53,7 @@ REQUIRED_FILES = [
     "report/tables/validation20_results.md",
     "report/tables/math_validation50_results.md",
     "report/tables/efficiency_summary.md",
+    "report/tables/math_manual_test_estimate.md",
     "report/tables/evidence_verification.md",
     "report/tables/math_validation50_failure_analysis.md",
     "report/tables/humaneval_test_results.md",
@@ -67,6 +69,7 @@ PYTHON_FILES = [
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
     "experiments/analyze_efficiency.py",
+    "experiments/estimate_math_manual_test.py",
     "experiments/export_evidence.py",
     "experiments/verify_evidence.py",
     "experiments/fill_report_metadata.py",
@@ -174,10 +177,13 @@ def git_ls_files(path: str) -> list[str]:
 
 def check_required_files(result: AuditResult) -> None:
     missing = [path for path in REQUIRED_FILES if not (REPO_ROOT / path).is_file()]
+    untracked = [path for path in REQUIRED_FILES if (REPO_ROOT / path).is_file() and not git_ls_files(path)]
     if missing:
         result.fail("Missing required files: " + ", ".join(missing))
+    elif untracked:
+        result.fail("Required files are not tracked by Git: " + ", ".join(untracked))
     else:
-        result.pass_check(f"Found {len(REQUIRED_FILES)} required files")
+        result.pass_check(f"Found {len(REQUIRED_FILES)} tracked required files")
 
 
 def check_python_compile(result: AuditResult) -> None:

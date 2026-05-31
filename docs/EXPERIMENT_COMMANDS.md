@@ -17,6 +17,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/run_chunked_workflows.py \
   experiments/collect_results.py \
   experiments/analyze_efficiency.py \
+  experiments/estimate_math_manual_test.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
   experiments/fill_report_metadata.py \
@@ -75,6 +76,7 @@ python experiments/collect_results.py --runs-dir experiments/runs --latest-only 
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --dataset HumanEval --split test --output report/tables/humaneval_test_results.md
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --dataset MATH --split test --output report/tables/math_test_baselines.md
 python experiments/analyze_efficiency.py --output report/tables/efficiency_summary.md
+python experiments/estimate_math_manual_test.py --output report/tables/math_manual_test_estimate.md
 python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 ```
 

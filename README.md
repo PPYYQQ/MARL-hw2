@@ -18,6 +18,7 @@ This repository contains the implementation, experiment runners, evidence, and r
 - MATH 50-sample validation: `manual_v1` reaches `0.98000`, above direct at `0.96000` and CoT at `0.94000`.
 - HumanEval full test: no-public-test ablation reaches `0.99237`; CoT and `manual_v1` both reach `0.98473`.
 - MATH full test baselines: direct reaches `0.88889`; CoT reaches `0.89300`.
+- MATH full `manual_v1` estimate: about `2,430` calls and `3.40M` raw tokens for the 486-example test split.
 - Efficiency tradeoff: MATH `manual_v1` costs `9.16x` direct tokens on 50 validation samples; HumanEval no-public-test costs `6.19x` direct tokens on the full test split.
 
 ## Quick Checks

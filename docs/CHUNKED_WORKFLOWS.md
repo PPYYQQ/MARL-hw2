@@ -51,6 +51,16 @@ Rerun the command to pick up the next incomplete chunk, or use `--start-chunk` t
 
 If the API returns quota or insufficient-balance errors for every item in a chunk, the chunk is marked `failed_quota` rather than `completed`, and the runner stops without counting that chunk in the aggregate.
 
+## Resource Estimate
+
+Generate the current full-test resource estimate from tracked evidence:
+
+```bash
+python experiments/estimate_math_manual_test.py --output report/tables/math_manual_test_estimate.md
+```
+
+The current estimate projects `2,430` LLM calls and about `3.40M` raw tokens for the full 486-example MATH test split, using 25 chunks at `--chunk-size 20`.
+
 ## Summarize
 
 ```bash

@@ -116,6 +116,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Installed Tectonic in the `marl_hw2` conda environment, generated `report/main.pdf`, and added a `make build-report` shortcut plus audit checks for the local report PDF.
 - Polished `report/main.tex` path formatting and narrow tables so the Tectonic build no longer reports overfull boxes.
 - Extended `experiments/package_submission.py` with optional student ID, name, and assignment arguments so the final zip can follow the course naming convention once metadata is known.
+- Added `experiments/estimate_math_manual_test.py` and `report/tables/math_manual_test_estimate.md`, estimating the missing full MATH `manual_v1` run at about 2,430 calls and 3.40M raw tokens.
 
 ## Next Steps
 

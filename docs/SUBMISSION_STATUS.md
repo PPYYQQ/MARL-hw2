@@ -13,6 +13,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/run_chunked_workflows.py`: checkpointed workflow runner for expensive full-test jobs.
 - `experiments/collect_results.py`: result table collection and MATH rescoring utility.
 - `experiments/analyze_efficiency.py`: token-efficiency summary utility.
+- `experiments/estimate_math_manual_test.py`: estimates full MATH `manual_v1` resource needs from tracked evidence.
 - `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
 - `experiments/verify_evidence.py`: verifies tracked evidence against cited scores, row counts, calls, and token totals.
 - `experiments/fill_report_metadata.py`: fills author name, student ID, and email when provided.
@@ -37,6 +38,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - HumanEval full-test failure analysis: CoT, `manual_v1`, and no-public-test all fix the three direct failures; no-public-test has the fewest regressions against direct.
 - MATH full test baselines: direct `0.88889`, CoT `0.89300`.
 - Efficiency summary: MATH 50-sample `manual_v1` gains `+0.02000` over direct at `9.16x` tokens; HumanEval no-public-test gains `+0.01527` at `6.19x` tokens.
+- MATH full `manual_v1` estimate: about `2,430` LLM calls and `3.40M` raw tokens for 486 test examples, split into 25 chunks at chunk size 20.
 - Evidence verification: all 10 tracked cited runs in `report/evidence/` reproduce their expected rows, scores, call counts, and token totals.
 
 ## Reproducibility Commands
@@ -56,6 +58,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/run_chunked_workflows.py \
   experiments/collect_results.py \
   experiments/analyze_efficiency.py \
+  experiments/estimate_math_manual_test.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
   experiments/fill_report_metadata.py \
