@@ -9,6 +9,7 @@ PY_COMPILE_FILES = \
 	experiments/analyze_efficiency.py \
 	experiments/estimate_math_manual_test.py \
 	experiments/verify_chunked_plan.py \
+	experiments/verify_report_pdf.py \
 	experiments/export_evidence.py \
 	experiments/verify_evidence.py \
 	experiments/fill_report_metadata.py \
@@ -20,7 +21,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence estimate-math-manual verify-math-manual-plan audit refresh-evidence build-report package-dry-run package verify-package final-package-check final-check
+.PHONY: py-compile verify-evidence estimate-math-manual verify-math-manual-plan verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package final-package-check final-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -33,6 +34,9 @@ estimate-math-manual:
 
 verify-math-manual-plan:
 	$(PYTHON) experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
+
+verify-report-pdf:
+	$(PYTHON) experiments/verify_report_pdf.py
 
 audit: py-compile verify-evidence
 	$(PYTHON) experiments/audit_submission.py
@@ -53,6 +57,6 @@ package:
 verify-package:
 	$(PYTHON) experiments/verify_submission_package.py
 
-final-package-check: package verify-package
+final-package-check: verify-report-pdf package verify-package
 
 final-check: audit package-dry-run

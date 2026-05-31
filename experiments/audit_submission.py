@@ -36,6 +36,7 @@ REQUIRED_FILES = [
     "experiments/analyze_efficiency.py",
     "experiments/estimate_math_manual_test.py",
     "experiments/verify_chunked_plan.py",
+    "experiments/verify_report_pdf.py",
     "experiments/export_evidence.py",
     "experiments/verify_evidence.py",
     "experiments/fill_report_metadata.py",
@@ -75,6 +76,7 @@ PYTHON_FILES = [
     "experiments/analyze_efficiency.py",
     "experiments/estimate_math_manual_test.py",
     "experiments/verify_chunked_plan.py",
+    "experiments/verify_report_pdf.py",
     "experiments/export_evidence.py",
     "experiments/verify_evidence.py",
     "experiments/fill_report_metadata.py",
@@ -256,7 +258,20 @@ def check_external_blockers(result: AuditResult) -> None:
         result.warn("No local LaTeX compiler found")
 
     if (REPO_ROOT / "report/main.pdf").is_file():
-        result.pass_check("Report PDF exists")
+        completed = subprocess.run(
+            [sys.executable, "experiments/verify_report_pdf.py"],
+            cwd=REPO_ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        if completed.returncode == 0:
+            message = completed.stdout.strip()
+            if message.startswith("PASS: "):
+                message = message.removeprefix("PASS: ")
+            result.pass_check(message)
+        else:
+            result.warn((completed.stdout + completed.stderr).strip())
     else:
         result.warn("Report PDF is not built yet")
 

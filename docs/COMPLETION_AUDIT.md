@@ -17,7 +17,7 @@ This document maps the assignment requirements to the current repository evidenc
 | Include ablations | Complete | `AFlow/workspace/MATH/workflows/ablation_single/graph.py`; `AFlow/workspace/HumanEval/workflows/ablation_no_public_test/graph.py`; `docs/ABLATIONS.md` |
 | Analyze failures | Complete for MATH validation50 and HumanEval full test | `report/tables/math_validation50_failure_analysis.md`; `report/tables/humaneval_test_failure_analysis.md` |
 | Track raw evidence | Complete for cited runs | `report/evidence/`; `report/tables/evidence_verification.md`; `experiments/verify_evidence.py` |
-| Prepare report PDF | Complete locally, needs final metadata rebuild | `report/main.pdf`; `Makefile` target `build-report`; `experiments/finalize_submission.py` |
+| Prepare report PDF | Complete locally, needs final metadata rebuild | `report/main.pdf`; `Makefile` targets `build-report` and `verify-report-pdf`; `experiments/finalize_submission.py` |
 | Prepare submission package | Complete default package; final named package needs metadata | `experiments/package_submission.py`; `experiments/finalize_submission.py`; `submission/MARL-hw2-submission.zip` |
 | Verify missing MATH run plan | Complete locally | `experiments/verify_chunked_plan.py`; `Makefile` target `verify-math-manual-plan`; `docs/CHUNKED_WORKFLOWS.md` |
 
@@ -36,6 +36,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make final-check` | Passes with warnings only for student metadata and missing full MATH `manual_v1` test table |
 | `make verify-math-manual-plan` | Confirms the full MATH `manual_v1` test plan covers 486 examples in 25 contiguous chunks |
 | `make build-report` | Rebuilds `report/main.pdf` with Tectonic |
+| `make verify-report-pdf` | Confirms `report/main.pdf` is present and newer than the TeX source files |
 | `make package` | Writes `submission/MARL-hw2-submission.zip` from a clean tracked worktree, `report/main.pdf`, and `SUBMISSION_MANIFEST.txt` |
 | `make verify-package` | Verifies the zip against tracked files, current commit, included PDF, and forbidden secret/run paths |
 | `make final-package-check` | Creates the default zip and verifies it in one local gate |

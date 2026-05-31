@@ -113,6 +113,12 @@ Build the report PDF with Tectonic:
 make build-report
 ```
 
+Verify that the local report PDF is current for its TeX sources:
+
+```bash
+make verify-report-pdf
+```
+
 Refresh tracked evidence files from local ignored run directories:
 
 ```bash
