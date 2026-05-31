@@ -137,6 +137,7 @@ python experiments/verify_submission_package.py --package "submission/Your_ID_Yo
 ```
 
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
+Default packaging refuses uncommitted tracked changes; use `experiments/finalize_submission.py` for the final filled-metadata archive because it allows only the temporary `report/main.tex` metadata edit.
 
 Equivalent one-command finalization after metadata is known:
 

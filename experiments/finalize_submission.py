@@ -80,6 +80,8 @@ def package_command(args: argparse.Namespace, output: Path, dry_run: bool) -> li
         args.assignment,
         "--output",
         str(output),
+        "--allow-dirty",
+        REPORT_PATH.as_posix(),
     ]
     if dry_run:
         command.append("--dry-run")

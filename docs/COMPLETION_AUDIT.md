@@ -36,7 +36,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make final-check` | Passes with warnings only for student metadata and missing full MATH `manual_v1` test table |
 | `make verify-math-manual-plan` | Confirms the full MATH `manual_v1` test plan covers 486 examples in 25 contiguous chunks |
 | `make build-report` | Rebuilds `report/main.pdf` with Tectonic |
-| `make package` | Writes `submission/MARL-hw2-submission.zip` with tracked files, `report/main.pdf`, and `SUBMISSION_MANIFEST.txt` |
+| `make package` | Writes `submission/MARL-hw2-submission.zip` from a clean tracked worktree, `report/main.pdf`, and `SUBMISSION_MANIFEST.txt` |
 | `make verify-package` | Verifies the zip against tracked files, current commit, included PDF, and forbidden secret/run paths |
 | `make final-package-check` | Creates the default zip and verifies it in one local gate |
 | `experiments/finalize_submission.py --dry-run ...` | Previews final metadata lines and named package contents without writing |
@@ -45,6 +45,6 @@ This document maps the assignment requirements to the current repository evidenc
 ## Submission Risk Notes
 
 - The report already states that full MATH `manual_v1` test evaluation is pending quota and uses validation evidence for the MATH workflow claim.
-- The default generated zip is usable for review, but the final course submission should be regenerated with real metadata and the named package command.
+- The default generated zip is usable for review, but the final course submission should be regenerated from a clean worktree with real metadata and the named package command.
 - The finalization helper checks filled metadata inside the generated archive and avoids leaving personal metadata in the worktree by default; use `--keep-filled-report` only if you intentionally want `report/main.tex` and `report/main.pdf` to remain filled locally.
 - `make final-check` now fails if required files are present locally but not tracked by Git.

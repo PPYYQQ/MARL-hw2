@@ -25,6 +25,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--assignment", default="MARL-hw2", help="Assignment label for the final submission zip name.")
     parser.add_argument("--dry-run", action="store_true", help="List files without creating the zip.")
     parser.add_argument("--skip-audit", action="store_true", help="Do not run experiments/audit_submission.py first.")
+    parser.add_argument(
+        "--allow-dirty",
+        action="append",
+        default=[],
+        metavar="PATH",
+        help="Allow one tracked path to differ from HEAD while packaging.",
+    )
     return parser.parse_args()
 
 
@@ -77,6 +84,19 @@ def tracked_files() -> list[Path]:
     return sorted(files, key=lambda path: path.as_posix())
 
 
+def dirty_tracked_files() -> set[Path]:
+    completed = run_command(["git", "diff", "--name-only", "HEAD", "--"])
+    return {Path(line) for line in completed.stdout.splitlines() if line}
+
+
+def check_clean_tracked_files(allowed_paths: list[str]) -> None:
+    allowed = {Path(path) for path in allowed_paths}
+    disallowed = sorted(dirty_tracked_files() - allowed, key=lambda path: path.as_posix())
+    if disallowed:
+        paths = ", ".join(path.as_posix() for path in disallowed)
+        raise SystemExit(f"Refusing to package uncommitted tracked changes: {paths}")
+
+
 def optional_existing_files(files: list[Path]) -> list[Path]:
     tracked = set(files)
     return [path for path in OPTIONAL_FILES if path not in tracked and (REPO_ROOT / path).is_file()]
@@ -124,6 +144,7 @@ def create_zip(output_path: Path, files: list[Path], extras: list[Path], manifes
 
 def main() -> None:
     args = parse_args()
+    check_clean_tracked_files(args.allow_dirty)
     files = tracked_files()
     extras = optional_existing_files(files)
     audit_output = None if args.skip_audit else run_audit()
