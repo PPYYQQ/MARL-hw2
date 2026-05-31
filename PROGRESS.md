@@ -111,6 +111,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `docs/PAPER_NOTES.md` and a report research-context section connecting AFlow's code-represented workflow search and multi-agent debate's candidate-diversity idea to the implemented manual workflows.
 - Added a top-level `README.md` as the GitHub/submission entry point, summarizing repository contents, current results, reproducibility checks, evidence location, and known blockers.
 - Added `experiments/verify_evidence.py` and `report/tables/evidence_verification.md` so tracked evidence can reproduce the cited scores, row counts, call counts, and token totals without using ignored run directories.
+- Added a top-level `Makefile` with local shortcuts for compile checks, evidence verification, audit, evidence refresh, dry-run packaging, and final packaging.
 
 ## Next Steps
 

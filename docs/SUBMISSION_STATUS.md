@@ -6,6 +6,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 
 - `AGENTS.md`: coding-agent guide with assignment overview, expected architecture, implementation plan, and testing plan.
 - `README.md`: top-level repository entry point with current results, quick checks, evidence location, and blockers.
+- `Makefile`: local shortcuts for compile checks, evidence verification, audit, evidence refresh, and packaging.
 - `AFlow/`: imported AFlow codebase with Kimi-compatible async LLM configuration support.
 - `experiments/run_baselines.py`: reproducible direct and CoT baseline runner.
 - `experiments/run_workflows.py`: reproducible manual workflow runner.
@@ -41,6 +42,12 @@ This document tracks what is ready for submission, what is reproducible, and wha
 Use the dedicated environment:
 
 ```bash
+make py-compile
+```
+
+Expanded command:
+
+```bash
 conda run -n marl_hw2 python -m py_compile \
   experiments/run_baselines.py \
   experiments/run_workflows.py \
@@ -72,12 +79,24 @@ conda run -n marl_hw2 python experiments/run_chunked_workflows.py \
 Run the no-API submission audit:
 
 ```bash
+make final-check
+```
+
+Audit only:
+
+```bash
 conda run -n marl_hw2 python experiments/audit_submission.py
 ```
 
 The audit is expected to warn until the Kimi quota, report metadata, full MATH `manual_v1` test run, and local PDF build are resolved.
 
 Refresh tracked evidence files from local ignored run directories:
+
+```bash
+make refresh-evidence
+```
+
+Expanded commands:
 
 ```bash
 conda run -n marl_hw2 python experiments/export_evidence.py --clean
@@ -87,6 +106,12 @@ conda run -n marl_hw2 python experiments/verify_evidence.py --output report/tabl
 See `docs/EXPERIMENT_COMMANDS.md` for the full command ledger behind the cited results and submission package.
 
 Preview the final zip contents:
+
+```bash
+make package-dry-run
+```
+
+Expanded command:
 
 ```bash
 conda run -n marl_hw2 python experiments/package_submission.py --dry-run

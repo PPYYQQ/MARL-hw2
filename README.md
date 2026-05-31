@@ -28,6 +28,12 @@ Run the no-API submission audit:
 conda run -n marl_hw2 python experiments/audit_submission.py
 ```
 
+Or use the Makefile shortcut:
+
+```bash
+make final-check
+```
+
 Preview the tracked-file submission package:
 
 ```bash
@@ -40,11 +46,19 @@ Create the local submission zip:
 conda run -n marl_hw2 python experiments/package_submission.py
 ```
 
+The equivalent packaging shortcut is:
+
+```bash
+make package
+```
+
 ## Reproducibility
 
 The full command ledger is in `docs/EXPERIMENT_COMMANDS.md`. The cited raw artifacts are in `report/evidence/`.
 
 Generated run directories under `experiments/runs/` and `experiments/chunked_runs/` are ignored. Use `experiments/export_evidence.py --clean` to refresh the tracked evidence from local ignored runs, then `experiments/verify_evidence.py` to verify cited rows, scores, calls, and token totals.
+
+The Makefile target `make refresh-evidence` runs both evidence export and verification.
 
 ## Known Blockers
 

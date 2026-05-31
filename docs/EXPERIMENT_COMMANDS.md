@@ -5,6 +5,12 @@ This document records the commands behind the report tables and evidence files. 
 ## Environment
 
 ```bash
+make py-compile
+```
+
+Equivalent expanded command:
+
+```bash
 conda run -n marl_hw2 python -m py_compile \
   experiments/run_baselines.py \
   experiments/run_workflows.py \
@@ -91,6 +97,14 @@ python experiments/analyze_humaneval_failures.py \
 ```
 
 ## Evidence And Submission
+
+```bash
+make refresh-evidence
+make final-check
+make package
+```
+
+Equivalent expanded commands:
 
 ```bash
 python experiments/export_evidence.py --clean
