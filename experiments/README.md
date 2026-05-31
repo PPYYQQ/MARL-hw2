@@ -88,3 +88,15 @@ python experiments/collect_results.py --runs-dir experiments/chunked_runs --late
 ```
 
 Each new run also writes `llm_usage.json` next to `run_config.json`, with raw input/output token counts and call history. Prefer raw token counts over the `total_cost` field until Kimi pricing is added and verified.
+
+Compare saved MATH runs at the problem level:
+
+```bash
+python experiments/analyze_math_failures.py \
+  --baseline cot \
+  --run direct=experiments/runs/MATH/direct/20260531_001748 \
+  --run cot=experiments/runs/MATH/cot/20260531_001748 \
+  --run manual_v1=experiments/runs/MATH/manual_v1/20260531_002230 \
+  --run single=experiments/runs/MATH/ablation_single/20260531_002230 \
+  --output report/tables/math_validation50_failure_analysis.md
+```

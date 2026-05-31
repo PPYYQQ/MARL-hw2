@@ -10,6 +10,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/run_workflows.py`: reproducible manual workflow runner.
 - `experiments/run_chunked_workflows.py`: checkpointed workflow runner for expensive full-test jobs.
 - `experiments/collect_results.py`: result table collection and MATH rescoring utility.
+- `experiments/analyze_math_failures.py`: problem-level MATH run comparison utility.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
 - `PROGRESS.md`: chronological implementation and experiment log.
 
@@ -17,6 +18,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 
 - MATH 20-sample validation: direct `0.90000`, CoT `0.95000`, `manual_v1` `1.00000`, single-candidate ablation `0.90000`.
 - MATH 50-sample validation: direct `0.96000`, CoT `0.94000`, `manual_v1` `0.98000`, single-candidate ablation `0.94000`.
+- MATH 50-sample failure analysis: `manual_v1` fixes two of three CoT failures with no CoT-relative regressions; the remaining failure is index `91`, missed by every compared method.
 - HumanEval full test: direct `0.97710`, CoT `0.98473`, `manual_v1` `0.98473`, no-public-test ablation `0.99237`.
 - MATH full test baselines: direct `0.88889`, CoT `0.89300`.
 
