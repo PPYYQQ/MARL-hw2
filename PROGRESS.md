@@ -95,11 +95,13 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Ran full MATH test split baselines. `MATH/direct` scored `0.88889` using 486 LLM calls and 425,052 tokens; `MATH/cot` scored `0.89300` using 486 LLM calls and 459,130 tokens.
 - Generated `report/tables/math_test_baselines.md` and updated `report/main.tex` with the full MATH direct/CoT baseline table.
 - Attempted full MATH `manual_v1` test with `--max-concurrency 2`; the process stayed alive but stopped updating run files for more than 20 minutes before producing a final CSV, so it was stopped. The next full workflow run should be checkpointed in chunks to avoid losing progress to a single long API wait.
+- Added `experiments/run_chunked_workflows.py` for checkpointed workflow evaluation. It writes per-chunk CSV/config files, refreshes an aggregate result after every completed chunk, supports `--run-id` resume, and keeps generated outputs under ignored `experiments/chunked_runs/`.
+- Added `docs/CHUNKED_WORKFLOWS.md` and updated `experiments/README.md` with dry-run, full MATH `manual_v1`, resume, and summarization commands.
 
 ## Next Steps
 
 1. Inspect 50-sample MATH failure logs to decide whether a low-cost workflow improvement is obvious.
-2. Add chunked/checkpointed workflow evaluation for full MATH `manual_v1`.
+2. Use the chunked runner to resume full MATH `manual_v1` in 20-example chunks.
 3. Consider a lower-token MATH workflow variant because `manual_v1` is accurate but expensive.
 4. Keep pushing each new key commit to GitHub after local validation.
 

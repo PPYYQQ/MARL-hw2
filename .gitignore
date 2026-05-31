@@ -27,6 +27,7 @@ tester.txt
 experiments/**/*.csv
 experiments/**/*.jsonl
 experiments/**/*.log
+experiments/chunked_runs/
 experiments/runs/
 
 # Report build outputs

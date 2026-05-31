@@ -60,6 +60,14 @@ python experiments/run_workflows.py --dataset HumanEval --workflow manual_v1 --s
 python experiments/run_workflows.py --dataset HumanEval --workflow ablation_no_public_test --sample-size 20 --sample-seed 1 --max-concurrency 4
 ```
 
+Run expensive workflows in checkpointed chunks:
+
+```bash
+python experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 --split test --chunk-size 20 --max-concurrency 2 --run-id math-test-manual-v1
+```
+
+If the command is interrupted, rerun the same command with the same `--run-id`; completed chunks are skipped and the aggregate CSV/config are refreshed after each chunk.
+
 After runs finish:
 
 ```bash
@@ -75,6 +83,7 @@ python experiments/collect_results.py --runs-dir experiments/runs --latest-only 
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --dataset MATH --sample-size 50 --output report/tables/math_validation50_results.md
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --dataset MATH --split test --output report/tables/math_test_baselines.md
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --dataset HumanEval --split test --output report/tables/humaneval_test_results.md
+python experiments/collect_results.py --runs-dir experiments/chunked_runs --latest-only --rescore-math --dataset MATH --split test --output report/tables/math_test_manual_chunked.md
 ```
 
 Each new run also writes `llm_usage.json` next to `run_config.json`, with raw input/output token counts and call history. Prefer raw token counts over the `total_cost` field until Kimi pricing is added and verified.
