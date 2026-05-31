@@ -150,6 +150,8 @@ After metadata is known, run finalization in one command:
 conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com" --assignment "MARL-hw2"
 ```
 
+This command restores local `report/main.tex` and `report/main.pdf` placeholders after packaging by default, while the generated zip retains the filled report source and PDF. Pass `--keep-filled-report` only if you intentionally want local report artifacts to stay filled.
+
 After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 
 ```bash

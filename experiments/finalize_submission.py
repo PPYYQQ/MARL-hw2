@@ -11,6 +11,8 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+REPORT_PATH = Path("report/main.tex")
+REPORT_PDF_PATH = Path("report/main.pdf")
 
 
 def parse_args() -> argparse.Namespace:
@@ -20,6 +22,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--email", required=True, help="Corresponding author email for the report.")
     parser.add_argument("--assignment", default="MARL-hw2", help="Assignment label for the final zip name.")
     parser.add_argument("--output", type=Path, help="Optional explicit output zip path.")
+    parser.add_argument(
+        "--keep-filled-report",
+        action="store_true",
+        help="Leave report/main.tex and report/main.pdf filled after packaging instead of restoring placeholders.",
+    )
     parser.add_argument("--dry-run", action="store_true", help="Preview metadata and package contents without writing.")
     return parser.parse_args()
 
@@ -71,9 +78,22 @@ def main() -> None:
         run_command(package_command(args, dry_run=True))
         return
 
-    run_command(metadata_command(args, dry_run=False))
-    run_command(["make", "build-report"])
-    run_command(package_command(args, dry_run=False))
+    report_path = REPO_ROOT / REPORT_PATH
+    pdf_path = REPO_ROOT / REPORT_PDF_PATH
+    original_report = report_path.read_text(encoding="utf-8")
+    original_pdf = pdf_path.read_bytes() if pdf_path.is_file() else None
+    try:
+        run_command(metadata_command(args, dry_run=False))
+        run_command(["make", "build-report"])
+        run_command(package_command(args, dry_run=False))
+    finally:
+        if not args.keep_filled_report:
+            report_path.write_text(original_report, encoding="utf-8")
+            if original_pdf is None:
+                pdf_path.unlink(missing_ok=True)
+            else:
+                pdf_path.write_bytes(original_pdf)
+            print(f"Restored {REPORT_PATH} and {REPORT_PDF_PATH} placeholders after packaging.", flush=True)
 
 
 if __name__ == "__main__":

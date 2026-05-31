@@ -59,6 +59,8 @@ Or run the final no-API metadata/PDF/package sequence in one command:
 conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
 ```
 
+By default, finalization restores local `report/main.tex` and `report/main.pdf` placeholders after packaging so personal metadata is not left in the worktree. The generated zip still contains the filled report source and PDF.
+
 The equivalent packaging shortcut is:
 
 ```bash
