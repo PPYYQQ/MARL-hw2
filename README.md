@@ -1,0 +1,53 @@
+# MARL HW2: Multi-Agent Workflow Design with AFlow
+
+This repository contains the implementation, experiment runners, evidence, and report draft for the multi-agent workflow assignment.
+
+## What Is Included
+
+- `AFlow/`: imported AFlow codebase plus local assignment workflow additions.
+- `experiments/`: reproducible runners, table collectors, analysis utilities, audit checks, evidence export, and packaging helpers.
+- `report/main.tex`: ICML-style report draft.
+- `report/tables/`: tracked report tables and analysis summaries.
+- `report/evidence/`: copied CSV/config/log/token-summary artifacts for the cited final runs.
+- `docs/`: setup notes, ablation notes, experiment command ledger, paper notes, chunked-run guide, and submission status.
+- `PROGRESS.md`: chronological work log.
+
+## Current Result Summary
+
+- MATH 20-sample validation: `manual_v1` reaches `1.00000`, above CoT at `0.95000`.
+- MATH 50-sample validation: `manual_v1` reaches `0.98000`, above direct at `0.96000` and CoT at `0.94000`.
+- HumanEval full test: no-public-test ablation reaches `0.99237`; CoT and `manual_v1` both reach `0.98473`.
+- MATH full test baselines: direct reaches `0.88889`; CoT reaches `0.89300`.
+- Efficiency tradeoff: MATH `manual_v1` costs `9.16x` direct tokens on 50 validation samples; HumanEval no-public-test costs `6.19x` direct tokens on the full test split.
+
+## Quick Checks
+
+Run the no-API submission audit:
+
+```bash
+conda run -n marl_hw2 python experiments/audit_submission.py
+```
+
+Preview the tracked-file submission package:
+
+```bash
+conda run -n marl_hw2 python experiments/package_submission.py --dry-run
+```
+
+Create the local submission zip:
+
+```bash
+conda run -n marl_hw2 python experiments/package_submission.py
+```
+
+## Reproducibility
+
+The full command ledger is in `docs/EXPERIMENT_COMMANDS.md`. The cited raw artifacts are in `report/evidence/`.
+
+Generated run directories under `experiments/runs/` and `experiments/chunked_runs/` are ignored. Use `experiments/export_evidence.py --clean` to refresh the tracked evidence from local ignored runs.
+
+## Known Blockers
+
+- New Kimi API calls currently fail with an insufficient-balance quota error, so full MATH `manual_v1` test evaluation is not complete.
+- `report/main.tex` still contains placeholder student name, ID, and email fields.
+- This machine does not have `pdflatex` or `xelatex`, so the report PDF has not been compiled locally.

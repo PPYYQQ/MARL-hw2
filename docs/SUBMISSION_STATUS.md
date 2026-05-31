@@ -5,6 +5,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 ## Current Deliverables
 
 - `AGENTS.md`: coding-agent guide with assignment overview, expected architecture, implementation plan, and testing plan.
+- `README.md`: top-level repository entry point with current results, quick checks, evidence location, and blockers.
 - `AFlow/`: imported AFlow codebase with Kimi-compatible async LLM configuration support.
 - `experiments/run_baselines.py`: reproducible direct and CoT baseline runner.
 - `experiments/run_workflows.py`: reproducible manual workflow runner.

@@ -109,6 +109,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added a report section for explicit workflow algorithm details, covering MATH `manual_v1`, MATH single-candidate ablation, HumanEval `manual_v1`, and the no-public-test ablation.
 - Added `docs/EXPERIMENT_COMMANDS.md` as a command ledger for API runs, result table regeneration, failure analysis, evidence export, audit, and packaging.
 - Added `docs/PAPER_NOTES.md` and a report research-context section connecting AFlow's code-represented workflow search and multi-agent debate's candidate-diversity idea to the implemented manual workflows.
+- Added a top-level `README.md` as the GitHub/submission entry point, summarizing repository contents, current results, reproducibility checks, evidence location, and known blockers.
 
 ## Next Steps
 
