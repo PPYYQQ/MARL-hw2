@@ -41,11 +41,11 @@ This document maps the assignment requirements to the current repository evidenc
 | `make verify-package` | Verifies the zip against tracked files, current commit, included PDF, manifest checksums, zero-failure audit summary, and forbidden secret/run paths |
 | `make final-package-check` | Creates the default zip and verifies it in one local gate |
 | `experiments/finalize_submission.py --dry-run ...` | Previews final metadata lines and named package contents without writing |
-| `experiments/finalize_submission.py ...` | Builds and verifies a filled-metadata zip/PDF, checks report metadata inside the archive, then restores local `report/main.tex` and `report/main.pdf` placeholders unless `--keep-filled-report` is passed |
+| `experiments/finalize_submission.py ...` | Requires a clean tracked worktree, builds and verifies a filled-metadata zip/PDF, checks report metadata inside the archive, then restores local `report/main.tex` and `report/main.pdf` placeholders unless `--keep-filled-report` is passed |
 
 ## Submission Risk Notes
 
 - The report already states that full MATH `manual_v1` test evaluation is pending quota and uses validation evidence for the MATH workflow claim.
 - The default generated zip is usable for review, but the final course submission should be regenerated from a clean worktree with real metadata and the named package command.
-- The finalization helper checks filled metadata inside the generated archive and avoids leaving personal metadata in the worktree by default; use `--keep-filled-report` only if you intentionally want `report/main.tex` and `report/main.pdf` to remain filled locally.
+- The finalization helper starts from a clean tracked worktree, checks filled metadata inside the generated archive, and avoids leaving personal metadata in the worktree by default; use `--keep-filled-report` only if you intentionally want `report/main.tex` and `report/main.pdf` to remain filled locally.
 - `make final-check` now fails if required files are present locally but not tracked by Git.

@@ -128,6 +128,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Tightened `experiments/verify_submission_package.py` so generated package manifests must include a parseable audit summary with zero failures and no failing audit lines.
 - Added per-file SHA-256 checksums to `SUBMISSION_MANIFEST.txt` and made package verification recompute archive hashes, so generated zips are checked for content integrity rather than only entry names.
 - Refreshed `docs/SUBMISSION_STATUS.md` so its deliverable list and expanded compile command include the latest local verifiers and explain the current package verification coverage.
+- Tightened `experiments/finalize_submission.py` so finalization refuses to start when tracked files already have uncommitted changes, while still allowing its own temporary report metadata edit during packaging.
 
 ## Next Steps
 

@@ -185,6 +185,7 @@ conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Nam
 This command verifies the generated zip and restores local `report/main.tex` and `report/main.pdf` placeholders after packaging by default, while the generated zip retains the filled report source and PDF. Pass `--keep-filled-report` only if you intentionally want local report artifacts to stay filled.
 The generated zip verification also checks that `report/main.tex` inside the archive contains the provided name, student ID, and email instead of placeholders.
 Default packaging refuses uncommitted tracked changes; finalization only permits the temporary `report/main.tex` metadata edit.
+Finalization refuses to start if any tracked file already has uncommitted changes.
 
 After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 

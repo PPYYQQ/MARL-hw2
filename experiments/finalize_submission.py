@@ -38,6 +38,25 @@ def run_command(command: list[str]) -> None:
     subprocess.run(command, cwd=REPO_ROOT, check=True)
 
 
+def dirty_tracked_files() -> list[str]:
+    completed = subprocess.run(
+        ["git", "diff", "--name-only", "HEAD", "--"],
+        cwd=REPO_ROOT,
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    return [line for line in completed.stdout.splitlines() if line]
+
+
+def check_clean_tracked_files() -> None:
+    dirty_files = dirty_tracked_files()
+    if dirty_files:
+        paths = ", ".join(dirty_files)
+        raise SystemExit(f"Refusing finalization with uncommitted tracked changes: {paths}")
+
+
 def safe_name_component(value: str) -> str:
     cleaned = re.sub(r"[^\w.-]+", "_", value.strip())
     return cleaned.strip("._") or "unknown"
@@ -105,6 +124,7 @@ def verify_command(args: argparse.Namespace, output: Path) -> list[str]:
 
 def main() -> None:
     args = parse_args()
+    check_clean_tracked_files()
     output = output_path(args)
     if args.dry_run:
         run_command(metadata_command(args, dry_run=True))
