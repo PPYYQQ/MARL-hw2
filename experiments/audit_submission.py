@@ -40,6 +40,7 @@ REQUIRED_FILES = [
     "docs/SETUP.md",
     "docs/ABLATIONS.md",
     "docs/CHUNKED_WORKFLOWS.md",
+    "docs/EXPERIMENT_COMMANDS.md",
     "docs/SUBMISSION_STATUS.md",
     "report/main.tex",
     "report/references.bib",

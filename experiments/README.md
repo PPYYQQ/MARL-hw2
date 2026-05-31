@@ -2,6 +2,8 @@
 
 This folder contains reproducible helpers for assignment experiments. Generated run outputs go under `experiments/runs/`, which is ignored by Git.
 
+For the final cited runs and submission commands, see `docs/EXPERIMENT_COMMANDS.md`.
+
 ## Kimi Config
 
 Create the local AFlow config from the safe example:

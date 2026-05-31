@@ -16,6 +16,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
 - `experiments/package_submission.py`: tracked-file submission zip builder.
+- `docs/EXPERIMENT_COMMANDS.md`: command ledger for API runs, table generation, analysis, evidence export, audit, and packaging.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
 - `report/evidence/`: raw CSV/config/log/token-summary evidence for the cited final runs.
 - `PROGRESS.md`: chronological implementation and experiment log.
@@ -76,6 +77,8 @@ Refresh tracked evidence files from local ignored run directories:
 ```bash
 conda run -n marl_hw2 python experiments/export_evidence.py --clean
 ```
+
+See `docs/EXPERIMENT_COMMANDS.md` for the full command ledger behind the cited results and submission package.
 
 Preview the final zip contents:
 

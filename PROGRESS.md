@@ -107,6 +107,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/analyze_efficiency.py` and generated `report/tables/efficiency_summary.md` to summarize score deltas and token multipliers against direct prompting. The report now explicitly states the main cost tradeoffs for MATH `manual_v1` and HumanEval no-public-test.
 - Added `experiments/export_evidence.py` and generated tracked `report/evidence/` artifacts for the cited final runs, including copied CSVs, configs, failure logs, and token summaries without full call histories.
 - Added a report section for explicit workflow algorithm details, covering MATH `manual_v1`, MATH single-candidate ablation, HumanEval `manual_v1`, and the no-public-test ablation.
+- Added `docs/EXPERIMENT_COMMANDS.md` as a command ledger for API runs, result table regeneration, failure analysis, evidence export, audit, and packaging.
 
 ## Next Steps
 
