@@ -67,6 +67,7 @@ python experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 
 ```
 
 If the command is interrupted, rerun the same command with the same `--run-id`; completed chunks are skipped and the aggregate CSV/config are refreshed after each chunk.
+Use `--max-chunks 1` for controlled incremental batches.
 
 After runs finish:
 

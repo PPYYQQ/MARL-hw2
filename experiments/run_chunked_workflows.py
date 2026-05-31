@@ -35,6 +35,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=Path("experiments/chunked_runs"))
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--chunk-size", type=int, default=20)
+    parser.add_argument("--start-chunk", type=int, default=0)
+    parser.add_argument("--max-chunks", type=int, default=None)
     parser.add_argument("--sample-size", type=int, default=None)
     parser.add_argument("--sample-seed", type=int, default=0)
     parser.add_argument("--indices", default=None, help="Comma-separated zero-based sample indices.")
@@ -78,6 +80,19 @@ def load_completed_chunks(run_dir: Path) -> list[dict[str, Any]]:
         if config.get("status") == "completed":
             chunks.append(config)
     return chunks
+
+
+def chunk_dir_for(run_dir: Path, chunk_number: int, indices: list[int]) -> Path:
+    return run_dir / f"chunk_{chunk_number:04d}_{indices[0]}_{indices[-1]}"
+
+
+def chunk_is_completed(run_dir: Path, chunk_number: int, indices: list[int]) -> bool:
+    chunk_config_path = chunk_dir_for(run_dir, chunk_number, indices) / "chunk_config.json"
+    if not chunk_config_path.exists():
+        return False
+    with chunk_config_path.open(encoding="utf-8") as config_file:
+        chunk_config = json.load(config_file)
+    return chunk_config.get("status") == "completed"
 
 
 def aggregate_chunks(run_dir: Path, args: argparse.Namespace, all_indices: list[int], total_chunks: int) -> dict[str, Any]:
@@ -152,7 +167,7 @@ async def run_chunk(
 ) -> dict[str, Any]:
     from scripts.async_llm import LLMsConfig
 
-    chunk_dir = run_dir / f"chunk_{chunk_number:04d}_{indices[0]}_{indices[-1]}"
+    chunk_dir = chunk_dir_for(run_dir, chunk_number, indices)
     chunk_config_path = chunk_dir / "chunk_config.json"
     if chunk_config_path.exists():
         with chunk_config_path.open(encoding="utf-8") as config_file:
@@ -217,6 +232,13 @@ async def run(args: argparse.Namespace) -> None:
     if selected_indices is None:
         selected_indices = list(range(len(all_data)))
     chunks = chunk_indices(selected_indices, args.chunk_size)
+    selected_chunks = [(number, chunk) for number, chunk in enumerate(chunks) if number >= args.start_chunk]
+    if args.max_chunks is not None:
+        selected_chunks = [
+            (number, chunk)
+            for number, chunk in selected_chunks
+            if not chunk_is_completed(run_dir, number, chunk)
+        ][: args.max_chunks]
 
     plan = {
         "dataset": args.dataset,
@@ -225,8 +247,11 @@ async def run(args: argparse.Namespace) -> None:
         "run_id": run_id,
         "run_dir": str(run_dir),
         "chunk_size": args.chunk_size,
+        "start_chunk": args.start_chunk,
+        "max_chunks": args.max_chunks,
         "total_indices": len(selected_indices),
         "total_chunks": len(chunks),
+        "selected_chunks": len(selected_chunks),
         "chunks": [{"chunk_number": number, "indices": chunk} for number, chunk in enumerate(chunks)],
     }
     (run_dir / "manifest.json").write_text(json.dumps(plan, indent=2), encoding="utf-8")
@@ -234,7 +259,7 @@ async def run(args: argparse.Namespace) -> None:
         print(json.dumps(plan, indent=2))
         return
 
-    for chunk_number, chunk in enumerate(chunks):
+    for chunk_number, chunk in selected_chunks:
         await run_chunk(args, data_path, run_dir, chunk_number, chunk)
         aggregate_config = aggregate_chunks(run_dir, args, selected_indices, len(chunks))
         print(

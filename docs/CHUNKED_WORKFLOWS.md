@@ -34,6 +34,21 @@ python experiments/run_chunked_workflows.py \
 
 To resume, rerun the same command with the same `--run-id`. Completed chunks are skipped.
 
+For controlled batches, add `--max-chunks`:
+
+```bash
+python experiments/run_chunked_workflows.py \
+  --dataset MATH \
+  --workflow manual_v1 \
+  --split test \
+  --chunk-size 20 \
+  --max-concurrency 2 \
+  --run-id math-test-manual-v1 \
+  --max-chunks 1
+```
+
+Rerun the command to pick up the next incomplete chunk, or use `--start-chunk` to jump to a later chunk.
+
 ## Summarize
 
 ```bash
