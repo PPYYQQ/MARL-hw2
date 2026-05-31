@@ -67,6 +67,7 @@ python experiments/collect_results.py --runs-dir experiments/runs --latest-only 
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --dataset HumanEval --split test --output report/tables/humaneval_test_results.md
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --dataset MATH --split test --output report/tables/math_test_baselines.md
 python experiments/analyze_efficiency.py --output report/tables/efficiency_summary.md
+python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 ```
 
 ## Failure Analysis
@@ -93,6 +94,7 @@ python experiments/analyze_humaneval_failures.py \
 
 ```bash
 python experiments/export_evidence.py --clean
+python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 python experiments/audit_submission.py
 python experiments/package_submission.py --dry-run
 python experiments/package_submission.py

@@ -13,6 +13,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/collect_results.py`: result table collection and MATH rescoring utility.
 - `experiments/analyze_efficiency.py`: token-efficiency summary utility.
 - `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
+- `experiments/verify_evidence.py`: verifies tracked evidence against cited scores, row counts, calls, and token totals.
 - `experiments/analyze_math_failures.py`: problem-level MATH run comparison utility.
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
@@ -33,6 +34,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - HumanEval full-test failure analysis: CoT, `manual_v1`, and no-public-test all fix the three direct failures; no-public-test has the fewest regressions against direct.
 - MATH full test baselines: direct `0.88889`, CoT `0.89300`.
 - Efficiency summary: MATH 50-sample `manual_v1` gains `+0.02000` over direct at `9.16x` tokens; HumanEval no-public-test gains `+0.01527` at `6.19x` tokens.
+- Evidence verification: all 10 tracked cited runs in `report/evidence/` reproduce their expected rows, scores, call counts, and token totals.
 
 ## Reproducibility Commands
 
@@ -46,6 +48,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/collect_results.py \
   experiments/analyze_efficiency.py \
   experiments/export_evidence.py \
+  experiments/verify_evidence.py \
   experiments/analyze_math_failures.py \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
@@ -78,6 +81,7 @@ Refresh tracked evidence files from local ignored run directories:
 
 ```bash
 conda run -n marl_hw2 python experiments/export_evidence.py --clean
+conda run -n marl_hw2 python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 ```
 
 See `docs/EXPERIMENT_COMMANDS.md` for the full command ledger behind the cited results and submission package.

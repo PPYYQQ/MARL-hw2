@@ -101,6 +101,7 @@ Export raw evidence for the cited result runs:
 
 ```bash
 python experiments/export_evidence.py --clean
+python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 ```
 
 Compare saved MATH runs at the problem level:

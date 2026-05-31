@@ -34,6 +34,7 @@ REQUIRED_FILES = [
     "experiments/collect_results.py",
     "experiments/analyze_efficiency.py",
     "experiments/export_evidence.py",
+    "experiments/verify_evidence.py",
     "experiments/analyze_math_failures.py",
     "experiments/analyze_humaneval_failures.py",
     "experiments/package_submission.py",
@@ -49,6 +50,7 @@ REQUIRED_FILES = [
     "report/tables/validation20_results.md",
     "report/tables/math_validation50_results.md",
     "report/tables/efficiency_summary.md",
+    "report/tables/evidence_verification.md",
     "report/tables/math_validation50_failure_analysis.md",
     "report/tables/humaneval_test_results.md",
     "report/tables/humaneval_test_failure_analysis.md",
@@ -64,6 +66,7 @@ PYTHON_FILES = [
     "experiments/collect_results.py",
     "experiments/analyze_efficiency.py",
     "experiments/export_evidence.py",
+    "experiments/verify_evidence.py",
     "experiments/analyze_math_failures.py",
     "experiments/analyze_humaneval_failures.py",
     "experiments/package_submission.py",
@@ -99,6 +102,11 @@ EXPECTED_TABLE_SNIPPETS = {
     "report/tables/efficiency_summary.md": [
         "| MATH validate50 | manual_v1 | 0.98000 | +0.02000 | 250 | 5.00x | 349515 | 9.16x |",
         "| HumanEval test | ablation_no_public_test | 0.99237 | +0.01527 | 409 | 3.12x | 303127 | 6.19x |",
+    ],
+    "report/tables/evidence_verification.md": [
+        "| math_validate50 | manual_v1 | 50 | 0.98000 | 0.98000 | 250 | 349515 | ok |",
+        "| humaneval_test | ablation_no_public_test | 131 | 0.99237 | 0.99237 | 409 | 303127 | ok |",
+        "| math_test_baselines | cot | 486 | 0.89300 | 0.89300 | 486 | 459130 | ok |",
     ],
     "report/tables/math_validation50_failure_analysis.md": [
         "| manual_v1 | 0.98000 | 1 | 2 | 0 | 1 | 250 | 349515 |",
