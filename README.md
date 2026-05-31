@@ -93,6 +93,12 @@ The report PDF can be built locally with Tectonic:
 make build-report
 ```
 
+Verify the planned full MATH `manual_v1` chunks before spending API quota:
+
+```bash
+make verify-math-manual-plan
+```
+
 Fill the report author metadata before final packaging:
 
 ```bash

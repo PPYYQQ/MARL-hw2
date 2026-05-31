@@ -18,6 +18,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/collect_results.py \
   experiments/analyze_efficiency.py \
   experiments/estimate_math_manual_test.py \
+  experiments/verify_chunked_plan.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
   experiments/fill_report_metadata.py \
@@ -79,6 +80,7 @@ python experiments/collect_results.py --runs-dir experiments/runs --latest-only 
 python experiments/collect_results.py --runs-dir experiments/runs --latest-only --rescore-math --dataset MATH --split test --output report/tables/math_test_baselines.md
 python experiments/analyze_efficiency.py --output report/tables/efficiency_summary.md
 python experiments/estimate_math_manual_test.py --output report/tables/math_manual_test_estimate.md
+python experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
 python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 ```
 
@@ -113,6 +115,7 @@ python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your
 ```bash
 make refresh-evidence
 make build-report
+make verify-math-manual-plan
 make final-check
 make package
 make verify-package

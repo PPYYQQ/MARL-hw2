@@ -8,6 +8,7 @@ PY_COMPILE_FILES = \
 	experiments/collect_results.py \
 	experiments/analyze_efficiency.py \
 	experiments/estimate_math_manual_test.py \
+	experiments/verify_chunked_plan.py \
 	experiments/export_evidence.py \
 	experiments/verify_evidence.py \
 	experiments/fill_report_metadata.py \
@@ -19,7 +20,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence estimate-math-manual audit refresh-evidence build-report package-dry-run package verify-package final-package-check final-check
+.PHONY: py-compile verify-evidence estimate-math-manual verify-math-manual-plan audit refresh-evidence build-report package-dry-run package verify-package final-package-check final-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -29,6 +30,9 @@ verify-evidence:
 
 estimate-math-manual:
 	$(PYTHON) experiments/estimate_math_manual_test.py --output report/tables/math_manual_test_estimate.md
+
+verify-math-manual-plan:
+	$(PYTHON) experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
 
 audit: py-compile verify-evidence
 	$(PYTHON) experiments/audit_submission.py

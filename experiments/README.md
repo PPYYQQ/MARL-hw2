@@ -68,6 +68,12 @@ Run expensive workflows in checkpointed chunks:
 python experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 --split test --chunk-size 20 --max-concurrency 2 --run-id math-test-manual-v1
 ```
 
+Verify the full MATH chunk plan before spending API quota:
+
+```bash
+python experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
+```
+
 If the command is interrupted, rerun the same command with the same `--run-id`; completed chunks are skipped and the aggregate CSV/config are refreshed after each chunk.
 Use `--max-chunks 1` for controlled incremental batches.
 

@@ -87,6 +87,12 @@ conda run -n marl_hw2 python experiments/run_chunked_workflows.py \
   --dry-run
 ```
 
+Verify the full MATH `manual_v1` chunk plan without calling the API:
+
+```bash
+make verify-math-manual-plan
+```
+
 Run the no-API submission audit:
 
 ```bash

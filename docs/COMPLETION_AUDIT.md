@@ -19,6 +19,7 @@ This document maps the assignment requirements to the current repository evidenc
 | Track raw evidence | Complete for cited runs | `report/evidence/`; `report/tables/evidence_verification.md`; `experiments/verify_evidence.py` |
 | Prepare report PDF | Complete locally, needs final metadata rebuild | `report/main.pdf`; `Makefile` target `build-report`; `experiments/finalize_submission.py` |
 | Prepare submission package | Complete default package; final named package needs metadata | `experiments/package_submission.py`; `experiments/finalize_submission.py`; `submission/MARL-hw2-submission.zip` |
+| Verify missing MATH run plan | Complete locally | `experiments/verify_chunked_plan.py`; `Makefile` target `verify-math-manual-plan`; `docs/CHUNKED_WORKFLOWS.md` |
 
 ## Remaining External Inputs
 
@@ -33,6 +34,7 @@ This document maps the assignment requirements to the current repository evidenc
 | Gate | Expected outcome |
 | --- | --- |
 | `make final-check` | Passes with warnings only for student metadata and missing full MATH `manual_v1` test table |
+| `make verify-math-manual-plan` | Confirms the full MATH `manual_v1` test plan covers 486 examples in 25 contiguous chunks |
 | `make build-report` | Rebuilds `report/main.pdf` with Tectonic |
 | `make package` | Writes `submission/MARL-hw2-submission.zip` with tracked files, `report/main.pdf`, and `SUBMISSION_MANIFEST.txt` |
 | `make verify-package` | Verifies the zip against tracked files, current commit, included PDF, and forbidden secret/run paths |

@@ -61,6 +61,28 @@ python experiments/estimate_math_manual_test.py --output report/tables/math_manu
 
 The current estimate projects `2,430` LLM calls and about `3.40M` raw tokens for the full 486-example MATH test split, using 25 chunks at `--chunk-size 20`.
 
+## Plan Check
+
+Verify that the intended full-test command covers all 486 MATH test examples in 25 chunks before spending API quota:
+
+```bash
+make verify-math-manual-plan
+```
+
+Equivalent expanded command:
+
+```bash
+python experiments/verify_chunked_plan.py \
+  --dataset MATH \
+  --split test \
+  --chunk-size 20 \
+  --expect-total-indices 486 \
+  --expect-total-chunks 25 \
+  --expect-first-index 0 \
+  --expect-last-index 485 \
+  --expect-contiguous
+```
+
 ## Summarize
 
 ```bash
