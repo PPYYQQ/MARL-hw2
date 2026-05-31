@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
 import subprocess
 import zipfile
@@ -77,6 +78,47 @@ def verify_manifest(entries: set[str], manifest_text: str, expected_commit: str)
     return failures
 
 
+def parse_manifest_checksums(manifest_text: str) -> dict[str, str]:
+    checksum_pattern = re.compile(r"^- (?P<sha256>[0-9a-f]{64})  (?P<path>.+)$", re.MULTILINE)
+    return {match.group("path"): match.group("sha256") for match in checksum_pattern.finditer(manifest_text)}
+
+
+def archive_sha256(archive: zipfile.ZipFile, entry: str) -> str:
+    digest = hashlib.sha256()
+    with archive.open(entry) as file_handle:
+        for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def verify_manifest_checksums(
+    archive: zipfile.ZipFile,
+    entries: set[str],
+    manifest_text: str,
+    expected_files: set[str],
+) -> list[str]:
+    failures: list[str] = []
+    checksums = parse_manifest_checksums(manifest_text)
+    if not checksums:
+        return ["Manifest does not include file checksums"]
+
+    missing = sorted(expected_files - checksums.keys())
+    unexpected = sorted(checksums.keys() - expected_files)
+    if missing:
+        failures.append("Missing manifest checksums: " + ", ".join(missing[:20]))
+    if unexpected:
+        failures.append("Unexpected manifest checksums: " + ", ".join(unexpected[:20]))
+
+    for entry, expected_sha256 in sorted(checksums.items()):
+        if entry not in entries:
+            failures.append(f"Checksum entry missing from archive: {entry}")
+            continue
+        actual_sha256 = archive_sha256(archive, entry)
+        if actual_sha256 != expected_sha256:
+            failures.append(f"Checksum mismatch for {entry}")
+    return failures
+
+
 def verify_entries(entries: set[str], expected_files: set[str]) -> list[str]:
     failures: list[str] = []
     expected_entries = expected_files | {MANIFEST}
@@ -134,10 +176,12 @@ def main() -> None:
         entries = set(archive.namelist())
         manifest_text = archive.read(MANIFEST).decode("utf-8") if MANIFEST in entries else ""
         metadata_failures = verify_report_metadata(archive, entries, args)
+        checksum_failures = verify_manifest_checksums(archive, entries, manifest_text, expected_files)
 
     failures = verify_manifest(entries, manifest_text, current_commit())
     failures.extend(verify_entries(entries, expected_files))
     failures.extend(metadata_failures)
+    failures.extend(checksum_failures)
     if failures:
         for failure in failures:
             print(f"FAIL: {failure}")
@@ -145,6 +189,7 @@ def main() -> None:
 
     print(f"PASS: Package {args.package} contains {len(entries)} entries")
     print(f"PASS: Manifest references commit {current_commit()}")
+    print("PASS: Manifest checksums match archive contents")
     print("PASS: No forbidden package entries found")
     if args.expect_name or args.expect_student_id or args.expect_email:
         print("PASS: Report metadata matches expected values")

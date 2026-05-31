@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
 import subprocess
 import sys
@@ -107,6 +108,14 @@ def run_audit() -> str:
     return completed.stdout.strip()
 
 
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as file_handle:
+        for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def render_manifest(
     files: list[Path],
     extras: list[Path],
@@ -128,6 +137,9 @@ def render_manifest(
     lines.extend(f"- {path.as_posix()}" for path in extras)
     if not extras:
         lines.append("- none")
+    lines.extend(["", "File checksums (sha256):"])
+    for path in files + extras:
+        lines.append(f"- {file_sha256(REPO_ROOT / path)}  {path.as_posix()}")
     if audit_output:
         lines.extend(["", "Audit output:", audit_output])
     return "\n".join(lines) + "\n"

@@ -126,6 +126,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Tightened packaging integrity so `experiments/package_submission.py` refuses uncommitted tracked changes by default; finalization allows only the temporary filled `report/main.tex` metadata edit.
 - Added `experiments/verify_report_pdf.py` and `make verify-report-pdf` so packaging gates can confirm the local report PDF is current for the tracked TeX sources before including it.
 - Tightened `experiments/verify_submission_package.py` so generated package manifests must include a parseable audit summary with zero failures and no failing audit lines.
+- Added per-file SHA-256 checksums to `SUBMISSION_MANIFEST.txt` and made package verification recompute archive hashes, so generated zips are checked for content integrity rather than only entry names.
 
 ## Next Steps
 
