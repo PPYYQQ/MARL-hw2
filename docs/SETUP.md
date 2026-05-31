@@ -70,20 +70,21 @@ The first API smoke tests showed that this Kimi endpoint requires `top_p: 0.95` 
 
 ## Local Validation
 
-Static checks:
+The current no-API validation entry points are maintained in the root `Makefile`:
 
 ```bash
-conda run -n marl_hw2 python -m py_compile experiments/run_baselines.py experiments/run_workflows.py experiments/collect_results.py AFlow/scripts/async_llm.py AFlow/workspace/MATH/workflows/manual_v1/graph.py AFlow/workspace/HumanEval/workflows/manual_v1/graph.py
+make final-check
+make handoff-check
 ```
 
-Workflow import check:
+For a narrower syntax-only check, use:
 
 ```bash
-conda run -n marl_hw2 python -c "import os, sys, pathlib; repo=pathlib.Path.cwd(); sys.path.insert(0, str(repo/'AFlow')); os.chdir(repo/'AFlow'); import workspace.MATH.workflows.manual_v1.graph as math_graph; import workspace.HumanEval.workflows.manual_v1.graph as code_graph; print(math_graph.Workflow.__name__, code_graph.Workflow.__name__)"
+make py-compile
 ```
 
-Observed result:
+Expected result:
 
 ```text
-Workflow Workflow
+The commands should pass locally without making API calls. `make final-check` may warn about missing final student metadata and the quota-blocked full MATH `manual_v1` test table until those external inputs are resolved.
 ```
