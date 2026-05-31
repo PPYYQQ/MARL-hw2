@@ -1,0 +1,20 @@
+{
+  "dataset": "HumanEval",
+  "baseline": "cot",
+  "model": "kimi-k2.5",
+  "split": "test",
+  "data_path": "/home/yongqian/Documents/yongqian/MARL\u5927\u4f5c\u4e1a/hw2/AFlow/data/datasets/humaneval_test.jsonl",
+  "sample_size": 131,
+  "sample_seed": 0,
+  "indices": null,
+  "max_concurrency": 8,
+  "average_score": 0.9847328244274809,
+  "average_cost": 0.0,
+  "total_cost": 0.0,
+  "total_input_tokens": 23650,
+  "total_output_tokens": 96923,
+  "total_tokens": 120573,
+  "llm_call_count": 131,
+  "llm_total_cost": 0.0,
+  "llm_usage_path": "/home/yongqian/Documents/yongqian/MARL\u5927\u4f5c\u4e1a/hw2/experiments/runs/HumanEval/cot/20260531_004920/llm_usage.json"
+}

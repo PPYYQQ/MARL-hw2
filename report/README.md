@@ -15,6 +15,7 @@ pdflatex main
 Current status:
 
 - `main.tex` is a draft report with setup notes, architecture summary, workflow design, validation tables, full HumanEval test results, and full MATH direct/CoT baselines.
+- `evidence/` contains copied CSV/config/log/token-summary artifacts for the report's cited final runs.
 - Full MATH `manual_v1` workflow results are still missing because the current Kimi account returns an insufficient-balance quota error for new API calls.
 - Student name and ID placeholders still need to be filled before final submission.
 - This machine does not currently have `pdflatex` or `xelatex`, so PDF compilation must be done after installing LaTeX or on another machine.

@@ -32,6 +32,7 @@ REQUIRED_FILES = [
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
     "experiments/analyze_efficiency.py",
+    "experiments/export_evidence.py",
     "experiments/analyze_math_failures.py",
     "experiments/analyze_humaneval_failures.py",
     "experiments/package_submission.py",
@@ -49,6 +50,7 @@ REQUIRED_FILES = [
     "report/tables/humaneval_test_results.md",
     "report/tables/humaneval_test_failure_analysis.md",
     "report/tables/math_test_baselines.md",
+    "report/evidence/README.md",
 ]
 
 
@@ -58,6 +60,7 @@ PYTHON_FILES = [
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
     "experiments/analyze_efficiency.py",
+    "experiments/export_evidence.py",
     "experiments/analyze_math_failures.py",
     "experiments/analyze_humaneval_failures.py",
     "experiments/package_submission.py",
@@ -107,6 +110,10 @@ EXPECTED_TABLE_SNIPPETS = {
     "report/tables/math_test_baselines.md": [
         "| MATH | direct | kimi-k2.5 | test | 486 | 0.88889",
         "| MATH | cot | kimi-k2.5 | test | 486 | 0.89300",
+    ],
+    "report/evidence/README.md": [
+        "| math_test_baselines | direct | 486 | 0.88889 | 486 | 425052 | report/evidence/math_test_baselines/direct |",
+        "| humaneval_test | ablation_no_public_test | 131 | 0.99237 | 409 | 303127 | report/evidence/humaneval_test/ablation_no_public_test |",
     ],
 }
 

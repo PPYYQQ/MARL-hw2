@@ -1,0 +1,20 @@
+{
+  "dataset": "MATH",
+  "baseline": "cot",
+  "model": "kimi-k2.5",
+  "split": "test",
+  "data_path": "/home/yongqian/Documents/yongqian/MARL\u5927\u4f5c\u4e1a/hw2/AFlow/data/datasets/math_test.jsonl",
+  "sample_size": 486,
+  "sample_seed": 0,
+  "indices": null,
+  "max_concurrency": 4,
+  "average_score": 0.8930041152263375,
+  "average_cost": 0.0,
+  "total_cost": 0.0,
+  "total_input_tokens": 55747,
+  "total_output_tokens": 403383,
+  "total_tokens": 459130,
+  "llm_call_count": 486,
+  "llm_total_cost": 0.0,
+  "llm_usage_path": "/home/yongqian/Documents/yongqian/MARL\u5927\u4f5c\u4e1a/hw2/experiments/runs/MATH/cot/20260531_102239/llm_usage.json"
+}

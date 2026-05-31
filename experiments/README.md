@@ -95,6 +95,12 @@ Summarize score and token-efficiency tradeoffs from tracked result tables:
 python experiments/analyze_efficiency.py --output report/tables/efficiency_summary.md
 ```
 
+Export raw evidence for the cited result runs:
+
+```bash
+python experiments/export_evidence.py --clean
+```
+
 Compare saved MATH runs at the problem level:
 
 ```bash

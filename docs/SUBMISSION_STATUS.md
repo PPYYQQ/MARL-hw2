@@ -11,11 +11,13 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/run_chunked_workflows.py`: checkpointed workflow runner for expensive full-test jobs.
 - `experiments/collect_results.py`: result table collection and MATH rescoring utility.
 - `experiments/analyze_efficiency.py`: token-efficiency summary utility.
+- `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
 - `experiments/analyze_math_failures.py`: problem-level MATH run comparison utility.
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
 - `experiments/package_submission.py`: tracked-file submission zip builder.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
+- `report/evidence/`: raw CSV/config/log/token-summary evidence for the cited final runs.
 - `PROGRESS.md`: chronological implementation and experiment log.
 
 ## Current Results
@@ -39,6 +41,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/run_chunked_workflows.py \
   experiments/collect_results.py \
   experiments/analyze_efficiency.py \
+  experiments/export_evidence.py \
   experiments/analyze_math_failures.py \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
@@ -66,6 +69,12 @@ conda run -n marl_hw2 python experiments/audit_submission.py
 ```
 
 The audit is expected to warn until the Kimi quota, report metadata, full MATH `manual_v1` test run, and local PDF build are resolved.
+
+Refresh tracked evidence files from local ignored run directories:
+
+```bash
+conda run -n marl_hw2 python experiments/export_evidence.py --clean
+```
 
 Preview the final zip contents:
 
