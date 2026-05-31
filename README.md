@@ -60,6 +60,12 @@ Generated run directories under `experiments/runs/` and `experiments/chunked_run
 
 The Makefile target `make refresh-evidence` runs both evidence export and verification.
 
+The report PDF can be built locally with Tectonic:
+
+```bash
+make build-report
+```
+
 Fill the report author metadata before final packaging:
 
 ```bash
@@ -70,4 +76,3 @@ conda run -n marl_hw2 python experiments/fill_report_metadata.py --name "Your Na
 
 - New Kimi API calls currently fail with an insufficient-balance quota error, so full MATH `manual_v1` test evaluation is not complete.
 - `report/main.tex` still contains placeholder student name, ID, and email fields; use `experiments/fill_report_metadata.py` after those values are known.
-- This machine does not have `pdflatex` or `xelatex`, so the report PDF has not been compiled locally.

@@ -23,6 +23,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `docs/EXPERIMENT_COMMANDS.md`: command ledger for API runs, table generation, analysis, evidence export, audit, and packaging.
 - `docs/PAPER_NOTES.md`: notes linking AFlow and multi-agent debate ideas to the implemented workflows.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
+- `report/main.pdf`: locally compiled report PDF, included in generated submission packages when present.
 - `report/evidence/`: raw CSV/config/log/token-summary evidence for the cited final runs.
 - `PROGRESS.md`: chronological implementation and experiment log.
 - Report coverage includes research context, AFlow engineering structure, environment setup, baseline prompts, workflow algorithm details, validation/test results, ablations, failure analysis, efficiency analysis, limitations, and remaining blockers.
@@ -90,7 +91,13 @@ Audit only:
 conda run -n marl_hw2 python experiments/audit_submission.py
 ```
 
-The audit is expected to warn until the Kimi quota, report metadata, full MATH `manual_v1` test run, and local PDF build are resolved.
+The audit is expected to warn until the Kimi quota, report metadata, and full MATH `manual_v1` test run are resolved.
+
+Build the report PDF with Tectonic:
+
+```bash
+make build-report
+```
 
 Refresh tracked evidence files from local ignored run directories:
 
@@ -144,7 +151,6 @@ Rerun the same command to process the next incomplete chunk. Remove `--max-chunk
 
 - New Kimi API calls currently fail with an insufficient-balance quota error.
 - Full MATH `manual_v1` test results are therefore not available yet.
-- `pdflatex` and `xelatex` are not installed on this machine, so the report PDF has not been compiled locally.
 - `report/main.tex` still contains placeholder student name, student ID, and email fields; use `experiments/fill_report_metadata.py` after those values are known.
 
 ## Next Actions
@@ -153,5 +159,5 @@ Rerun the same command to process the next incomplete chunk. Remove `--max-chunk
 2. Resume full MATH `manual_v1` with the chunked runner.
 3. Collect the chunked MATH result table after enough chunks complete.
 4. Fill student metadata in `report/main.tex` with `experiments/fill_report_metadata.py`.
-5. Compile the final PDF on a machine with LaTeX installed.
+5. Rebuild `report/main.pdf` with `make build-report`.
 6. Run `experiments/package_submission.py` to create the final tracked-file zip.

@@ -51,8 +51,9 @@ def tracked_files() -> list[Path]:
     return sorted(files, key=lambda path: path.as_posix())
 
 
-def optional_existing_files() -> list[Path]:
-    return [path for path in OPTIONAL_FILES if (REPO_ROOT / path).is_file()]
+def optional_existing_files(files: list[Path]) -> list[Path]:
+    tracked = set(files)
+    return [path for path in OPTIONAL_FILES if path not in tracked and (REPO_ROOT / path).is_file()]
 
 
 def run_audit() -> str:
@@ -90,7 +91,7 @@ def create_zip(output_path: Path, files: list[Path], extras: list[Path], manifes
 def main() -> None:
     args = parse_args()
     files = tracked_files()
-    extras = optional_existing_files()
+    extras = optional_existing_files(files)
     audit_output = None if args.skip_audit else run_audit()
     manifest = render_manifest(files, extras, audit_output)
 

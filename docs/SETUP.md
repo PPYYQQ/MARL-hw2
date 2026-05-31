@@ -34,6 +34,12 @@ The local shell uses a SOCKS proxy. `httpx` requires `socksio` for that proxy mo
 
 MATH scoring uses SymPy's LaTeX parser. A smoke test produced the correct answer but scored zero because `antlr4` was missing, so `antlr4-python3-runtime==4.11.0` was added.
 
+Report compilation uses Tectonic in the same conda environment:
+
+```bash
+conda install -n marl_hw2 -c conda-forge tectonic -y
+```
+
 ## Kimi Configuration
 
 Created the local config from the safe example:

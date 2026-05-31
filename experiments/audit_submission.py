@@ -236,10 +236,16 @@ def check_external_blockers(result: AuditResult) -> None:
     else:
         result.pass_check("Report student metadata is filled")
 
-    if not shutil.which("pdflatex") and not shutil.which("xelatex"):
-        result.warn("No local pdflatex/xelatex executable found")
+    compiler = next((name for name in ("pdflatex", "xelatex", "tectonic") if shutil.which(name)), None)
+    if compiler:
+        result.pass_check(f"LaTeX compiler is available: {compiler}")
     else:
-        result.pass_check("A LaTeX compiler is available")
+        result.warn("No local LaTeX compiler found")
+
+    if (REPO_ROOT / "report/main.pdf").is_file():
+        result.pass_check("Report PDF exists")
+    else:
+        result.warn("Report PDF is not built yet")
 
     if not os.environ.get("KIMI_API_KEY"):
         result.warn("KIMI_API_KEY is not set in this shell")

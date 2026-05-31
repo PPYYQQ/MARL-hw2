@@ -1,4 +1,5 @@
 PYTHON ?= conda run -n marl_hw2 python
+TECTONIC ?= conda run -n marl_hw2 tectonic
 
 PY_COMPILE_FILES = \
 	experiments/run_baselines.py \
@@ -15,7 +16,7 @@ PY_COMPILE_FILES = \
 	experiments/package_submission.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence audit refresh-evidence package-dry-run package final-check
+.PHONY: py-compile verify-evidence audit refresh-evidence build-report package-dry-run package final-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -29,6 +30,9 @@ audit: py-compile verify-evidence
 refresh-evidence:
 	$(PYTHON) experiments/export_evidence.py --clean
 	$(PYTHON) experiments/verify_evidence.py --output report/tables/evidence_verification.md
+
+build-report:
+	cd report && $(TECTONIC) main.tex
 
 package-dry-run:
 	$(PYTHON) experiments/package_submission.py --dry-run

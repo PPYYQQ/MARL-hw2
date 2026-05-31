@@ -18,6 +18,8 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/collect_results.py \
   experiments/analyze_efficiency.py \
   experiments/export_evidence.py \
+  experiments/verify_evidence.py \
+  experiments/fill_report_metadata.py \
   experiments/analyze_math_failures.py \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
@@ -106,6 +108,7 @@ python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your
 
 ```bash
 make refresh-evidence
+make build-report
 make final-check
 make package
 ```
@@ -116,6 +119,7 @@ Equivalent expanded commands:
 python experiments/export_evidence.py --clean
 python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
+cd report && conda run -n marl_hw2 tectonic main.tex
 python experiments/audit_submission.py
 python experiments/package_submission.py --dry-run
 python experiments/package_submission.py
