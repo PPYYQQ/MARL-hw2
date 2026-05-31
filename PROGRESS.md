@@ -117,7 +117,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Polished `report/main.tex` path formatting and narrow tables so the Tectonic build no longer reports overfull boxes.
 - Extended `experiments/package_submission.py` with optional student ID, name, and assignment arguments so the final zip can follow the course naming convention once metadata is known.
 - Added `experiments/estimate_math_manual_test.py` and `report/tables/math_manual_test_estimate.md`, estimating the missing full MATH `manual_v1` run at about 2,430 calls and 3.40M raw tokens.
-- Added `experiments/finalize_submission.py` to run the final metadata fill, report PDF rebuild, and named submission packaging once student metadata is available; it now restores local report source/PDF placeholders after packaging by default to avoid accidental personal metadata commits.
+- Added `experiments/finalize_submission.py` to run the final metadata fill, report PDF rebuild, zip verification, and named submission packaging once student metadata is available; it restores local report source/PDF placeholders after packaging by default to avoid accidental personal metadata commits.
 - Added `docs/COMPLETION_AUDIT.md` to map each assignment requirement to current evidence files, validation gates, and remaining external inputs.
 - Added `experiments/verify_submission_package.py` and `make verify-package` to validate generated zip contents, manifest commit, PDF inclusion, and forbidden secret/run paths.
 

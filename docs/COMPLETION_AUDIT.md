@@ -37,7 +37,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make package` | Writes `submission/MARL-hw2-submission.zip` with tracked files, `report/main.pdf`, and `SUBMISSION_MANIFEST.txt` |
 | `make verify-package` | Verifies the zip against tracked files, current commit, included PDF, and forbidden secret/run paths |
 | `experiments/finalize_submission.py --dry-run ...` | Previews final metadata lines and named package contents without writing |
-| `experiments/finalize_submission.py ...` | Builds a filled-metadata zip/PDF and restores local `report/main.tex` and `report/main.pdf` placeholders unless `--keep-filled-report` is passed |
+| `experiments/finalize_submission.py ...` | Builds and verifies a filled-metadata zip/PDF, then restores local `report/main.tex` and `report/main.pdf` placeholders unless `--keep-filled-report` is passed |
 
 ## Submission Risk Notes
 
