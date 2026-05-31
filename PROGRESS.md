@@ -98,17 +98,22 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/run_chunked_workflows.py` for checkpointed workflow evaluation. It writes per-chunk CSV/config files, refreshes an aggregate result after every completed chunk, supports `--run-id` resume plus `--start-chunk`/`--max-chunks` batch controls, and keeps generated outputs under ignored `experiments/chunked_runs/`.
 - Added `docs/CHUNKED_WORKFLOWS.md` and updated `experiments/README.md` with dry-run, full MATH `manual_v1`, resume, and summarization commands.
 - Attempted the first chunked MATH test `manual_v1` batch, but Kimi returned `exceeded_current_quota_error` / insufficient balance for every problem, producing no usable LLM calls. Updated `experiments/run_chunked_workflows.py` so quota-only chunks are marked `failed_quota`, excluded from aggregates, and stop the run instead of being treated as completed.
+- Refreshed `report/main.tex` and `report/README.md` so the report status matches the current evidence: MATH validation subsets, full HumanEval test results, full MATH direct/CoT baselines, and the remaining quota-blocked full MATH `manual_v1` run.
+- Added `docs/SUBMISSION_STATUS.md` as a submission checklist with current deliverables, exact result summary, reproducibility commands, known blockers, and next actions.
 
 ## Next Steps
 
 1. Inspect 50-sample MATH failure logs to decide whether a low-cost workflow improvement is obvious.
 2. Use the chunked runner to resume full MATH `manual_v1` in 20-example chunks.
 3. Consider a lower-token MATH workflow variant because `manual_v1` is accurate but expensive.
-4. Keep pushing each new key commit to GitHub after local validation.
+4. Fill student metadata in `report/main.tex` before final submission.
+5. Compile the report PDF on a machine with LaTeX installed.
+6. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 
 - Full API experiments require a valid `KIMI_API_KEY` in the shell environment.
 - The Kimi account currently returns an insufficient-balance quota error for new calls; further API experiments require recharge or another valid `KIMI_API_KEY`.
-- Complete benchmark runs should wait until small-sample runs show the output format and cost are acceptable.
+- Full MATH `manual_v1` test evaluation is the main missing benchmark run.
+- Local PDF compilation is blocked because this machine does not have `pdflatex` or `xelatex` installed.
 - GitHub push works through the SSH remote `git@github.com:PPYYQQ/MARL-hw2.git`.

@@ -27,14 +27,14 @@
 ]
 
 \begin{abstract}
-This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. Twenty-sample validation runs verify the evaluation, API, workflow, token logging, and ablation pipelines end to end. Full benchmark runs remain the next step before drawing final performance conclusions.
+This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. The current experiments include MATH validation subsets, full HumanEval test runs, and full MATH direct/CoT test baselines. The main remaining experiment is the expensive full MATH \texttt{manual\_v1} workflow run, which now requires a recharged Kimi account or another valid API key.
 \end{abstract}
 
 \section{Introduction}
 
 Large language model agents can improve reasoning by decomposing a task into multiple model calls, critiques, revisions, code execution steps, or ensemble decisions. AFlow formulates this idea as a search problem over code-represented agentic workflows, where reusable operators become nodes in a workflow graph and an optimizer searches for better graph structures \cite{zhang2025aflow}. Related work on multi-agent debate \cite{du2024debate} and optimizable agent graphs \cite{zhuge2024gptswarm} motivates comparing direct model calls against explicit multi-agent reasoning.
 
-The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. The current project focuses first on a reproducible engineering base: safe API configuration, benchmark runners, manual workflows, validation subsets, and result tables.
+The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. The current project focuses on a reproducible engineering base: safe API configuration, benchmark runners, manual workflows, validation subsets, full-test result tables where available, and resumable execution for expensive workflow runs.
 
 \section{AFlow Engineering Summary}
 
@@ -174,9 +174,9 @@ Table~\ref{tab:mathtest} reports full MATH test split baselines. CoT is slightly
 
 To support that rerun, the project includes \texttt{experiments/run\_chunked\_workflows.py}. For MATH test with chunk size 20, it plans 25 chunks, skips completed chunks when rerun with the same \texttt{run-id}, and refreshes an aggregate CSV/config after every completed chunk. A first chunked attempt after the MATH baselines returned an insufficient-balance API error, so no full-test \texttt{manual\_v1} chunk is reported yet.
 
-\section{Planned Full Experiments}
+\section{Remaining Experiments}
 
-The next experimental stage is to move from validation subsets to full benchmark runs and workflow refinement. The planned sequence is:
+Most planned infrastructure and several full benchmark runs are now complete. The remaining experimental sequence is:
 
 \begin{enumerate}
     \item Inspect the 50-sample MATH failure logs to identify whether direct-only and workflow-only failures are systematic.
@@ -187,11 +187,11 @@ The next experimental stage is to move from validation subsets to full benchmark
 
 \section{Limitations}
 
-Current MATH workflow results are validation subsets and should not be interpreted as final benchmark gains. The manual workflows increase token usage and latency, especially for MATH where three candidates plus ensemble selection used 151,117 tokens on 20 problems and 349,515 tokens on 50 problems. Kimi pricing is not yet reflected in the local cost field because the imported AFlow pricing table does not include Kimi. Future runs should report raw token counts or add a verified Kimi pricing table.
+Current MATH workflow results are validation subsets and should not be interpreted as final benchmark gains. The manual workflows increase token usage and latency, especially for MATH where three candidates plus ensemble selection used 151,117 tokens on 20 problems and 349,515 tokens on 50 problems. Kimi pricing is not yet reflected in the local cost field because the imported AFlow pricing table does not include Kimi. The current Kimi account also returns an insufficient-balance quota error for new requests, so additional API experiments require a recharge or another valid API key. Future runs should report raw token counts or add a verified Kimi pricing table.
 
 \section{Conclusion}
 
-The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, ablations, token-aware validation tables, MATH full-test baselines, HumanEval full-test workflow results, and a report draft. The remaining core work is to checkpoint the expensive full MATH workflow evaluation and then decide whether the accuracy gain justifies its token cost.
+The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, ablations, token-aware validation tables, MATH full-test baselines, HumanEval full-test workflow results, checkpointed workflow execution, and a report draft. The remaining core work is to resume the expensive full MATH workflow evaluation after the API quota issue is resolved, fill the student metadata, compile the PDF, and decide whether the MATH validation accuracy gain justifies its token cost.
 
 \bibliography{references}
 \bibliographystyle{icml2022}
