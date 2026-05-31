@@ -11,6 +11,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/run_chunked_workflows.py`: checkpointed workflow runner for expensive full-test jobs.
 - `experiments/collect_results.py`: result table collection and MATH rescoring utility.
 - `experiments/analyze_math_failures.py`: problem-level MATH run comparison utility.
+- `experiments/audit_submission.py`: no-API submission readiness checker.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
 - `PROGRESS.md`: chronological implementation and experiment log.
 
@@ -47,6 +48,14 @@ conda run -n marl_hw2 python experiments/run_chunked_workflows.py \
   --max-chunks 1 \
   --dry-run
 ```
+
+Run the no-API submission audit:
+
+```bash
+conda run -n marl_hw2 python experiments/audit_submission.py
+```
+
+The audit is expected to warn until the Kimi quota, report metadata, full MATH `manual_v1` test run, and local PDF build are resolved.
 
 After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 

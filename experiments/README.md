@@ -100,3 +100,11 @@ python experiments/analyze_math_failures.py \
   --run single=experiments/runs/MATH/ablation_single/20260531_002230 \
   --output report/tables/math_validation50_failure_analysis.md
 ```
+
+Run the local submission audit without making API calls:
+
+```bash
+python experiments/audit_submission.py
+```
+
+Use `--strict` before final packaging when the Kimi quota, student metadata, and local PDF build blockers have been resolved.
