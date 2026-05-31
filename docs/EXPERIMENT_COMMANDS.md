@@ -26,6 +26,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
   experiments/package_submission.py \
+  experiments/verify_submission_package.py \
   AFlow/benchmarks/math.py
 ```
 
@@ -126,6 +127,7 @@ cd report && conda run -n marl_hw2 tectonic main.tex
 python experiments/audit_submission.py
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
+python experiments/verify_submission_package.py --package submission/MARL-hw2-submission.zip
 ```
 
 Equivalent one-command finalization after metadata is known:

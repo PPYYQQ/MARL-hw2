@@ -22,6 +22,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
 - `experiments/package_submission.py`: tracked-file submission zip builder with optional student/name/assignment output naming.
+- `experiments/verify_submission_package.py`: validates generated zip contents against tracked files, manifest commit, PDF inclusion, and secret hygiene.
 - `docs/COMPLETION_AUDIT.md`: requirement-by-requirement handoff audit with evidence paths and remaining external inputs.
 - `docs/EXPERIMENT_COMMANDS.md`: command ledger for API runs, table generation, analysis, evidence export, audit, and packaging.
 - `docs/PAPER_NOTES.md`: notes linking AFlow and multi-agent debate ideas to the implemented workflows.
@@ -69,6 +70,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
   experiments/package_submission.py \
+  experiments/verify_submission_package.py \
   AFlow/benchmarks/math.py
 ```
 
@@ -136,6 +138,12 @@ Expanded command:
 
 ```bash
 conda run -n marl_hw2 python experiments/package_submission.py --dry-run
+```
+
+Verify the generated default zip:
+
+```bash
+make verify-package
 ```
 
 After filling report metadata, preview the course-style named zip:

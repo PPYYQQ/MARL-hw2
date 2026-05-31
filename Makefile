@@ -16,9 +16,10 @@ PY_COMPILE_FILES = \
 	experiments/analyze_humaneval_failures.py \
 	experiments/audit_submission.py \
 	experiments/package_submission.py \
+	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence estimate-math-manual audit refresh-evidence build-report package-dry-run package final-check
+.PHONY: py-compile verify-evidence estimate-math-manual audit refresh-evidence build-report package-dry-run package verify-package final-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -44,5 +45,8 @@ package-dry-run:
 
 package:
 	$(PYTHON) experiments/package_submission.py
+
+verify-package:
+	$(PYTHON) experiments/verify_submission_package.py
 
 final-check: audit package-dry-run

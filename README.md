@@ -47,6 +47,12 @@ Create the local submission zip:
 conda run -n marl_hw2 python experiments/package_submission.py
 ```
 
+Verify the generated zip:
+
+```bash
+make verify-package
+```
+
 After filling report metadata, create the course-style named zip:
 
 ```bash

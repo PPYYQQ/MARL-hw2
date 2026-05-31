@@ -42,6 +42,7 @@ REQUIRED_FILES = [
     "experiments/analyze_math_failures.py",
     "experiments/analyze_humaneval_failures.py",
     "experiments/package_submission.py",
+    "experiments/verify_submission_package.py",
     "experiments/README.md",
     "docs/SETUP.md",
     "docs/ABLATIONS.md",
@@ -79,6 +80,7 @@ PYTHON_FILES = [
     "experiments/analyze_math_failures.py",
     "experiments/analyze_humaneval_failures.py",
     "experiments/package_submission.py",
+    "experiments/verify_submission_package.py",
     "experiments/audit_submission.py",
     "AFlow/benchmarks/math.py",
 ]

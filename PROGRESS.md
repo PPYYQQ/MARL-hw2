@@ -119,6 +119,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/estimate_math_manual_test.py` and `report/tables/math_manual_test_estimate.md`, estimating the missing full MATH `manual_v1` run at about 2,430 calls and 3.40M raw tokens.
 - Added `experiments/finalize_submission.py` to run the final metadata fill, report PDF rebuild, and named submission packaging once student metadata is available; it now restores local report source/PDF placeholders after packaging by default to avoid accidental personal metadata commits.
 - Added `docs/COMPLETION_AUDIT.md` to map each assignment requirement to current evidence files, validation gates, and remaining external inputs.
+- Added `experiments/verify_submission_package.py` and `make verify-package` to validate generated zip contents, manifest commit, PDF inclusion, and forbidden secret/run paths.
 
 ## Next Steps
 
