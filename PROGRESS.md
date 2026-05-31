@@ -122,6 +122,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/verify_submission_package.py` and `make verify-package` to validate generated zip contents, manifest commit, PDF inclusion, and forbidden secret/run paths.
 - Added `make final-package-check` as a one-command default submission packaging gate, running package creation and zip verification together.
 - Added `experiments/verify_chunked_plan.py` and `make verify-math-manual-plan` to confirm the remaining full MATH `manual_v1` run covers 486 contiguous test examples in 25 chunks before spending restored API quota.
+- Extended final submission verification so `experiments/finalize_submission.py` checks that `report/main.tex` inside the generated zip contains the provided student name, ID, and email instead of placeholders.
 
 ## Next Steps
 

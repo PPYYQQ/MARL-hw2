@@ -72,6 +72,7 @@ conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Nam
 ```
 
 By default, finalization verifies the generated zip and then restores local `report/main.tex` and `report/main.pdf` placeholders so personal metadata is not left in the worktree. The generated zip still contains the filled report source and PDF.
+The finalization verifier checks that the zip's report source contains the provided name, student ID, and email.
 
 The equivalent packaging shortcut is:
 

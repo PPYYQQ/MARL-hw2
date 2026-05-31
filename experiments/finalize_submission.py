@@ -86,8 +86,19 @@ def package_command(args: argparse.Namespace, output: Path, dry_run: bool) -> li
     return command
 
 
-def verify_command(output: Path) -> list[str]:
-    return [sys.executable, "experiments/verify_submission_package.py", "--package", str(output)]
+def verify_command(args: argparse.Namespace, output: Path) -> list[str]:
+    return [
+        sys.executable,
+        "experiments/verify_submission_package.py",
+        "--package",
+        str(output),
+        "--expect-name",
+        args.name,
+        "--expect-student-id",
+        args.student_id,
+        "--expect-email",
+        args.email,
+    ]
 
 
 def main() -> None:
@@ -97,7 +108,7 @@ def main() -> None:
         run_command(metadata_command(args, dry_run=True))
         print("$ make build-report  # skipped in dry-run", flush=True)
         run_command(package_command(args, output, dry_run=True))
-        print("$ " + shlex.join(verify_command(output)) + "  # skipped in dry-run", flush=True)
+        print("$ " + shlex.join(verify_command(args, output)) + "  # skipped in dry-run", flush=True)
         return
 
     report_path = REPO_ROOT / REPORT_PATH
@@ -108,7 +119,7 @@ def main() -> None:
         run_command(metadata_command(args, dry_run=False))
         run_command(["make", "build-report"])
         run_command(package_command(args, output, dry_run=False))
-        run_command(verify_command(output))
+        run_command(verify_command(args, output))
     finally:
         if not args.keep_filled_report:
             report_path.write_text(original_report, encoding="utf-8")

@@ -133,6 +133,7 @@ python experiments/audit_submission.py
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
 python experiments/verify_submission_package.py --package submission/MARL-hw2-submission.zip
+python experiments/verify_submission_package.py --package "submission/Your_ID_Your_Name_MARL-hw2.zip" --expect-name "Your Name" --expect-student-id "Your ID" --expect-email "you@example.com"
 ```
 
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
