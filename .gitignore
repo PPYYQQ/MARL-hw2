@@ -38,3 +38,7 @@ report/**/*.log
 report/**/*.out
 report/**/*.toc
 report/**/*.synctex.gz
+
+# Local submission packages
+submission/
+*.zip

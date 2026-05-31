@@ -13,6 +13,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/analyze_math_failures.py`: problem-level MATH run comparison utility.
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
+- `experiments/package_submission.py`: tracked-file submission zip builder.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
 - `PROGRESS.md`: chronological implementation and experiment log.
 
@@ -35,6 +36,10 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/run_workflows.py \
   experiments/run_chunked_workflows.py \
   experiments/collect_results.py \
+  experiments/analyze_math_failures.py \
+  experiments/analyze_humaneval_failures.py \
+  experiments/audit_submission.py \
+  experiments/package_submission.py \
   AFlow/benchmarks/math.py
 ```
 
@@ -58,6 +63,12 @@ conda run -n marl_hw2 python experiments/audit_submission.py
 ```
 
 The audit is expected to warn until the Kimi quota, report metadata, full MATH `manual_v1` test run, and local PDF build are resolved.
+
+Preview the final zip contents:
+
+```bash
+conda run -n marl_hw2 python experiments/package_submission.py --dry-run
+```
 
 After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 
@@ -88,3 +99,4 @@ Rerun the same command to process the next incomplete chunk. Remove `--max-chunk
 3. Collect the chunked MATH result table after enough chunks complete.
 4. Fill student metadata in `report/main.tex`.
 5. Compile the final PDF on a machine with LaTeX installed.
+6. Run `experiments/package_submission.py` to create the final tracked-file zip.

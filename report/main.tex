@@ -179,7 +179,7 @@ To support that rerun, the project includes \texttt{experiments/run\_chunked\_wo
 Most planned infrastructure and several full benchmark runs are now complete. The remaining experimental sequence is:
 
 \begin{enumerate}
-    \item Inspect the 50-sample MATH failure logs to identify whether direct-only and workflow-only failures are systematic.
+    \item Use the 50-sample MATH failure analysis to decide whether the shared arc-length failure can be addressed without increasing the already high token budget.
     \item Tune MATH prompts or add verification only on validation data if a low-cost fix is clear.
     \item Rerun full MATH \texttt{manual\_v1} in checkpointed chunks rather than one monolithic job.
     \item Add larger ablations: remove ensemble, reduce candidate count, and compare non-thinking against thinking-enabled Kimi K2.5.

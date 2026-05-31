@@ -120,3 +120,10 @@ python experiments/audit_submission.py
 ```
 
 Use `--strict` before final packaging when the Kimi quota, student metadata, and local PDF build blockers have been resolved.
+
+Create a submission zip from tracked files and an optional `report/main.pdf`:
+
+```bash
+python experiments/package_submission.py --dry-run
+python experiments/package_submission.py
+```
