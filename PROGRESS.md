@@ -92,11 +92,14 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Ran full HumanEval test split evaluations. Results are `direct=0.97710` with 48,941 tokens, `cot=0.98473` with 120,573 tokens, `manual_v1=0.98473` with 134,751 tokens, and `ablation_no_public_test=0.99237` with 303,127 tokens.
 - Added `--split` filtering to `experiments/collect_results.py`, generated `report/tables/humaneval_test_results.md`, and updated `report/main.tex` with the full HumanEval test table.
 - Added generated `error.log` files to `.gitignore` after HumanEval execution tests produced local failure logs.
+- Ran full MATH test split baselines. `MATH/direct` scored `0.88889` using 486 LLM calls and 425,052 tokens; `MATH/cot` scored `0.89300` using 486 LLM calls and 459,130 tokens.
+- Generated `report/tables/math_test_baselines.md` and updated `report/main.tex` with the full MATH direct/CoT baseline table.
+- Attempted full MATH `manual_v1` test with `--max-concurrency 2`; the process stayed alive but stopped updating run files for more than 20 minutes before producing a final CSV, so it was stopped. The next full workflow run should be checkpointed in chunks to avoid losing progress to a single long API wait.
 
 ## Next Steps
 
 1. Inspect 50-sample MATH failure logs to decide whether a low-cost workflow improvement is obvious.
-2. Run full MATH validation/test evaluations after accepting the `manual_v1` token cost.
+2. Add chunked/checkpointed workflow evaluation for full MATH `manual_v1`.
 3. Consider a lower-token MATH workflow variant because `manual_v1` is accurate but expensive.
 4. Keep pushing each new key commit to GitHub after local validation.
 
