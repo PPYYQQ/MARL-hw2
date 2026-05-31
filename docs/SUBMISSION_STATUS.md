@@ -19,6 +19,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
 - `report/evidence/`: raw CSV/config/log/token-summary evidence for the cited final runs.
 - `PROGRESS.md`: chronological implementation and experiment log.
+- Report coverage includes AFlow engineering structure, environment setup, baseline prompts, workflow algorithm details, validation/test results, ablations, failure analysis, efficiency analysis, limitations, and remaining blockers.
 
 ## Current Results
 

@@ -106,6 +106,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/package_submission.py` to build a submission zip from tracked files plus an optional compiled report PDF, and ignored local generated zip outputs under `submission/`.
 - Added `experiments/analyze_efficiency.py` and generated `report/tables/efficiency_summary.md` to summarize score deltas and token multipliers against direct prompting. The report now explicitly states the main cost tradeoffs for MATH `manual_v1` and HumanEval no-public-test.
 - Added `experiments/export_evidence.py` and generated tracked `report/evidence/` artifacts for the cited final runs, including copied CSVs, configs, failure logs, and token summaries without full call histories.
+- Added a report section for explicit workflow algorithm details, covering MATH `manual_v1`, MATH single-candidate ablation, HumanEval `manual_v1`, and the no-public-test ablation.
 
 ## Next Steps
 

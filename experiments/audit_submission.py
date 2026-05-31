@@ -75,6 +75,7 @@ REPORT_SECTIONS = [
     r"\section{Environment Setup}",
     r"\section{Baselines}",
     r"\section{Manual Workflow Design}",
+    r"\section{Workflow Algorithm Details}",
     r"\section{Validation Results}",
     r"\section{Remaining Experiments}",
     r"\section{Limitations}",

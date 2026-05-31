@@ -76,6 +76,32 @@ The project implements reproducible baseline runners in \texttt{experiments/run\
 
 \paragraph{HumanEval manual\_v1.} The code workflow in \texttt{AFlow/workspace/HumanEval/workflows/manual\_v1/} creates two independent code candidates. If public tests are available, it runs the dataset-specific \texttt{Test} operator and uses reflection repair for failing candidates. If no candidate passes public tests, the workflow falls back to self-consistency selection over the repaired candidates.
 
+\section{Workflow Algorithm Details}
+
+The implemented workflows are deliberately manual rather than produced by a full AFlow optimizer search. This keeps API spending controlled while still using AFlow's graph abstraction and reusable operators. Table~\ref{tab:workflowalgorithms} summarizes the algorithmic structure used in the final tracked workflows and ablations.
+
+\begin{table}[t]
+\caption{Manual workflow algorithm structures.}
+\label{tab:workflowalgorithms}
+\vskip 0.08in
+\begin{center}
+\begin{small}
+\begin{tabular}{lp{0.62\linewidth}}
+\toprule
+Workflow & Algorithm \\
+\midrule
+MATH manual\_v1 & Generate three independent solution candidates with different reasoning styles; select by self-consistency; run a cleanup call that emits one final boxed answer. \\
+MATH single & Generate one solution candidate; run the same boxed-answer cleanup. This isolates the value of candidate diversity and selection. \\
+HumanEval manual\_v1 & Generate two code candidates; execute public tests when available; repair failing candidates with reflection; fall back to ensemble selection if no tested candidate passes. \\
+HumanEval no public & Generate multiple candidates and select without public-test repair. This isolates candidate diversity from execution feedback. \\
+\bottomrule
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+The design choice for MATH is to spend calls on independent reasoning paths because symbolic mistakes often arise from early false assumptions. The final cleanup call is intentionally narrow: it does not solve the problem again, but makes the selected answer compatible with the benchmark extractor. The HumanEval design instead prioritizes executable feedback, because public tests can identify syntax, entry-point, and simple semantic errors before final scoring. The no-public-test ablation is retained because its full-test result shows that extra candidate diversity can outperform the execution-feedback variant on this Kimi setup, albeit at higher token cost.
+
 \section{Validation Results}
 
 Table~\ref{tab:validation20} reports 20-sample validation subset tests using sample seed 1. These are not final benchmark results, but they are large enough to reveal initial differences between direct prompting, CoT, manual workflows, and ablations. MATH scores in this table are recomputed from saved predictions with the corrected text and list-answer normalizer, so CSV filenames may still contain the original pre-fix score.
