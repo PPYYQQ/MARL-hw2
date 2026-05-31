@@ -102,6 +102,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `docs/SUBMISSION_STATUS.md` as a submission checklist with current deliverables, exact result summary, reproducibility commands, known blockers, and next actions.
 - Added `experiments/analyze_math_failures.py` and generated `report/tables/math_validation50_failure_analysis.md` for problem-level comparison of the 50-sample MATH validation runs. The analysis shows `manual_v1` fixes two of three CoT failures with no CoT-relative regressions, leaving only index `91` as a shared failure across all compared methods.
 - Added `experiments/audit_submission.py`, a no-API submission readiness audit that checks required files, Python syntax, report sections, result table snippets, secret hygiene, and known external blockers.
+- Added `experiments/analyze_humaneval_failures.py` and generated `report/tables/humaneval_test_failure_analysis.md` for problem-level comparison of full HumanEval test runs. CoT, `manual_v1`, and no-public-test each solve the three direct failures; no-public-test introduces the fewest regressions against direct.
 
 ## Next Steps
 

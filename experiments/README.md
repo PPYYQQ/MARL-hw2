@@ -101,6 +101,18 @@ python experiments/analyze_math_failures.py \
   --output report/tables/math_validation50_failure_analysis.md
 ```
 
+Compare saved HumanEval runs at the problem level:
+
+```bash
+python experiments/analyze_humaneval_failures.py \
+  --baseline direct \
+  --run direct=experiments/runs/HumanEval/direct/20260531_004920 \
+  --run cot=experiments/runs/HumanEval/cot/20260531_004920 \
+  --run manual_v1=experiments/runs/HumanEval/manual_v1/20260531_005625 \
+  --run no_public=experiments/runs/HumanEval/ablation_no_public_test/20260531_005625 \
+  --output report/tables/humaneval_test_failure_analysis.md
+```
+
 Run the local submission audit without making API calls:
 
 ```bash

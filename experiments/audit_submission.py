@@ -32,6 +32,7 @@ REQUIRED_FILES = [
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
     "experiments/analyze_math_failures.py",
+    "experiments/analyze_humaneval_failures.py",
     "experiments/README.md",
     "docs/SETUP.md",
     "docs/ABLATIONS.md",
@@ -43,6 +44,7 @@ REQUIRED_FILES = [
     "report/tables/math_validation50_results.md",
     "report/tables/math_validation50_failure_analysis.md",
     "report/tables/humaneval_test_results.md",
+    "report/tables/humaneval_test_failure_analysis.md",
     "report/tables/math_test_baselines.md",
 ]
 
@@ -53,6 +55,7 @@ PYTHON_FILES = [
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
     "experiments/analyze_math_failures.py",
+    "experiments/analyze_humaneval_failures.py",
     "experiments/audit_submission.py",
     "AFlow/benchmarks/math.py",
 ]
@@ -87,6 +90,10 @@ EXPECTED_TABLE_SNIPPETS = {
     "report/tables/humaneval_test_results.md": [
         "| HumanEval | ablation_no_public_test | kimi-k2.5 | test | 131 | 0.99237",
         "| HumanEval | manual_v1 | kimi-k2.5 | test | 131 | 0.98473",
+    ],
+    "report/tables/humaneval_test_failure_analysis.md": [
+        "| no_public | 0.99237 | 1 | 3 | 1 | 0 | 409 | 303127 |",
+        "| 120 | sort_array | direct:1, cot:0, manual_v1:0, no_public:1 |",
     ],
     "report/tables/math_test_baselines.md": [
         "| MATH | direct | kimi-k2.5 | test | 486 | 0.88889",

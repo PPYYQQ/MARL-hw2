@@ -150,7 +150,7 @@ no public test & 0.99237 & 409 & 303,127 \\
 \end{center}
 \end{table}
 
-Table~\ref{tab:humanevaltest} reports full HumanEval test split results. The direct baseline is already strong at 0.97710. CoT and \texttt{manual\_v1} both improve to 0.98473, while the no-public-test ablation reaches 0.99237 through additional candidate generation and ensemble selection. This result suggests that, on this Kimi setup, candidate diversity matters at least as much as execution-feedback repair for the tested HumanEval split, although the best ablation uses more than six times the direct baseline token count.
+Table~\ref{tab:humanevaltest} reports full HumanEval test split results. The direct baseline is already strong at 0.97710. CoT and \texttt{manual\_v1} both improve to 0.98473, while the no-public-test ablation reaches 0.99237 through additional candidate generation and ensemble selection. A problem-level comparison shows that all three non-direct methods solve the three direct failures. CoT and \texttt{manual\_v1} each introduce two regressions on problems direct solved, while the no-public-test ablation introduces one regression. This result suggests that, on this Kimi setup, candidate diversity matters at least as much as execution-feedback repair for the tested HumanEval split, although the best ablation uses more than six times the direct baseline token count.
 
 \begin{table}[t]
 \caption{MATH full test split baseline results.}
