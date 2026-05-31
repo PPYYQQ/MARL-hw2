@@ -97,6 +97,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Attempted full MATH `manual_v1` test with `--max-concurrency 2`; the process stayed alive but stopped updating run files for more than 20 minutes before producing a final CSV, so it was stopped. The next full workflow run should be checkpointed in chunks to avoid losing progress to a single long API wait.
 - Added `experiments/run_chunked_workflows.py` for checkpointed workflow evaluation. It writes per-chunk CSV/config files, refreshes an aggregate result after every completed chunk, supports `--run-id` resume plus `--start-chunk`/`--max-chunks` batch controls, and keeps generated outputs under ignored `experiments/chunked_runs/`.
 - Added `docs/CHUNKED_WORKFLOWS.md` and updated `experiments/README.md` with dry-run, full MATH `manual_v1`, resume, and summarization commands.
+- Attempted the first chunked MATH test `manual_v1` batch, but Kimi returned `exceeded_current_quota_error` / insufficient balance for every problem, producing no usable LLM calls. Updated `experiments/run_chunked_workflows.py` so quota-only chunks are marked `failed_quota`, excluded from aggregates, and stop the run instead of being treated as completed.
 
 ## Next Steps
 
@@ -108,6 +109,6 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 ## Open Issues
 
 - Full API experiments require a valid `KIMI_API_KEY` in the shell environment.
-- The example config uses the official Kimi K2.5 model id `kimi-k2.5` and Moonshot OpenAI-compatible base URL `https://api.moonshot.cn/v1`; account availability still needs to be confirmed before paid runs.
+- The Kimi account currently returns an insufficient-balance quota error for new calls; further API experiments require recharge or another valid `KIMI_API_KEY`.
 - Complete benchmark runs should wait until small-sample runs show the output format and cost are acceptable.
 - GitHub push works through the SSH remote `git@github.com:PPYYQQ/MARL-hw2.git`.

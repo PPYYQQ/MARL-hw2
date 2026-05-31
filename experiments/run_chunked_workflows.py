@@ -72,6 +72,21 @@ def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
         writer.writerows(rows)
 
 
+def quota_failure(csv_path: Path, usage_summary: dict[str, Any]) -> bool:
+    if usage_summary.get("call_count"):
+        return False
+    rows = read_csv_rows(csv_path)
+    if not rows:
+        return False
+    markers = [
+        "insufficient balance",
+        "exceeded_current_quota",
+        "suspended due to insufficient balance",
+    ]
+    predictions = [row.get("prediction", "").lower() for row in rows]
+    return all(any(marker in prediction for marker in markers) for prediction in predictions)
+
+
 def load_completed_chunks(run_dir: Path) -> list[dict[str, Any]]:
     chunks = []
     for config_path in sorted(run_dir.glob("chunk_*/chunk_config.json")):
@@ -187,9 +202,10 @@ async def run_chunk(
     average_score, average_cost, total_cost = benchmark.save_results_to_csv(results, benchmark.get_result_columns())
     usage_summary = save_usage_summary(workflow, chunk_dir)
     csv_path = latest_csv(chunk_dir)
+    status = "failed_quota" if quota_failure(csv_path, usage_summary) else "completed"
 
     chunk_config = {
-        "status": "completed",
+        "status": status,
         "dataset": args.dataset,
         "workflow": args.workflow,
         "model": args.model,
@@ -260,12 +276,15 @@ async def run(args: argparse.Namespace) -> None:
         return
 
     for chunk_number, chunk in selected_chunks:
-        await run_chunk(args, data_path, run_dir, chunk_number, chunk)
+        chunk_config = await run_chunk(args, data_path, run_dir, chunk_number, chunk)
         aggregate_config = aggregate_chunks(run_dir, args, selected_indices, len(chunks))
         print(
             f"Checkpoint: {aggregate_config['completed_chunks']}/{aggregate_config['total_chunks']} chunks, "
             f"score={aggregate_config['average_score']:.5f}, tokens={aggregate_config['total_tokens']}"
         )
+        if chunk_config.get("status") != "completed":
+            print(f"Stopping after chunk {chunk_number} status={chunk_config.get('status')}")
+            break
 
 
 def main() -> None:

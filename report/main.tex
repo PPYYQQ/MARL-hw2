@@ -172,7 +172,7 @@ CoT & 0.89300 & 486 & 459,130 \\
 
 Table~\ref{tab:mathtest} reports full MATH test split baselines. CoT is slightly better than direct prompting, but the gap is small. A full \texttt{manual\_v1} test run was attempted with concurrency 2; it stalled in a long API wait before writing the final CSV. The 50-sample validation result therefore remains the current evidence for the MATH manual workflow, and full MATH workflow evaluation should be rerun in smaller chunks so partial results are checkpointed.
 
-To support that rerun, the project includes \texttt{experiments/run\_chunked\_workflows.py}. For MATH test with chunk size 20, it plans 25 chunks, skips completed chunks when rerun with the same \texttt{run-id}, and refreshes an aggregate CSV/config after every completed chunk.
+To support that rerun, the project includes \texttt{experiments/run\_chunked\_workflows.py}. For MATH test with chunk size 20, it plans 25 chunks, skips completed chunks when rerun with the same \texttt{run-id}, and refreshes an aggregate CSV/config after every completed chunk. A first chunked attempt after the MATH baselines returned an insufficient-balance API error, so no full-test \texttt{manual\_v1} chunk is reported yet.
 
 \section{Planned Full Experiments}
 
