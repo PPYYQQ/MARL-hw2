@@ -19,7 +19,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence estimate-math-manual audit refresh-evidence build-report package-dry-run package verify-package final-check
+.PHONY: py-compile verify-evidence estimate-math-manual audit refresh-evidence build-report package-dry-run package verify-package final-package-check final-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -48,5 +48,7 @@ package:
 
 verify-package:
 	$(PYTHON) experiments/verify_submission_package.py
+
+final-package-check: package verify-package
 
 final-check: audit package-dry-run

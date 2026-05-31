@@ -115,6 +115,8 @@ make refresh-evidence
 make build-report
 make final-check
 make package
+make verify-package
+make final-package-check
 ```
 
 Equivalent expanded commands:
@@ -129,6 +131,8 @@ python experiments/package_submission.py --student-id "Your ID" --name "Your Nam
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
 python experiments/verify_submission_package.py --package submission/MARL-hw2-submission.zip
 ```
+
+`make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
 
 Equivalent one-command finalization after metadata is known:
 

@@ -120,6 +120,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/finalize_submission.py` to run the final metadata fill, report PDF rebuild, zip verification, and named submission packaging once student metadata is available; it restores local report source/PDF placeholders after packaging by default to avoid accidental personal metadata commits.
 - Added `docs/COMPLETION_AUDIT.md` to map each assignment requirement to current evidence files, validation gates, and remaining external inputs.
 - Added `experiments/verify_submission_package.py` and `make verify-package` to validate generated zip contents, manifest commit, PDF inclusion, and forbidden secret/run paths.
+- Added `make final-package-check` as a one-command default submission packaging gate, running package creation and zip verification together.
 
 ## Next Steps
 

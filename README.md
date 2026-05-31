@@ -53,6 +53,12 @@ Verify the generated zip:
 make verify-package
 ```
 
+Create and verify the default local submission zip in one step:
+
+```bash
+make final-package-check
+```
+
 After filling report metadata, create the course-style named zip:
 
 ```bash

@@ -146,6 +146,12 @@ Verify the generated default zip:
 make verify-package
 ```
 
+Create and verify the default zip in one command:
+
+```bash
+make final-package-check
+```
+
 After filling report metadata, preview the course-style named zip:
 
 ```bash
