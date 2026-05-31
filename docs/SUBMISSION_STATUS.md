@@ -14,6 +14,8 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/collect_results.py`: result table collection and MATH rescoring utility.
 - `experiments/analyze_efficiency.py`: token-efficiency summary utility.
 - `experiments/estimate_math_manual_test.py`: estimates full MATH `manual_v1` resource needs from tracked evidence.
+- `experiments/verify_chunked_plan.py`: verifies the planned full MATH `manual_v1` chunks without API calls.
+- `experiments/verify_report_pdf.py`: verifies that the local report PDF is current for tracked TeX sources.
 - `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
 - `experiments/verify_evidence.py`: verifies tracked evidence against cited scores, row counts, calls, and token totals.
 - `experiments/fill_report_metadata.py`: fills author name, student ID, and email when provided.
@@ -62,6 +64,8 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/collect_results.py \
   experiments/analyze_efficiency.py \
   experiments/estimate_math_manual_test.py \
+  experiments/verify_chunked_plan.py \
+  experiments/verify_report_pdf.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
   experiments/fill_report_metadata.py \
@@ -157,6 +161,8 @@ Verify the generated default zip:
 ```bash
 make verify-package
 ```
+
+Package verification checks tracked entries, optional PDF inclusion, manifest commit, per-file SHA-256 checksums, the embedded zero-failure audit summary, and forbidden secret/run paths.
 
 Create and verify the default zip in one command:
 
