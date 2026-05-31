@@ -9,7 +9,7 @@ This repository contains the implementation, experiment runners, evidence, and r
 - `report/main.tex`: ICML-style report draft.
 - `report/tables/`: tracked report tables and analysis summaries.
 - `report/evidence/`: copied CSV/config/log/token-summary artifacts for the cited final runs.
-- `docs/`: setup notes, ablation notes, experiment command ledger, paper notes, chunked-run guide, and submission status.
+- `docs/`: setup notes, ablation notes, experiment command ledger, paper notes, chunked-run guide, completion audit, and submission status.
 - `PROGRESS.md`: chronological work log.
 
 ## Current Result Summary

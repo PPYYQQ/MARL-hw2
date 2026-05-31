@@ -46,6 +46,7 @@ REQUIRED_FILES = [
     "docs/SETUP.md",
     "docs/ABLATIONS.md",
     "docs/CHUNKED_WORKFLOWS.md",
+    "docs/COMPLETION_AUDIT.md",
     "docs/EXPERIMENT_COMMANDS.md",
     "docs/PAPER_NOTES.md",
     "docs/SUBMISSION_STATUS.md",
