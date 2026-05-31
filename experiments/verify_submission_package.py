@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import subprocess
 import zipfile
 from pathlib import Path
@@ -66,8 +67,13 @@ def verify_manifest(entries: set[str], manifest_text: str, expected_commit: str)
         failures.append(f"Missing {MANIFEST}")
     if f"Git commit: {expected_commit}" not in manifest_text:
         failures.append(f"Manifest does not reference current commit {expected_commit}")
-    if "Summary:" not in manifest_text:
-        failures.append("Manifest does not include audit summary")
+    summary_match = re.search(r"^Summary: \d+ passed, \d+ warnings, (?P<failures>\d+) failures$", manifest_text, re.MULTILINE)
+    if not summary_match:
+        failures.append("Manifest does not include a parseable audit summary")
+    elif summary_match.group("failures") != "0":
+        failures.append("Manifest audit summary reports failures")
+    if re.search(r"^FAIL:", manifest_text, re.MULTILINE):
+        failures.append("Manifest audit output contains failing checks")
     return failures
 
 

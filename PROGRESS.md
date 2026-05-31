@@ -125,6 +125,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Extended final submission verification so `experiments/finalize_submission.py` checks that `report/main.tex` inside the generated zip contains the provided student name, ID, and email instead of placeholders.
 - Tightened packaging integrity so `experiments/package_submission.py` refuses uncommitted tracked changes by default; finalization allows only the temporary filled `report/main.tex` metadata edit.
 - Added `experiments/verify_report_pdf.py` and `make verify-report-pdf` so packaging gates can confirm the local report PDF is current for the tracked TeX sources before including it.
+- Tightened `experiments/verify_submission_package.py` so generated package manifests must include a parseable audit summary with zero failures and no failing audit lines.
 
 ## Next Steps
 
