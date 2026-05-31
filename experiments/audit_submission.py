@@ -41,6 +41,7 @@ REQUIRED_FILES = [
     "docs/ABLATIONS.md",
     "docs/CHUNKED_WORKFLOWS.md",
     "docs/EXPERIMENT_COMMANDS.md",
+    "docs/PAPER_NOTES.md",
     "docs/SUBMISSION_STATUS.md",
     "report/main.tex",
     "report/references.bib",
@@ -72,6 +73,7 @@ PYTHON_FILES = [
 
 REPORT_SECTIONS = [
     r"\section{Introduction}",
+    r"\section{Research Context}",
     r"\section{AFlow Engineering Summary}",
     r"\section{Environment Setup}",
     r"\section{Baselines}",

@@ -36,6 +36,12 @@ Large language model agents can improve reasoning by decomposing a task into mul
 
 The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. The current project focuses on a reproducible engineering base: safe API configuration, benchmark runners, manual workflows, validation subsets, full-test result tables where available, and resumable execution for expensive workflow runs.
 
+\section{Research Context}
+
+The AFlow paper motivates the project by treating workflow design as an optimization problem over code-represented agent graphs \cite{zhang2025aflow}. In that formulation, LLM calls are nodes, edges encode execution logic, reusable operators provide common patterns such as ensemble or review-revise, and the optimizer searches over candidate workflow code using execution feedback. This assignment uses the same engineering abstraction but stops short of a full optimizer search because the available Kimi budget is the limiting resource.
+
+The multi-agent debate paper provides a complementary design intuition: multiple model instances can maintain diverse candidate answers and revise after seeing other candidates \cite{du2024debate}. The manual workflows in this project use a lower-cost version of that idea. MATH \texttt{manual\_v1} creates independent solution candidates and selects among them, while HumanEval combines candidate diversity with executable public-test feedback. The ablations are designed to test whether the observed gains come from candidate diversity, execution feedback, or simply spending more tokens.
+
 \section{AFlow Engineering Summary}
 
 The imported AFlow snapshot is stored under \texttt{AFlow/}. The main engineering components are:

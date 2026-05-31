@@ -17,10 +17,11 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/audit_submission.py`: no-API submission readiness checker.
 - `experiments/package_submission.py`: tracked-file submission zip builder.
 - `docs/EXPERIMENT_COMMANDS.md`: command ledger for API runs, table generation, analysis, evidence export, audit, and packaging.
+- `docs/PAPER_NOTES.md`: notes linking AFlow and multi-agent debate ideas to the implemented workflows.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
 - `report/evidence/`: raw CSV/config/log/token-summary evidence for the cited final runs.
 - `PROGRESS.md`: chronological implementation and experiment log.
-- Report coverage includes AFlow engineering structure, environment setup, baseline prompts, workflow algorithm details, validation/test results, ablations, failure analysis, efficiency analysis, limitations, and remaining blockers.
+- Report coverage includes research context, AFlow engineering structure, environment setup, baseline prompts, workflow algorithm details, validation/test results, ablations, failure analysis, efficiency analysis, limitations, and remaining blockers.
 
 ## Current Results
 
