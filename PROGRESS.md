@@ -104,6 +104,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/audit_submission.py`, a no-API submission readiness audit that checks required files, Python syntax, report sections, result table snippets, secret hygiene, and known external blockers.
 - Added `experiments/analyze_humaneval_failures.py` and generated `report/tables/humaneval_test_failure_analysis.md` for problem-level comparison of full HumanEval test runs. CoT, `manual_v1`, and no-public-test each solve the three direct failures; no-public-test introduces the fewest regressions against direct.
 - Added `experiments/package_submission.py` to build a submission zip from tracked files plus an optional compiled report PDF, and ignored local generated zip outputs under `submission/`.
+- Added `experiments/analyze_efficiency.py` and generated `report/tables/efficiency_summary.md` to summarize score deltas and token multipliers against direct prompting. The report now explicitly states the main cost tradeoffs for MATH `manual_v1` and HumanEval no-public-test.
 
 ## Next Steps
 

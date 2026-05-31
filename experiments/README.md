@@ -89,6 +89,12 @@ python experiments/collect_results.py --runs-dir experiments/chunked_runs --late
 
 Each new run also writes `llm_usage.json` next to `run_config.json`, with raw input/output token counts and call history. Prefer raw token counts over the `total_cost` field until Kimi pricing is added and verified.
 
+Summarize score and token-efficiency tradeoffs from tracked result tables:
+
+```bash
+python experiments/analyze_efficiency.py --output report/tables/efficiency_summary.md
+```
+
 Compare saved MATH runs at the problem level:
 
 ```bash

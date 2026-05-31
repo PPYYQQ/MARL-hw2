@@ -31,6 +31,7 @@ REQUIRED_FILES = [
     "experiments/run_workflows.py",
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
+    "experiments/analyze_efficiency.py",
     "experiments/analyze_math_failures.py",
     "experiments/analyze_humaneval_failures.py",
     "experiments/package_submission.py",
@@ -43,6 +44,7 @@ REQUIRED_FILES = [
     "report/references.bib",
     "report/tables/validation20_results.md",
     "report/tables/math_validation50_results.md",
+    "report/tables/efficiency_summary.md",
     "report/tables/math_validation50_failure_analysis.md",
     "report/tables/humaneval_test_results.md",
     "report/tables/humaneval_test_failure_analysis.md",
@@ -55,6 +57,7 @@ PYTHON_FILES = [
     "experiments/run_workflows.py",
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
+    "experiments/analyze_efficiency.py",
     "experiments/analyze_math_failures.py",
     "experiments/analyze_humaneval_failures.py",
     "experiments/package_submission.py",
@@ -84,6 +87,10 @@ EXPECTED_TABLE_SNIPPETS = {
     "report/tables/math_validation50_results.md": [
         "| MATH | manual_v1 | kimi-k2.5 | validate | 50 | 0.98000",
         "| MATH | direct | kimi-k2.5 | validate | 50 | 0.96000",
+    ],
+    "report/tables/efficiency_summary.md": [
+        "| MATH validate50 | manual_v1 | 0.98000 | +0.02000 | 250 | 5.00x | 349515 | 9.16x |",
+        "| HumanEval test | ablation_no_public_test | 0.99237 | +0.01527 | 409 | 3.12x | 303127 | 6.19x |",
     ],
     "report/tables/math_validation50_failure_analysis.md": [
         "| manual_v1 | 0.98000 | 1 | 2 | 0 | 1 | 250 | 349515 |",

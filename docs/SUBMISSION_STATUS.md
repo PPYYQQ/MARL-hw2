@@ -10,6 +10,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/run_workflows.py`: reproducible manual workflow runner.
 - `experiments/run_chunked_workflows.py`: checkpointed workflow runner for expensive full-test jobs.
 - `experiments/collect_results.py`: result table collection and MATH rescoring utility.
+- `experiments/analyze_efficiency.py`: token-efficiency summary utility.
 - `experiments/analyze_math_failures.py`: problem-level MATH run comparison utility.
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
@@ -25,6 +26,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - HumanEval full test: direct `0.97710`, CoT `0.98473`, `manual_v1` `0.98473`, no-public-test ablation `0.99237`.
 - HumanEval full-test failure analysis: CoT, `manual_v1`, and no-public-test all fix the three direct failures; no-public-test has the fewest regressions against direct.
 - MATH full test baselines: direct `0.88889`, CoT `0.89300`.
+- Efficiency summary: MATH 50-sample `manual_v1` gains `+0.02000` over direct at `9.16x` tokens; HumanEval no-public-test gains `+0.01527` at `6.19x` tokens.
 
 ## Reproducibility Commands
 
@@ -36,6 +38,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/run_workflows.py \
   experiments/run_chunked_workflows.py \
   experiments/collect_results.py \
+  experiments/analyze_efficiency.py \
   experiments/analyze_math_failures.py \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
