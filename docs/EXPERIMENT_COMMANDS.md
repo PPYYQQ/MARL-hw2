@@ -121,6 +121,7 @@ make verify-math-manual-plan
 make final-check
 make package
 make verify-package
+make finalize-dry-run
 make final-package-check
 ```
 
@@ -137,9 +138,11 @@ python experiments/package_submission.py --student-id "Your ID" --name "Your Nam
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
 python experiments/verify_submission_package.py --package submission/MARL-hw2-submission.zip
 python experiments/verify_submission_package.py --package "submission/Your_ID_Your_Name_MARL-hw2.zip" --expect-name "Your Name" --expect-student-id "Your ID" --expect-email "you@example.com"
+python experiments/finalize_submission.py --name "Test Student" --student-id "TEST123" --email "test@example.com" --assignment "MARL-hw2" --dry-run
 ```
 
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
+`make finalize-dry-run` previews the final filled-metadata path with overrideable `FINALIZE_DRY_RUN_*` Make variables and writes no files.
 Default packaging refuses uncommitted tracked changes; use `experiments/finalize_submission.py` for the final filled-metadata archive because it allows only the temporary `report/main.tex` metadata edit.
 
 Equivalent one-command finalization after metadata is known:

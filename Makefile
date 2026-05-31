@@ -1,5 +1,9 @@
 PYTHON ?= conda run -n marl_hw2 python
 TECTONIC ?= conda run -n marl_hw2 tectonic
+FINALIZE_DRY_RUN_NAME ?= Test Student
+FINALIZE_DRY_RUN_ID ?= TEST123
+FINALIZE_DRY_RUN_EMAIL ?= test@example.com
+FINALIZE_DRY_RUN_ASSIGNMENT ?= MARL-hw2
 
 PY_COMPILE_FILES = \
 	experiments/run_baselines.py \
@@ -21,7 +25,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence estimate-math-manual verify-math-manual-plan verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package final-package-check final-check
+.PHONY: py-compile verify-evidence estimate-math-manual verify-math-manual-plan verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run final-package-check final-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -56,6 +60,9 @@ package:
 
 verify-package:
 	$(PYTHON) experiments/verify_submission_package.py
+
+finalize-dry-run:
+	$(PYTHON) experiments/finalize_submission.py --name "$(FINALIZE_DRY_RUN_NAME)" --student-id "$(FINALIZE_DRY_RUN_ID)" --email "$(FINALIZE_DRY_RUN_EMAIL)" --assignment "$(FINALIZE_DRY_RUN_ASSIGNMENT)" --dry-run
 
 final-package-check: verify-report-pdf package verify-package
 

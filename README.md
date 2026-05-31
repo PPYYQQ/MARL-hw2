@@ -71,6 +71,12 @@ Or run the final no-API metadata/PDF/package sequence in one command:
 conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
 ```
 
+Preview that sequence with test metadata:
+
+```bash
+make finalize-dry-run
+```
+
 By default, finalization verifies the generated zip and then restores local `report/main.tex` and `report/main.pdf` placeholders so personal metadata is not left in the worktree. The generated zip still contains the filled report source and PDF.
 The finalization verifier checks that the zip's report source contains the provided name, student ID, and email.
 Default packaging refuses uncommitted tracked changes; finalization only allows the temporary `report/main.tex` metadata edit needed for the filled archive.
