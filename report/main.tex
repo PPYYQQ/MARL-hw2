@@ -44,14 +44,14 @@ The multi-agent debate paper provides a complementary design intuition: multiple
 
 \section{AFlow Engineering Summary}
 
-The imported AFlow snapshot is stored under \texttt{AFlow/}. The main engineering components are:
+The imported AFlow snapshot is stored under \path{AFlow/}. The main engineering components are:
 
 \begin{itemize}
-    \item \textbf{Nodes and LLM calls}: \texttt{scripts/async\_llm.py} wraps OpenAI-compatible async chat completion APIs and tracks token usage.
-    \item \textbf{Operators}: \texttt{scripts/operators.py} and dataset-specific operator templates provide reusable calls such as generation, self-consistency ensemble, code generation, execution-based testing, and revision.
-    \item \textbf{Workflows}: \texttt{workspace/<Dataset>/workflows/<name>/graph.py} implements callable Python workflow graphs.
-    \item \textbf{Benchmarks}: \texttt{benchmarks/math.py} and \texttt{benchmarks/humaneval.py} evaluate model outputs against ground truth or executable tests.
-    \item \textbf{Optimization}: \texttt{run.py} wires datasets, operators, and the optimizer for automatic workflow search.
+    \item \textbf{Nodes and LLM calls}: \path{scripts/async_llm.py} wraps OpenAI-compatible async chat completion APIs and tracks token usage.
+    \item \textbf{Operators}: \path{scripts/operators.py} and dataset-specific operator templates provide reusable calls such as generation, self-consistency ensemble, code generation, execution-based testing, and revision.
+    \item \textbf{Workflows}: \path{workspace/<Dataset>/workflows/<name>/graph.py} implements callable Python workflow graphs.
+    \item \textbf{Benchmarks}: \path{benchmarks/math.py} and \path{benchmarks/humaneval.py} evaluate model outputs against ground truth or executable tests.
+    \item \textbf{Optimization}: \path{run.py} wires datasets, operators, and the optimizer for automatic workflow search.
 \end{itemize}
 
 \section{Environment Setup}
@@ -64,13 +64,13 @@ conda install -n marl_hw2 pip=24.2 -y
 conda run -n marl_hw2 python -m pip install -r AFlow/requirements.txt
 \end{verbatim}
 
-Two dependency issues were found during setup. First, the imported downloader required \texttt{requests}, which was not listed in the snapshot requirements. Second, the local SOCKS proxy required \texttt{socksio} for \texttt{httpx}. MATH scoring also needed \texttt{antlr4-python3-runtime} for SymPy's LaTeX parser. These were added to \texttt{AFlow/requirements.txt}.
+Two dependency issues were found during setup. First, the imported downloader required \texttt{requests}, which was not listed in the snapshot requirements. Second, the local SOCKS proxy required \texttt{socksio} for \texttt{httpx}. MATH scoring also needed \texttt{antlr4-python3-runtime} for SymPy's LaTeX parser. These were added to \path{AFlow/requirements.txt}.
 
-The local Kimi configuration is created from \texttt{AFlow/config/config2.kimi.example.yaml}; \texttt{AFlow/config/config2.yaml} is ignored by Git and reads the secret from \texttt{KIMI\_API\_KEY}. Initial Kimi API smoke tests established the required non-thinking parameters \texttt{temperature=0.6} and \texttt{top\_p=0.95}. A separate \texttt{kimi-k2.5-thinking} alias is kept for model-side thinking experiments.
+The local Kimi configuration is created from \path{AFlow/config/config2.kimi.example.yaml}; \path{AFlow/config/config2.yaml} is ignored by Git and reads the secret from \texttt{KIMI\_API\_KEY}. Initial Kimi API smoke tests established the required non-thinking parameters \texttt{temperature=0.6} and \texttt{top\_p=0.95}. A separate \texttt{kimi-k2.5-thinking} alias is kept for model-side thinking experiments.
 
 \section{Baselines}
 
-The project implements reproducible baseline runners in \texttt{experiments/run\_baselines.py}. Each run records the dataset, model, split, sample indices, concurrency, CSV path, and aggregate score in a generated \texttt{run\_config.json}.
+The project implements reproducible baseline runners in \path{experiments/run_baselines.py}. Each run records the dataset, model, split, sample indices, concurrency, CSV path, and aggregate score in a generated \path{run_config.json}.
 
 \paragraph{Direct baseline.} The direct math baseline asks Kimi K2.5 to solve the problem and place the final answer in \texttt{\textbackslash boxed\{\}}. The direct HumanEval baseline asks for valid Python code defining the required entry point.
 
@@ -78,9 +78,9 @@ The project implements reproducible baseline runners in \texttt{experiments/run\
 
 \section{Manual Workflow Design}
 
-\paragraph{MATH manual\_v1.} The math workflow in \texttt{AFlow/workspace/MATH/workflows/manual\_v1/} creates three independent solution candidates with different reasoning instructions. It then applies self-consistency selection and a final cleanup call that enforces a single \texttt{\textbackslash boxed\{\}} answer. The intended effect is to reduce single-sample reasoning errors while preserving compatibility with AFlow's answer extractor.
+\paragraph{MATH manual\_v1.} The math workflow in \path{AFlow/workspace/MATH/workflows/manual_v1/} creates three independent solution candidates with different reasoning instructions. It then applies self-consistency selection and a final cleanup call that enforces a single \texttt{\textbackslash boxed\{\}} answer. The intended effect is to reduce single-sample reasoning errors while preserving compatibility with AFlow's answer extractor.
 
-\paragraph{HumanEval manual\_v1.} The code workflow in \texttt{AFlow/workspace/HumanEval/workflows/manual\_v1/} creates two independent code candidates. If public tests are available, it runs the dataset-specific \texttt{Test} operator and uses reflection repair for failing candidates. If no candidate passes public tests, the workflow falls back to self-consistency selection over the repaired candidates.
+\paragraph{HumanEval manual\_v1.} The code workflow in \path{AFlow/workspace/HumanEval/workflows/manual_v1/} creates two independent code candidates. If public tests are available, it runs the dataset-specific \texttt{Test} operator and uses reflection repair for failing candidates. If no candidate passes public tests, the workflow falls back to self-consistency selection over the repaired candidates.
 
 \section{Workflow Algorithm Details}
 
@@ -91,8 +91,9 @@ The implemented workflows are deliberately manual rather than produced by a full
 \label{tab:workflowalgorithms}
 \vskip 0.08in
 \begin{center}
-\begin{small}
-\begin{tabular}{lp{0.62\linewidth}}
+\begin{scriptsize}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.25\linewidth}p{0.68\linewidth}@{}}
 \toprule
 Workflow & Algorithm \\
 \midrule
@@ -102,7 +103,7 @@ HumanEval manual\_v1 & Generate two code candidates; execute public tests when a
 HumanEval no public & Generate multiple candidates and select without public-test repair. This isolates candidate diversity from execution feedback. \\
 \bottomrule
 \end{tabular}
-\end{small}
+\end{scriptsize}
 \end{center}
 \end{table}
 
@@ -117,8 +118,9 @@ Table~\ref{tab:validation20} reports 20-sample validation subset tests using sam
 \label{tab:validation20}
 \vskip 0.08in
 \begin{center}
-\begin{small}
-\begin{tabular}{llrrr}
+\begin{scriptsize}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}llrrr@{}}
 \toprule
 Dataset & Method & Score & Calls & Tokens \\
 \midrule
@@ -132,7 +134,7 @@ MATH & manual\_v1 & 1.00000 & 100 & 151,117 \\
 MATH & single candidate & 0.90000 & 40 & 54,945 \\
 \bottomrule
 \end{tabular}
-\end{small}
+\end{scriptsize}
 \end{center}
 \end{table}
 
@@ -204,15 +206,16 @@ CoT & 0.89300 & 486 & 459,130 \\
 
 Table~\ref{tab:mathtest} reports full MATH test split baselines. CoT is slightly better than direct prompting, but the gap is small. A full \texttt{manual\_v1} test run was attempted with concurrency 2; it stalled in a long API wait before writing the final CSV. The 50-sample validation result therefore remains the current evidence for the MATH manual workflow, and full MATH workflow evaluation should be rerun in smaller chunks so partial results are checkpointed.
 
-To support that rerun, the project includes \texttt{experiments/run\_chunked\_workflows.py}. For MATH test with chunk size 20, it plans 25 chunks, skips completed chunks when rerun with the same \texttt{run-id}, and refreshes an aggregate CSV/config after every completed chunk. A first chunked attempt after the MATH baselines returned an insufficient-balance API error, so no full-test \texttt{manual\_v1} chunk is reported yet.
+To support that rerun, the project includes \path{experiments/run_chunked_workflows.py}. For MATH test with chunk size 20, it plans 25 chunks, skips completed chunks when rerun with the same \texttt{run-id}, and refreshes an aggregate CSV/config after every completed chunk. A first chunked attempt after the MATH baselines returned an insufficient-balance API error, so no full-test \texttt{manual\_v1} chunk is reported yet.
 
 \begin{table}[t]
 \caption{Efficiency tradeoffs against direct prompting.}
 \label{tab:efficiency}
 \vskip 0.08in
 \begin{center}
-\begin{small}
-\begin{tabular}{llrr}
+\begin{scriptsize}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}llrr@{}}
 \toprule
 Group & Method & $\Delta$ Score & Token $\times$ \\
 \midrule
@@ -224,7 +227,7 @@ HumanEval test & no public test & +0.01527 & 6.19 \\
 MATH test & CoT & +0.00411 & 1.08 \\
 \bottomrule
 \end{tabular}
-\end{small}
+\end{scriptsize}
 \end{center}
 \end{table}
 

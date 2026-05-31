@@ -114,6 +114,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added a top-level `Makefile` with local shortcuts for compile checks, evidence verification, audit, evidence refresh, dry-run packaging, and final packaging.
 - Added `experiments/fill_report_metadata.py` so final report author name, student ID, and email placeholders can be filled safely once provided.
 - Installed Tectonic in the `marl_hw2` conda environment, generated `report/main.pdf`, and added a `make build-report` shortcut plus audit checks for the local report PDF.
+- Polished `report/main.tex` path formatting and narrow tables so the Tectonic build no longer reports overfull boxes.
 
 ## Next Steps
 
