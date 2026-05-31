@@ -8,6 +8,7 @@ PY_COMPILE_FILES = \
 	experiments/analyze_efficiency.py \
 	experiments/export_evidence.py \
 	experiments/verify_evidence.py \
+	experiments/fill_report_metadata.py \
 	experiments/analyze_math_failures.py \
 	experiments/analyze_humaneval_failures.py \
 	experiments/audit_submission.py \

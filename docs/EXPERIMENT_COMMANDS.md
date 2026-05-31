@@ -98,6 +98,12 @@ python experiments/analyze_humaneval_failures.py \
 
 ## Evidence And Submission
 
+Fill report metadata before final packaging:
+
+```bash
+python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
+```
+
 ```bash
 make refresh-evidence
 make final-check
@@ -109,6 +115,7 @@ Equivalent expanded commands:
 ```bash
 python experiments/export_evidence.py --clean
 python experiments/verify_evidence.py --output report/tables/evidence_verification.md
+python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
 python experiments/audit_submission.py
 python experiments/package_submission.py --dry-run
 python experiments/package_submission.py

@@ -15,6 +15,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/analyze_efficiency.py`: token-efficiency summary utility.
 - `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
 - `experiments/verify_evidence.py`: verifies tracked evidence against cited scores, row counts, calls, and token totals.
+- `experiments/fill_report_metadata.py`: fills author name, student ID, and email when provided.
 - `experiments/analyze_math_failures.py`: problem-level MATH run comparison utility.
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
@@ -56,6 +57,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/analyze_efficiency.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
+  experiments/fill_report_metadata.py \
   experiments/analyze_math_failures.py \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
@@ -105,6 +107,12 @@ conda run -n marl_hw2 python experiments/verify_evidence.py --output report/tabl
 
 See `docs/EXPERIMENT_COMMANDS.md` for the full command ledger behind the cited results and submission package.
 
+Fill report author metadata before final packaging:
+
+```bash
+conda run -n marl_hw2 python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
+```
+
 Preview the final zip contents:
 
 ```bash
@@ -137,13 +145,13 @@ Rerun the same command to process the next incomplete chunk. Remove `--max-chunk
 - New Kimi API calls currently fail with an insufficient-balance quota error.
 - Full MATH `manual_v1` test results are therefore not available yet.
 - `pdflatex` and `xelatex` are not installed on this machine, so the report PDF has not been compiled locally.
-- `report/main.tex` still contains placeholder student name, student ID, and email fields.
+- `report/main.tex` still contains placeholder student name, student ID, and email fields; use `experiments/fill_report_metadata.py` after those values are known.
 
 ## Next Actions
 
 1. Recharge the Kimi account or provide another valid `KIMI_API_KEY`.
 2. Resume full MATH `manual_v1` with the chunked runner.
 3. Collect the chunked MATH result table after enough chunks complete.
-4. Fill student metadata in `report/main.tex`.
+4. Fill student metadata in `report/main.tex` with `experiments/fill_report_metadata.py`.
 5. Compile the final PDF on a machine with LaTeX installed.
 6. Run `experiments/package_submission.py` to create the final tracked-file zip.

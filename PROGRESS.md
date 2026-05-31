@@ -112,6 +112,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added a top-level `README.md` as the GitHub/submission entry point, summarizing repository contents, current results, reproducibility checks, evidence location, and known blockers.
 - Added `experiments/verify_evidence.py` and `report/tables/evidence_verification.md` so tracked evidence can reproduce the cited scores, row counts, call counts, and token totals without using ignored run directories.
 - Added a top-level `Makefile` with local shortcuts for compile checks, evidence verification, audit, evidence refresh, dry-run packaging, and final packaging.
+- Added `experiments/fill_report_metadata.py` so final report author name, student ID, and email placeholders can be filled safely once provided.
 
 ## Next Steps
 

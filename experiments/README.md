@@ -104,6 +104,12 @@ python experiments/export_evidence.py --clean
 python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 ```
 
+Fill final report metadata:
+
+```bash
+python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
+```
+
 Compare saved MATH runs at the problem level:
 
 ```bash
