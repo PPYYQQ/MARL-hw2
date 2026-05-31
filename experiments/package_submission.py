@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import subprocess
 import sys
 import zipfile
@@ -18,7 +19,10 @@ OPTIONAL_FILES = [Path("report/main.pdf")]
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT, help="Output zip path.")
+    parser.add_argument("--output", type=Path, help="Output zip path.")
+    parser.add_argument("--student-id", help="Student ID for the final submission zip name.")
+    parser.add_argument("--name", help="Student name for the final submission zip name.")
+    parser.add_argument("--assignment", default="MARL-hw2", help="Assignment label for the final submission zip name.")
     parser.add_argument("--dry-run", action="store_true", help="List files without creating the zip.")
     parser.add_argument("--skip-audit", action="store_true", help="Do not run experiments/audit_submission.py first.")
     return parser.parse_args()
@@ -37,6 +41,28 @@ def run_command(command: list[str]) -> subprocess.CompletedProcess[str]:
 
 def current_commit() -> str:
     return run_command(["git", "rev-parse", "--short", "HEAD"]).stdout.strip()
+
+
+def safe_name_component(value: str) -> str:
+    cleaned = re.sub(r"[^\w.-]+", "_", value.strip())
+    return cleaned.strip("._") or "unknown"
+
+
+def output_path(args: argparse.Namespace) -> Path:
+    if args.output:
+        return args.output
+    if args.student_id and args.name:
+        student_id = safe_name_component(args.student_id)
+        name = safe_name_component(args.name)
+        assignment = safe_name_component(args.assignment)
+        return Path("submission") / f"{student_id}_{name}_{assignment}.zip"
+    return DEFAULT_OUTPUT
+
+
+def submission_label(args: argparse.Namespace) -> str | None:
+    if args.student_id and args.name:
+        return f"{args.student_id} {args.name} {args.assignment}"
+    return None
 
 
 def tracked_files() -> list[Path]:
@@ -61,16 +87,24 @@ def run_audit() -> str:
     return completed.stdout.strip()
 
 
-def render_manifest(files: list[Path], extras: list[Path], audit_output: str | None) -> str:
+def render_manifest(
+    files: list[Path],
+    extras: list[Path],
+    output: Path,
+    label: str | None,
+    audit_output: str | None,
+) -> str:
     lines = [
         "MARL HW2 submission package",
         f"Created: {datetime.now(timezone.utc).isoformat()}",
         f"Git commit: {current_commit()}",
+        f"Output: {output.as_posix()}",
         f"Tracked files: {len(files)}",
         f"Optional files: {len(extras)}",
-        "",
-        "Optional included files:",
     ]
+    if label:
+        lines.append(f"Submission label: {label}")
+    lines.extend(["", "Optional included files:"])
     lines.extend(f"- {path.as_posix()}" for path in extras)
     if not extras:
         lines.append("- none")
@@ -93,16 +127,17 @@ def main() -> None:
     files = tracked_files()
     extras = optional_existing_files(files)
     audit_output = None if args.skip_audit else run_audit()
-    manifest = render_manifest(files, extras, audit_output)
+    output = output_path(args)
+    manifest = render_manifest(files, extras, output, submission_label(args), audit_output)
 
     if args.dry_run:
-        print(f"Would package {len(files)} tracked files and {len(extras)} optional files")
+        print(f"Would package {len(files)} tracked files and {len(extras)} optional files into {output}")
         for path in files + extras:
             print(path.as_posix())
         return
 
-    create_zip(args.output, files, extras, manifest)
-    print(f"Wrote {args.output}")
+    create_zip(output, files, extras, manifest)
+    print(f"Wrote {output}")
 
 
 if __name__ == "__main__":

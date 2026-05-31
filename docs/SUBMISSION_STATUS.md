@@ -19,7 +19,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/analyze_math_failures.py`: problem-level MATH run comparison utility.
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
-- `experiments/package_submission.py`: tracked-file submission zip builder.
+- `experiments/package_submission.py`: tracked-file submission zip builder with optional student/name/assignment output naming.
 - `docs/EXPERIMENT_COMMANDS.md`: command ledger for API runs, table generation, analysis, evidence export, audit, and packaging.
 - `docs/PAPER_NOTES.md`: notes linking AFlow and multi-agent debate ideas to the implemented workflows.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
@@ -132,6 +132,12 @@ Expanded command:
 conda run -n marl_hw2 python experiments/package_submission.py --dry-run
 ```
 
+After filling report metadata, preview the course-style named zip:
+
+```bash
+conda run -n marl_hw2 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
+```
+
 After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 
 ```bash
@@ -160,4 +166,4 @@ Rerun the same command to process the next incomplete chunk. Remove `--max-chunk
 3. Collect the chunked MATH result table after enough chunks complete.
 4. Fill student metadata in `report/main.tex` with `experiments/fill_report_metadata.py`.
 5. Rebuild `report/main.pdf` with `make build-report`.
-6. Run `experiments/package_submission.py` to create the final tracked-file zip.
+6. Run `experiments/package_submission.py --student-id ... --name ... --assignment "MARL-hw2"` to create the final named zip.

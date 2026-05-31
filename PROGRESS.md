@@ -115,6 +115,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/fill_report_metadata.py` so final report author name, student ID, and email placeholders can be filled safely once provided.
 - Installed Tectonic in the `marl_hw2` conda environment, generated `report/main.pdf`, and added a `make build-report` shortcut plus audit checks for the local report PDF.
 - Polished `report/main.tex` path formatting and narrow tables so the Tectonic build no longer reports overfull boxes.
+- Extended `experiments/package_submission.py` with optional student ID, name, and assignment arguments so the final zip can follow the course naming convention once metadata is known.
 
 ## Next Steps
 
@@ -122,7 +123,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 2. Use the chunked runner to resume full MATH `manual_v1` in 20-example chunks.
 3. Consider a lower-token MATH workflow variant because `manual_v1` is accurate but expensive.
 4. Fill student metadata in `report/main.tex` before final submission.
-5. Compile the report PDF on a machine with LaTeX installed.
+5. Rebuild `report/main.pdf` with `make build-report`.
 6. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
@@ -130,5 +131,5 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Full API experiments require a valid `KIMI_API_KEY` in the shell environment.
 - The Kimi account currently returns an insufficient-balance quota error for new calls; further API experiments require recharge or another valid `KIMI_API_KEY`.
 - Full MATH `manual_v1` test evaluation is the main missing benchmark run.
-- Local PDF compilation is blocked because this machine does not have `pdflatex` or `xelatex` installed.
+- Report metadata still needs the final student name, student ID, and email.
 - GitHub push works through the SSH remote `git@github.com:PPYYQQ/MARL-hw2.git`.

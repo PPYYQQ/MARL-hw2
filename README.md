@@ -46,6 +46,12 @@ Create the local submission zip:
 conda run -n marl_hw2 python experiments/package_submission.py
 ```
 
+After filling report metadata, create the course-style named zip:
+
+```bash
+conda run -n marl_hw2 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
+```
+
 The equivalent packaging shortcut is:
 
 ```bash

@@ -121,6 +121,6 @@ python experiments/verify_evidence.py --output report/tables/evidence_verificati
 python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
 cd report && conda run -n marl_hw2 tectonic main.tex
 python experiments/audit_submission.py
-python experiments/package_submission.py --dry-run
-python experiments/package_submission.py
+python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
+python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
 ```
