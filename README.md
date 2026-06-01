@@ -98,6 +98,12 @@ Or run the final no-API metadata/PDF/package sequence in one command:
 conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
 ```
 
+Equivalent Make shortcut:
+
+```bash
+make finalize-submission FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+```
+
 Preview that sequence with test metadata:
 
 ```bash

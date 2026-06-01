@@ -19,7 +19,7 @@
 
 | 缺口 | 为什么需要 | 补齐后执行 |
 | --- | --- | --- |
-| 姓名 | 报告作者和命名 zip 需要 | `conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com" --assignment "MARL-hw2"` |
+| 姓名 | 报告作者和命名 zip 需要 | `make finalize-submission FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"` |
 | 学号 | 报告 affiliation 和课程提交文件名需要 | 同上 |
 | 邮箱 | 报告 corresponding author 需要 | 同上 |
 

@@ -143,6 +143,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Extended `experiments/audit_submission.py` so the no-API submission audit now requires the Chinese final handoff checklist and verifies key handoff-document snippets.
 - Added `experiments/verify_git_sync.py` and `make verify-github-sync` so each pushed key commit can be checked against the configured GitHub upstream.
 - Added `make post-push-check` so the final pushed handoff state can run package/audit gates and GitHub synchronization verification in one command.
+- Added `make finalize-submission` with required `FINAL_NAME`, `FINAL_STUDENT_ID`, and `FINAL_EMAIL` variables to reduce final metadata/package command errors.
 
 ## Next Steps
 
