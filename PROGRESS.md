@@ -183,6 +183,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Re-ran `make status-summary` and `make post-push-check` after the assignment run-matrix review. The worktree remained clean and synchronized with GitHub, the default package verified successfully, and the only warnings were the maintained external blockers: missing student metadata and the quota-blocked full MATH `manual_v1` test table.
 - Added `experiments/verify_requirement_matrix.py` and `make verify-requirement-matrix`, then wired the new no-API check into `make handoff-check` so the assignment requirement matrix is compared against tracked result tables, Kimi budget totals, and the current full MATH quota-blocked status.
 - After Kimi quota was restored, resumed the checkpointed full MATH `manual_v1` test run. Chunks 0, 1, and 2 completed successfully, covering indices 0-59 with an aggregate score of `0.95000`, 300 LLM calls, and 350,970 tokens. The next missing chunk is chunk 3, indices 60-79.
+- Continued the restored full MATH `manual_v1` run through chunk 4. The run now has 5/25 chunks completed, covering indices 0-99 with aggregate score `0.93000`, 500 LLM calls, and 560,382 tokens; the next missing chunk is chunk 5, indices 100-119.
 
 ## Next Steps
 
