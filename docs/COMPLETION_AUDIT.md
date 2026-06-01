@@ -35,6 +35,7 @@ This document maps the assignment requirements to the current repository evidenc
 | Gate | Expected outcome |
 | --- | --- |
 | `make final-check` | Passes with warnings only for student metadata and missing full MATH `manual_v1` test table |
+| `make verify-known-warnings` | Fails if the submission audit emits any warning outside the maintained known-blocker allowlist |
 | `make analyze-api-budget` | Refreshes the recorded usage and remaining Kimi budget table without making API calls |
 | `make verify-math-manual-plan` | Confirms the full MATH `manual_v1` test plan covers 486 examples in 25 contiguous chunks |
 | `make dry-run-math-manual-chunks` | Prints the chunked runner's full MATH `manual_v1` plan without making API calls |
@@ -49,7 +50,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make finalize-submission-dry-run FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` | Previews the final named package path using real metadata without writing files |
 | `make finalize-submission FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` | Builds and verifies the final named package once real student metadata is known |
 | `make final-package-check` | Creates the default zip and verifies it in one local gate |
-| `make handoff-check` | Runs all local no-API handoff gates in one target |
+| `make handoff-check` | Runs all local no-API handoff gates, including known-warning verification, in one target |
 | `make post-push-check` | Runs `make handoff-check` and then verifies the local branch matches its GitHub upstream |
 | `experiments/finalize_submission.py --dry-run ...` | Previews final metadata lines and named package contents without writing |
 | `experiments/finalize_submission.py ...` | Requires a clean tracked worktree, builds and verifies a filled-metadata zip/PDF, checks report metadata inside the archive, then restores local `report/main.tex` and `report/main.pdf` placeholders unless `--keep-filled-report` is passed |
@@ -61,3 +62,4 @@ This document maps the assignment requirements to the current repository evidenc
 - The default generated zip is usable for review, but the final course submission should be regenerated from a clean worktree with real metadata and the named package command.
 - The finalization helper starts from a clean tracked worktree, checks filled metadata inside the generated archive, and avoids leaving personal metadata in the worktree by default; use `--keep-filled-report` only if you intentionally want `report/main.tex` and `report/main.pdf` to remain filled locally.
 - `make final-check` now fails if required files are present locally but not tracked by Git.
+- `make verify-known-warnings` keeps expected external blockers separate from new audit warnings that should be fixed before handoff.

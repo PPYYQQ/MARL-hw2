@@ -17,6 +17,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/estimate_math_manual_test.py`: estimates full MATH `manual_v1` resource needs from tracked evidence.
 - `experiments/verify_chunked_plan.py`: verifies the planned full MATH `manual_v1` chunks without API calls.
 - `experiments/verify_report_pdf.py`: verifies that the local report PDF is current for tracked TeX sources.
+- `experiments/verify_audit_warnings.py`: verifies that submission-audit warnings are limited to known external blockers.
 - `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
 - `experiments/verify_evidence.py`: verifies tracked evidence against cited scores, row counts, calls, and token totals.
 - `experiments/fill_report_metadata.py`: fills author name, student ID, and email when provided.
@@ -69,10 +70,13 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/analyze_efficiency.py \
   experiments/analyze_api_budget.py \
   experiments/estimate_math_manual_test.py \
+  experiments/summarize_chunked_run.py \
   experiments/verify_chunked_plan.py \
   experiments/verify_report_pdf.py \
+  experiments/verify_audit_warnings.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
+  experiments/verify_git_sync.py \
   experiments/fill_report_metadata.py \
   experiments/finalize_submission.py \
   experiments/analyze_math_failures.py \
@@ -115,6 +119,12 @@ conda run -n marl_hw2 python experiments/audit_submission.py
 ```
 
 The audit is expected to warn until the Kimi quota, report metadata, and full MATH `manual_v1` test run are resolved.
+
+Verify that audit warnings are limited to the known external blockers:
+
+```bash
+make verify-known-warnings
+```
 
 Build the report PDF with Tectonic:
 
@@ -180,6 +190,8 @@ Run all local no-API handoff gates:
 ```bash
 make handoff-check
 ```
+
+This also fails if `experiments/audit_submission.py` emits any warning outside the maintained known-blocker allowlist.
 
 After pushing a key commit, verify that the local branch matches its GitHub upstream:
 

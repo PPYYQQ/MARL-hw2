@@ -38,6 +38,12 @@ Or use the Makefile shortcut:
 make final-check
 ```
 
+Confirm that any audit warnings are only the known external blockers:
+
+```bash
+make verify-known-warnings
+```
+
 Preview the tracked-file submission package:
 
 ```bash
@@ -67,6 +73,8 @@ Run every local no-API handoff gate:
 ```bash
 make handoff-check
 ```
+
+This includes the known-warning gate, so new audit warnings fail the handoff path instead of being hidden among expected blockers.
 
 After pushing a key commit, confirm local `main` matches GitHub:
 

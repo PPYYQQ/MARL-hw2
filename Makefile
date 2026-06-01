@@ -25,6 +25,7 @@ PY_COMPILE_FILES = \
 	experiments/summarize_chunked_run.py \
 	experiments/verify_chunked_plan.py \
 	experiments/verify_report_pdf.py \
+	experiments/verify_audit_warnings.py \
 	experiments/export_evidence.py \
 	experiments/verify_evidence.py \
 	experiments/verify_git_sync.py \
@@ -37,7 +38,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -71,6 +72,9 @@ collect-math-manual-chunked:
 
 verify-report-pdf:
 	$(PYTHON) experiments/verify_report_pdf.py
+
+verify-known-warnings:
+	$(PYTHON) experiments/verify_audit_warnings.py
 
 audit: py-compile verify-evidence
 	$(PYTHON) experiments/audit_submission.py
@@ -110,6 +114,6 @@ final-package-check: verify-report-pdf package verify-package
 
 final-check: analyze-api-budget audit package-dry-run
 
-handoff-check: final-check verify-math-manual-plan summarize-math-manual-chunks finalize-dry-run final-package-check
+handoff-check: final-check verify-known-warnings verify-math-manual-plan summarize-math-manual-chunks finalize-dry-run final-package-check
 
 post-push-check: handoff-check verify-github-sync

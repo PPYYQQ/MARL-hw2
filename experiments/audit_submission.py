@@ -39,6 +39,7 @@ REQUIRED_FILES = [
     "experiments/summarize_chunked_run.py",
     "experiments/verify_chunked_plan.py",
     "experiments/verify_report_pdf.py",
+    "experiments/verify_audit_warnings.py",
     "experiments/verify_git_sync.py",
     "experiments/export_evidence.py",
     "experiments/verify_evidence.py",
@@ -85,6 +86,7 @@ PYTHON_FILES = [
     "experiments/summarize_chunked_run.py",
     "experiments/verify_chunked_plan.py",
     "experiments/verify_report_pdf.py",
+    "experiments/verify_audit_warnings.py",
     "experiments/verify_git_sync.py",
     "experiments/export_evidence.py",
     "experiments/verify_evidence.py",
@@ -168,6 +170,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "make handoff-check",
         "make verify-github-sync",
         "make post-push-check",
+        "make verify-known-warnings",
         "MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk",
     ],
     "docs/REQUIREMENT_RUN_MATRIX.md": [
@@ -182,6 +185,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "`make finalize-submission FINAL_NAME=\"...\" FINAL_STUDENT_ID=\"...\" FINAL_EMAIL=\"...\"`",
         "`make handoff-check`",
         "`make post-push-check`",
+        "`make verify-known-warnings`",
         "Full MATH `manual_v1` test result",
     ],
 }

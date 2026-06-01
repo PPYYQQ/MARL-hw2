@@ -147,6 +147,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `make finalize-submission-dry-run` so real student metadata can be previewed through the final packaging path without writing files.
 - Added `experiments/summarize_chunked_run.py` and `make summarize-math-manual-chunks` to report completed, quota-failed, missing, and next chunk status for the remaining full MATH `manual_v1` run without making API calls.
 - Extended the chunked-run status summary so it now prints the suggested next Make command and flags quota-failed chunks with a recharge/API-key note.
+- Added `experiments/verify_audit_warnings.py` and `make verify-known-warnings` so handoff checks fail if the no-API audit emits any warning outside the maintained known external blockers.
 
 ## Next Steps
 
