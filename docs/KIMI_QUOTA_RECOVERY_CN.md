@@ -97,6 +97,8 @@ make collect-math-manual-chunked
 make verify-math-manual-result
 ```
 
+该 gate 默认还会要求至少 `2400` calls 和 `2500000` tokens，避免部分 chunk 结果被误当作完整 full-test 表。
+
 之后需要把 full-test 分数、calls、tokens 写入 `report/main.tex`，并确认报告不再保留 pending-run 表述：
 
 ```bash

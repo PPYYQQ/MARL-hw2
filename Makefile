@@ -13,6 +13,8 @@ MATH_MANUAL_CHUNK_SIZE ?= 20
 MATH_MANUAL_MAX_CONCURRENCY ?= 2
 MATH_MANUAL_MAX_CHUNKS ?= 1
 MATH_MANUAL_OUTPUT ?= report/tables/math_test_manual_chunked.md
+MATH_MANUAL_MIN_CALLS ?= 2400
+MATH_MANUAL_MIN_TOKENS ?= 2500000
 
 PY_COMPILE_FILES = \
 	experiments/run_baselines.py \
@@ -61,7 +63,7 @@ verify-math-manual-plan:
 	$(PYTHON) experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
 
 verify-math-manual-result:
-	$(PYTHON) experiments/verify_result_table.py --table "$(MATH_MANUAL_OUTPUT)" --dataset MATH --method manual_v1 --split test --samples 486 --require-model kimi
+	$(PYTHON) experiments/verify_result_table.py --table "$(MATH_MANUAL_OUTPUT)" --dataset MATH --method manual_v1 --split test --samples 486 --require-model kimi --min-calls $(MATH_MANUAL_MIN_CALLS) --min-tokens $(MATH_MANUAL_MIN_TOKENS)
 
 verify-final-report-ready:
 	$(PYTHON) experiments/verify_final_report_ready.py --table "$(MATH_MANUAL_OUTPUT)" --forbidden-phrase "main remaining experiment is the expensive full MATH" --forbidden-phrase "full MATH workflow evaluation should be rerun" --forbidden-phrase "no full-test \\texttt{manual\\_v1} chunk is reported yet" --forbidden-phrase "Current MATH workflow results are validation subsets and should not be interpreted as final benchmark gains" --forbidden-phrase "remaining core work is to resume the expensive full MATH workflow evaluation"

@@ -288,6 +288,8 @@ Verify the collected full MATH `manual_v1` table before final submission:
 make verify-math-manual-result
 ```
 
+This gate checks the 486-example row and requires a plausible full-run budget by default: at least `2400` calls and `2500000` tokens.
+
 Verify the report has been updated from pending-run language to the completed full-test result:
 
 ```bash

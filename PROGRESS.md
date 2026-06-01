@@ -159,6 +159,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Expanded `docs/REQUIREMENT_RUN_MATRIX.md` with an execution-command and evidence matrix, including the exact API commands behind each completed assignment requirement, the remaining MATH `manual_v1` full-test command, and a note explaining MATH rescored table values versus raw evidence CSV scores.
 - Fixed `experiments/verify_git_sync.py` so dirty-worktree diagnostics preserve full filenames such as `PROGRESS.md` when reporting files that still need to be committed.
 - Added `docs/KIMI_QUOTA_RECOVERY_CN.md` with a low-risk recharge and resume runbook for the remaining full MATH `manual_v1` run, linked it from handoff/status documents, and made the submission audit require the new handoff material.
+- Tightened `make verify-math-manual-result` with default minimum full-run thresholds of 2,400 calls and 2.5M tokens so a partial chunked MATH table cannot satisfy the final result gate.
 
 ## Next Steps
 

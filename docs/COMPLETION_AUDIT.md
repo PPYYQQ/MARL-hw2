@@ -39,7 +39,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make verify-known-warnings` | Fails if the submission audit emits any warning outside the maintained known-blocker allowlist |
 | `make analyze-api-budget` | Refreshes the recorded usage and remaining Kimi budget table without making API calls |
 | `make verify-math-manual-plan` | Confirms the full MATH `manual_v1` test plan covers 486 examples in 25 contiguous chunks |
-| `make verify-math-manual-result` | Confirms the collected full MATH `manual_v1` result table has one 486-example MATH test row with valid score, call, token, and model fields |
+| `make verify-math-manual-result` | Confirms the collected full MATH `manual_v1` result table has one 486-example MATH test row with valid score/model fields and at least 2,400 calls plus 2.5M tokens by default |
 | `make verify-final-report-ready` | Confirms the report source includes the completed full MATH `manual_v1` score/calls/tokens and does not retain stale pending-run language |
 | `make dry-run-math-manual-chunks` | Prints the chunked runner's full MATH `manual_v1` plan without making API calls |
 | `make summarize-math-manual-chunks` | Prints completed, quota-failed, missing, and next chunk status without making API calls |
