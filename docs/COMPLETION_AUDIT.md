@@ -45,6 +45,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make package` | Writes `submission/MARL-hw2-submission.zip` from a clean tracked worktree, `report/main.pdf`, and `SUBMISSION_MANIFEST.txt` |
 | `make verify-package` | Verifies the zip against tracked files, current commit, included PDF, manifest checksums, zero-failure audit summary, and forbidden secret/run paths |
 | `make finalize-dry-run` | Previews finalization with test metadata without writing files |
+| `make finalize-submission-dry-run FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` | Previews the final named package path using real metadata without writing files |
 | `make finalize-submission FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` | Builds and verifies the final named package once real student metadata is known |
 | `make final-package-check` | Creates the default zip and verifies it in one local gate |
 | `make handoff-check` | Runs all local no-API handoff gates in one target |

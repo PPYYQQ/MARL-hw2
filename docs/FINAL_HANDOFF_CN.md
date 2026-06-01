@@ -25,6 +25,12 @@
 
 `finalize_submission.py` 默认会临时填入个人信息、重编译 PDF、生成带姓名学号的 zip、验证 zip 内的元数据，然后恢复本地 `report/main.tex` 和 `report/main.pdf` 的占位符，避免把个人信息留在工作树里。
 
+正式打包前可以先用真实信息预演，不写文件：
+
+```bash
+make finalize-submission-dry-run FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+```
+
 ## 如果不补 Kimi 额度
 
 可以提交当前版本，但报告会明确说明 full MATH `manual_v1` test 因 Kimi 余额不足未完成。当前已有证据仍支持：

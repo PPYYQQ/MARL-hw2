@@ -144,6 +144,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/verify_git_sync.py` and `make verify-github-sync` so each pushed key commit can be checked against the configured GitHub upstream.
 - Added `make post-push-check` so the final pushed handoff state can run package/audit gates and GitHub synchronization verification in one command.
 - Added `make finalize-submission` with required `FINAL_NAME`, `FINAL_STUDENT_ID`, and `FINAL_EMAIL` variables to reduce final metadata/package command errors.
+- Added `make finalize-submission-dry-run` so real student metadata can be previewed through the final packaging path without writing files.
 
 ## Next Steps
 

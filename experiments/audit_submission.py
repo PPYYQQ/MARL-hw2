@@ -161,6 +161,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
     "docs/FINAL_HANDOFF_CN.md": [
         "## 当前可交付状态",
         "## 最终提交前必须补的信息",
+        "make finalize-submission-dry-run FINAL_NAME=",
         "make finalize-submission FINAL_NAME=",
         "make handoff-check",
         "make verify-github-sync",
@@ -175,6 +176,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
     ],
     "docs/COMPLETION_AUDIT.md": [
         "## Remaining External Inputs",
+        "`make finalize-submission-dry-run FINAL_NAME=\"...\" FINAL_STUDENT_ID=\"...\" FINAL_EMAIL=\"...\"`",
         "`make finalize-submission FINAL_NAME=\"...\" FINAL_STUDENT_ID=\"...\" FINAL_EMAIL=\"...\"`",
         "`make handoff-check`",
         "`make post-push-check`",

@@ -36,7 +36,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission final-package-check final-check handoff-check post-push-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -89,6 +89,12 @@ verify-package:
 
 finalize-dry-run:
 	$(PYTHON) experiments/finalize_submission.py --name "$(FINALIZE_DRY_RUN_NAME)" --student-id "$(FINALIZE_DRY_RUN_ID)" --email "$(FINALIZE_DRY_RUN_EMAIL)" --assignment "$(FINALIZE_DRY_RUN_ASSIGNMENT)" --dry-run
+
+finalize-submission-dry-run:
+	@test -n "$(FINAL_NAME)" || (echo "Set FINAL_NAME='Your Name'" && exit 1)
+	@test -n "$(FINAL_STUDENT_ID)" || (echo "Set FINAL_STUDENT_ID='Your ID'" && exit 1)
+	@test -n "$(FINAL_EMAIL)" || (echo "Set FINAL_EMAIL='you@example.com'" && exit 1)
+	$(PYTHON) experiments/finalize_submission.py --name "$(FINAL_NAME)" --student-id "$(FINAL_STUDENT_ID)" --email "$(FINAL_EMAIL)" --assignment "$(FINAL_ASSIGNMENT)" --dry-run
 
 finalize-submission:
 	@test -n "$(FINAL_NAME)" || (echo "Set FINAL_NAME='Your Name'" && exit 1)

@@ -211,6 +211,12 @@ Equivalent Make shortcut:
 make finalize-submission FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
 
+Preview the same final Make command with real metadata without writing files:
+
+```bash
+make finalize-submission-dry-run FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+```
+
 Preview the finalization sequence with test metadata:
 
 ```bash
