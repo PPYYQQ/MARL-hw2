@@ -77,6 +77,24 @@ def require_any(report_text: str, label: str, options: tuple[str, ...]) -> None:
         raise SystemExit(f"FAIL: Report does not mention {label}: expected {joined}")
 
 
+def require_result_line(
+    report_text: str,
+    method_options: tuple[str, ...],
+    score: str,
+    call_options: tuple[str, ...],
+    token_options: tuple[str, ...],
+) -> None:
+    for line in report_text.splitlines():
+        if (
+            any(method in line for method in method_options)
+            and score in line
+            and any(calls in line for calls in call_options)
+            and any(tokens in line for tokens in token_options)
+        ):
+            return
+    raise SystemExit("FAIL: Report does not contain one result line with method, score, calls, and tokens")
+
+
 def main() -> None:
     args = parse_args()
     report_path = resolve(args.report)
@@ -87,10 +105,14 @@ def main() -> None:
     report_text = report_path.read_text(encoding="utf-8")
 
     method_latex = args.method.replace("_", r"\_")
-    require_any(report_text, "method", (args.method, method_latex))
+    method_options = (args.method, method_latex)
+    call_options = int_text(row["calls"])
+    token_options = int_text(row["tokens"])
+    require_any(report_text, "method", method_options)
     require_any(report_text, "score", (row["score"],))
-    require_any(report_text, "calls", int_text(row["calls"]))
-    require_any(report_text, "tokens", int_text(row["tokens"]))
+    require_any(report_text, "calls", call_options)
+    require_any(report_text, "tokens", token_options)
+    require_result_line(report_text, method_options, row["score"], call_options, token_options)
 
     forbidden_found = [phrase for phrase in args.forbidden_phrase if phrase in report_text]
     if forbidden_found:
