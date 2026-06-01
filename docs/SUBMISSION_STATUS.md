@@ -205,6 +205,12 @@ After the final handoff commit is pushed, run the package/audit gates plus GitHu
 make post-push-check
 ```
 
+After the full MATH `manual_v1` result table and real metadata are available, run the final submission gate:
+
+```bash
+make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+```
+
 After filling report metadata, preview the course-style named zip:
 
 ```bash

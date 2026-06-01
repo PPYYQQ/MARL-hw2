@@ -38,7 +38,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check ready-to-submit-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -117,3 +117,9 @@ final-check: analyze-api-budget audit package-dry-run
 handoff-check: final-check verify-known-warnings verify-math-manual-plan summarize-math-manual-chunks finalize-dry-run final-package-check
 
 post-push-check: handoff-check verify-github-sync
+
+ready-to-submit-check:
+	@test -f "$(MATH_MANUAL_OUTPUT)" || (echo "Missing $(MATH_MANUAL_OUTPUT); finish MATH manual_v1 chunks and run make collect-math-manual-chunked" && exit 1)
+	$(MAKE) handoff-check
+	$(MAKE) finalize-submission
+	$(MAKE) verify-github-sync

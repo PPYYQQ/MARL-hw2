@@ -171,6 +171,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "make verify-github-sync",
         "make post-push-check",
         "make verify-known-warnings",
+        "make ready-to-submit-check",
         "MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk",
     ],
     "docs/REQUIREMENT_RUN_MATRIX.md": [
@@ -186,6 +187,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "`make handoff-check`",
         "`make post-push-check`",
         "`make verify-known-warnings`",
+        "`make ready-to-submit-check`",
         "Full MATH `manual_v1` test result",
     ],
 }

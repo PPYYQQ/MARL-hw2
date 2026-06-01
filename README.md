@@ -88,6 +88,12 @@ After pushing the final handoff commit, run the full local gate plus GitHub sync
 make post-push-check
 ```
 
+After the full MATH `manual_v1` table and real metadata are available, run the complete final-submission gate:
+
+```bash
+make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+```
+
 Refresh the API budget summary without making API calls:
 
 ```bash

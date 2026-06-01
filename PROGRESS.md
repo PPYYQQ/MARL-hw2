@@ -148,6 +148,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/summarize_chunked_run.py` and `make summarize-math-manual-chunks` to report completed, quota-failed, missing, and next chunk status for the remaining full MATH `manual_v1` run without making API calls.
 - Extended the chunked-run status summary so it now prints the suggested next Make command and flags quota-failed chunks with a recharge/API-key note.
 - Added `experiments/verify_audit_warnings.py` and `make verify-known-warnings` so handoff checks fail if the no-API audit emits any warning outside the maintained known external blockers.
+- Added `make ready-to-submit-check` as the final all-clear gate for the post-quota, real-metadata state: it requires the full MATH `manual_v1` table, runs handoff checks, builds the named package, and verifies GitHub sync.
 
 ## Next Steps
 
