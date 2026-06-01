@@ -160,7 +160,7 @@ python experiments/package_submission.py --student-id "Your ID" --name "Your Nam
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
 python experiments/verify_submission_package.py --package submission/MARL-hw2-submission.zip
 python experiments/verify_submission_package.py --package "submission/Your_ID_Your_Name_MARL-hw2.zip" --expect-name "Your Name" --expect-student-id "Your ID" --expect-email "you@example.com"
-python experiments/finalize_submission.py --name "Test Student" --student-id "TEST123" --email "test@example.com" --assignment "MARL-hw2" --dry-run
+python experiments/finalize_submission.py --name "Test Student" --student-id "TEST123" --email "test@example.com" --assignment "MARL-hw2" --dry-run --allow-test-metadata
 python experiments/verify_git_sync.py
 ```
 

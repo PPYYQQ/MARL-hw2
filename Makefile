@@ -106,7 +106,7 @@ verify-package:
 	$(PYTHON) experiments/verify_submission_package.py
 
 finalize-dry-run:
-	$(PYTHON) experiments/finalize_submission.py --name "$(FINALIZE_DRY_RUN_NAME)" --student-id "$(FINALIZE_DRY_RUN_ID)" --email "$(FINALIZE_DRY_RUN_EMAIL)" --assignment "$(FINALIZE_DRY_RUN_ASSIGNMENT)" --dry-run
+	$(PYTHON) experiments/finalize_submission.py --name "$(FINALIZE_DRY_RUN_NAME)" --student-id "$(FINALIZE_DRY_RUN_ID)" --email "$(FINALIZE_DRY_RUN_EMAIL)" --assignment "$(FINALIZE_DRY_RUN_ASSIGNMENT)" --dry-run --allow-test-metadata
 
 finalize-submission-dry-run:
 	@test -n "$(FINAL_NAME)" || (echo "Set FINAL_NAME='Your Name'" && exit 1)

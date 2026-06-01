@@ -264,7 +264,7 @@ This command verifies the generated zip and restores local `report/main.tex` and
 The generated zip verification also checks that `report/main.tex` inside the archive contains the provided name, student ID, and email instead of placeholders.
 Default packaging refuses uncommitted tracked changes; finalization only permits the temporary `report/main.tex` metadata edit.
 Finalization refuses to start if any tracked file already has uncommitted changes.
-Finalization also rejects placeholder/example metadata such as `Your Name`, `Your ID`, `you@example.com`, `Test Student`, `TEST123`, and `test@example.com` for real writes; the built-in `make finalize-dry-run` path allows the test values only because it writes no files.
+Finalization rejects placeholder/example metadata such as `Your Name`, `Your ID`, `you@example.com`, `Test Student`, `TEST123`, and `test@example.com` for normal finalization and real-metadata dry-runs; the built-in `make finalize-dry-run` path is the only maintained path that enables `--allow-test-metadata`, and it writes no files.
 
 After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 

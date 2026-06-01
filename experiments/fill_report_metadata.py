@@ -18,6 +18,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--email", required=True, help="Corresponding author email.")
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--dry-run", action="store_true", help="Print changed metadata lines without writing.")
+    parser.add_argument(
+        "--allow-test-metadata",
+        action="store_true",
+        help="Allow maintained test metadata such as Test Student for no-write gate checks.",
+    )
     return parser.parse_args()
 
 
@@ -97,7 +102,7 @@ def fill_metadata(report_text: str, name: str, student_id: str, email: str) -> s
 def main() -> None:
     args = parse_args()
     try:
-        validate_metadata(args.name, args.student_id, args.email, allow_test_metadata=args.dry_run)
+        validate_metadata(args.name, args.student_id, args.email, allow_test_metadata=args.allow_test_metadata)
     except ValueError as exc:
         raise SystemExit(f"FAIL: {exc}") from exc
     report_text = args.report.read_text(encoding="utf-8")

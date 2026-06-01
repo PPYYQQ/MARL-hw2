@@ -32,6 +32,11 @@ def parse_args() -> argparse.Namespace:
         help="Leave report/main.tex and report/main.pdf filled after packaging instead of restoring placeholders.",
     )
     parser.add_argument("--dry-run", action="store_true", help="Preview metadata and package contents without writing.")
+    parser.add_argument(
+        "--allow-test-metadata",
+        action="store_true",
+        help="Allow maintained test metadata such as Test Student for no-write gate checks.",
+    )
     return parser.parse_args()
 
 
@@ -86,6 +91,8 @@ def metadata_command(args: argparse.Namespace, dry_run: bool) -> list[str]:
     ]
     if dry_run:
         command.append("--dry-run")
+    if args.allow_test_metadata:
+        command.append("--allow-test-metadata")
     return command
 
 
@@ -126,8 +133,10 @@ def verify_command(args: argparse.Namespace, output: Path) -> list[str]:
 
 def main() -> None:
     args = parse_args()
+    if args.allow_test_metadata and not args.dry_run:
+        raise SystemExit("FAIL: --allow-test-metadata is only valid with --dry-run")
     try:
-        validate_metadata(args.name, args.student_id, args.email, allow_test_metadata=args.dry_run)
+        validate_metadata(args.name, args.student_id, args.email, allow_test_metadata=args.allow_test_metadata)
     except ValueError as exc:
         raise SystemExit(f"FAIL: {exc}") from exc
     check_clean_tracked_files()
