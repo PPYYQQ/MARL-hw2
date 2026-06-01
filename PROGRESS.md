@@ -134,6 +134,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Refreshed `docs/SETUP.md` so the local validation section points at the maintained Makefile gates instead of an outdated hand-written `py_compile` command.
 - Added `docs/REQUIREMENT_RUN_MATRIX.md` to show the assignment-required experiment matrix, completed runs, status, and evidence paths in one place.
 - Added `experiments/analyze_api_budget.py`, `make analyze-api-budget`, and `report/tables/api_budget_summary.md` to track historical Kimi token usage, stopped-run estimates, and the remaining full MATH `manual_v1` budget.
+- Updated the report limitations section so the PDF now reflects the verified Kimi budget summary instead of saying Kimi pricing still needs to be added.
 
 ## Next Steps
 
