@@ -165,6 +165,12 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Tightened metadata validation further so case variants, `TODO`, `your ...`, and angle-bracket placeholder values are rejected before final report/package generation.
 - Added `experiments/verify_metadata_validation.py` and `make verify-metadata-validation`, then wired it into `make handoff-check` so metadata placeholder rejection has a no-API regression check.
 
+### 2026-06-01
+
+- Rechecked the current handoff state after commit `785e4b7`: the worktree is clean, `main` is synchronized with `origin/main`, and `make status-summary` passes with only the two maintained external-blocker warnings.
+- Confirmed no API-consuming command should be run before Kimi quota is restored or a replacement `KIMI_API_KEY` is provided; the next MATH chunk remains chunk 0, indices 0-19.
+- Current no-API state remains ready for real-metadata current submission via `make current-submit-check FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."`.
+
 ## Next Steps
 
 1. Recharge the Kimi account or provide another valid `KIMI_API_KEY`; the practical minimum is CNY 50 for Tier1 limits, with CNY 80-100 leaving retry margin.
