@@ -189,11 +189,17 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Continued the full MATH `manual_v1` chunked run through chunk 19. The run now has 20/25 chunks completed, covering indices 0-399 with aggregate score `0.91750`, 2,001 LLM calls, and 3,117,592 tokens; the next missing chunk is chunk 20, indices 400-419.
 - Completed the full MATH `manual_v1` chunked run through chunk 24. The run now has 25/25 chunks completed, covering all 486 test examples with score `0.91770`, 2,431 LLM calls, and 3,786,936 tracked tokens; generated `report/tables/math_test_manual_chunked.md` and exported `report/evidence/math_test_manual/manual_v1/`.
 - Refreshed the API budget, efficiency, evidence, report, requirement matrix, completion audit, Kimi checkpoint runbook, and README/status handoff docs so they now state that no required API run remains.
+- Committed and pushed the completed full MATH result as `081bae6 Add full MATH manual workflow result`; `make post-push-check` passed and confirmed `main` was synchronized with `origin/main`.
+
+### 2026-06-02
+
+- Rechecked the handoff state after resuming the goal: the worktree was clean, `make status-summary` passed, GitHub sync reported `main` at `081bae6`, and the chunked MATH summary still showed 25/25 chunks complete with score `0.91770`.
+- Confirmed the only required external input still missing is final student metadata: name, student ID, and email. No required API experiment remains.
 
 ## Next Steps
 
-1. Run the no-API validation gates, rebuild the report PDF, and push the completed full MATH result commit.
-2. Run `experiments/finalize_submission.py` with final student name, student ID, and email before course submission.
+1. Provide the final student name, student ID, and email.
+2. Run `make ready-to-submit-check FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` to rebuild the filled report, create the named zip, verify it, and confirm GitHub sync.
 3. Use `docs/KIMI_QUOTA_RECOVERY_CN.md` only for optional reproduction, prompt tuning, or follow-up ablations.
 4. Keep pushing each new key commit to GitHub after local validation.
 
