@@ -62,6 +62,25 @@ def verify_manifest_file_counts() -> None:
         "mismatched optional count",
     )
 
+    ambiguous_text = "\n".join(
+        [
+            "Git commit: abc12345",
+            "Tracked files: 20",
+            "Optional files: 10",
+            "Summary: 10 passed, 0 warnings, 0 failures",
+        ]
+    )
+    ambiguous_failures = verify_manifest(
+        entries,
+        ambiguous_text,
+        "abc1234",
+        tracked_count=2,
+        optional_count=1,
+    )
+    assert_failure_contains(ambiguous_failures, "current commit", "ambiguous commit line")
+    assert_failure_contains(ambiguous_failures, "tracked-file count", "ambiguous tracked count")
+    assert_failure_contains(ambiguous_failures, "optional-file count", "ambiguous optional count")
+
 
 def write_zip(path: Path, files: dict[str, str]) -> None:
     with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:

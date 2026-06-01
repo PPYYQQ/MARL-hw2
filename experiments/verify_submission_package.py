@@ -83,6 +83,11 @@ def optional_existing_files(tracked: set[str]) -> set[str]:
     return {path for path in OPTIONAL_FILES if path not in tracked and (REPO_ROOT / path).is_file()}
 
 
+def has_manifest_line(manifest_text: str, label: str, value: str | int) -> bool:
+    expected = f"{label}: {value}"
+    return any(line == expected for line in manifest_text.splitlines())
+
+
 def verify_manifest(
     entries: set[str],
     manifest_text: str,
@@ -93,11 +98,11 @@ def verify_manifest(
     failures: list[str] = []
     if MANIFEST not in entries:
         failures.append(f"Missing {MANIFEST}")
-    if f"Git commit: {expected_commit}" not in manifest_text:
+    if not has_manifest_line(manifest_text, "Git commit", expected_commit):
         failures.append(f"Manifest does not reference current commit {expected_commit}")
-    if f"Tracked files: {tracked_count}" not in manifest_text:
+    if not has_manifest_line(manifest_text, "Tracked files", tracked_count):
         failures.append(f"Manifest tracked-file count does not match expected count {tracked_count}")
-    if f"Optional files: {optional_count}" not in manifest_text:
+    if not has_manifest_line(manifest_text, "Optional files", optional_count):
         failures.append(f"Manifest optional-file count does not match expected count {optional_count}")
     summary_match = re.search(r"^Summary: \d+ passed, \d+ warnings, (?P<failures>\d+) failures$", manifest_text, re.MULTILINE)
     if not summary_match:
