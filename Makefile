@@ -24,6 +24,7 @@ PY_COMPILE_FILES = \
 	experiments/estimate_math_manual_test.py \
 	experiments/summarize_chunked_run.py \
 	experiments/verify_chunked_plan.py \
+	experiments/verify_result_table.py \
 	experiments/verify_report_pdf.py \
 	experiments/verify_audit_warnings.py \
 	experiments/export_evidence.py \
@@ -38,7 +39,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check ready-to-submit-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan verify-math-manual-result summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check ready-to-submit-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -57,6 +58,9 @@ analyze-api-budget:
 
 verify-math-manual-plan:
 	$(PYTHON) experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
+
+verify-math-manual-result:
+	$(PYTHON) experiments/verify_result_table.py --table "$(MATH_MANUAL_OUTPUT)" --dataset MATH --method manual_v1 --split test --samples 486 --require-model kimi
 
 summarize-math-manual-chunks:
 	$(PYTHON) experiments/summarize_chunked_run.py --dataset MATH --workflow manual_v1 --run-id "$(MATH_MANUAL_RUN_ID)"
@@ -124,6 +128,7 @@ ready-to-submit-check:
 	@test -n "$(FINAL_EMAIL)" || (echo "Set FINAL_EMAIL='you@example.com'" && exit 1)
 	@test -f "$(MATH_MANUAL_OUTPUT)" || (echo "Missing $(MATH_MANUAL_OUTPUT); finish MATH manual_v1 chunks and run make collect-math-manual-chunked" && exit 1)
 	@git ls-files --error-unmatch "$(MATH_MANUAL_OUTPUT)" >/dev/null 2>&1 || (echo "$(MATH_MANUAL_OUTPUT) is not tracked by Git; run git add and commit it before final submission" && exit 1)
+	$(MAKE) verify-math-manual-result
 	$(MAKE) handoff-check
 	$(MAKE) finalize-submission
 	$(MAKE) verify-github-sync

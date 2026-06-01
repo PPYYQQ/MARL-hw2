@@ -191,6 +191,12 @@ Collect completed chunked outputs into the local report table:
 make collect-math-manual-chunked
 ```
 
+Verify that the collected full MATH `manual_v1` result table has the expected test row:
+
+```bash
+make verify-math-manual-result
+```
+
 Fill the report author metadata before final packaging:
 
 ```bash

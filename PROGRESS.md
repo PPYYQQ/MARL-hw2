@@ -150,6 +150,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/verify_audit_warnings.py` and `make verify-known-warnings` so handoff checks fail if the no-API audit emits any warning outside the maintained known external blockers.
 - Added `make ready-to-submit-check` as the final all-clear gate for the post-quota, real-metadata state: it requires the full MATH `manual_v1` table, runs handoff checks, builds the named package, and verifies GitHub sync.
 - Tightened `make ready-to-submit-check` so it validates final metadata variables before long checks and requires the full MATH `manual_v1` table to be tracked by Git, not just present locally.
+- Added `experiments/verify_result_table.py` and `make verify-math-manual-result` so the final gate validates the collected full MATH `manual_v1` Markdown table before packaging.
 
 ## Next Steps
 

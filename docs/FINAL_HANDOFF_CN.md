@@ -102,6 +102,12 @@ chunk 完成后汇总结果：
 make collect-math-manual-chunked
 ```
 
+确认汇总表里有 486 题的 MATH test `manual_v1` 行：
+
+```bash
+make verify-math-manual-result
+```
+
 之后需要更新报告、重建 PDF、刷新证据、重跑交接 gate：
 
 ```bash
