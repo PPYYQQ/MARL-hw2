@@ -92,6 +92,7 @@ def verify_manifest(
     entries: set[str],
     manifest_text: str,
     expected_commit: str,
+    expected_output: Path,
     tracked_count: int,
     optional_count: int,
 ) -> list[str]:
@@ -100,6 +101,8 @@ def verify_manifest(
         failures.append(f"Missing {MANIFEST}")
     if not has_manifest_line(manifest_text, "Git commit", expected_commit):
         failures.append(f"Manifest does not reference current commit {expected_commit}")
+    if not has_manifest_line(manifest_text, "Output", expected_output.as_posix()):
+        failures.append(f"Manifest output path does not match expected package {expected_output.as_posix()}")
     if not has_manifest_line(manifest_text, "Tracked files", tracked_count):
         failures.append(f"Manifest tracked-file count does not match expected count {tracked_count}")
     if not has_manifest_line(manifest_text, "Optional files", optional_count):
@@ -248,7 +251,7 @@ def main() -> None:
         checksum_failures = verify_manifest_checksums(archive, entries, manifest_text, expected_files)
         secret_failures = verify_secret_hygiene(archive, entries)
 
-    failures = verify_manifest(entries, manifest_text, current_commit(), len(tracked), len(optional))
+    failures = verify_manifest(entries, manifest_text, current_commit(), args.package, len(tracked), len(optional))
     failures.extend(clean_failures)
     failures.extend(verify_entries(entries, expected_files))
     failures.extend(metadata_failures)

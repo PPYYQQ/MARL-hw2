@@ -40,6 +40,7 @@ def verify_manifest_file_counts() -> None:
     manifest_text = "\n".join(
         [
             "Git commit: abc1234",
+            "Output: submission/example.zip",
             "Tracked files: 2",
             "Optional files: 1",
             "Summary: 10 passed, 0 warnings, 0 failures",
@@ -48,23 +49,57 @@ def verify_manifest_file_counts() -> None:
     entries = {MANIFEST}
 
     assert_no_failures(
-        verify_manifest(entries, manifest_text, "abc1234", tracked_count=2, optional_count=1),
+        verify_manifest(
+            entries,
+            manifest_text,
+            "abc1234",
+            Path("submission/example.zip"),
+            tracked_count=2,
+            optional_count=1,
+        ),
         "matching manifest counts",
     )
     assert_failure_contains(
-        verify_manifest(entries, manifest_text, "abc1234", tracked_count=3, optional_count=1),
+        verify_manifest(
+            entries,
+            manifest_text,
+            "abc1234",
+            Path("submission/example.zip"),
+            tracked_count=3,
+            optional_count=1,
+        ),
         "tracked-file count",
         "mismatched tracked count",
     )
     assert_failure_contains(
-        verify_manifest(entries, manifest_text, "abc1234", tracked_count=2, optional_count=0),
+        verify_manifest(
+            entries,
+            manifest_text,
+            "abc1234",
+            Path("submission/example.zip"),
+            tracked_count=2,
+            optional_count=0,
+        ),
         "optional-file count",
         "mismatched optional count",
+    )
+    assert_failure_contains(
+        verify_manifest(
+            entries,
+            manifest_text,
+            "abc1234",
+            Path("submission/other.zip"),
+            tracked_count=2,
+            optional_count=1,
+        ),
+        "output path",
+        "mismatched output path",
     )
 
     ambiguous_text = "\n".join(
         [
             "Git commit: abc12345",
+            "Output: submission/example.zip.bak",
             "Tracked files: 20",
             "Optional files: 10",
             "Summary: 10 passed, 0 warnings, 0 failures",
@@ -74,10 +109,12 @@ def verify_manifest_file_counts() -> None:
         entries,
         ambiguous_text,
         "abc1234",
+        Path("submission/example.zip"),
         tracked_count=2,
         optional_count=1,
     )
     assert_failure_contains(ambiguous_failures, "current commit", "ambiguous commit line")
+    assert_failure_contains(ambiguous_failures, "output path", "ambiguous output line")
     assert_failure_contains(ambiguous_failures, "tracked-file count", "ambiguous tracked count")
     assert_failure_contains(ambiguous_failures, "optional-file count", "ambiguous optional count")
 

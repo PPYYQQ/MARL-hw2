@@ -179,6 +179,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/verify_package_verifier.py` and `make verify-package-verifier`, then wired it into `make handoff-check` so package-verifier manifest-count and active-key leak checks have no-API regression coverage.
 - Corrected package secret scanning so `SUBMISSION_MANIFEST.txt` is checked for the active `KIMI_API_KEY` value too, matching the documented whole-archive safety guarantee.
 - Tightened manifest verification to require exact `Git commit`, `Tracked files`, and `Optional files` lines instead of substring matches, and extended the package-verifier regression check for ambiguous values such as `2` versus `20`.
+- Extended package verification so `SUBMISSION_MANIFEST.txt` must also contain an exact `Output:` line matching the zip being verified, with regression coverage for ambiguous output paths.
 
 ## Next Steps
 
