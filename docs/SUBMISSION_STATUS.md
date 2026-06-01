@@ -216,6 +216,14 @@ After the final handoff commit is pushed, run the package/audit gates plus GitHu
 make post-push-check
 ```
 
+If submitting the current known-blocker version after real metadata is available:
+
+```bash
+make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+```
+
+This runs the current handoff gates, builds the named metadata-filled zip, and verifies GitHub sync without requiring the missing full MATH `manual_v1` result table.
+
 After the full MATH `manual_v1` result table is tracked in Git and real metadata is available, run the final submission gate:
 
 ```bash

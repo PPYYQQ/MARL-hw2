@@ -56,7 +56,8 @@ This document maps the assignment requirements to the current repository evidenc
 | `make status-summary` | Prints the known-warning check, current MATH chunk status, and GitHub sync status without building packages |
 | `make handoff-check` | Runs all local no-API handoff gates, including known-warning verification, in one target |
 | `make post-push-check` | Runs `make handoff-check` and then verifies the local branch matches its GitHub upstream |
-| `make ready-to-submit-check` | Requires real metadata, a verified Git-tracked full MATH `manual_v1` table, and an updated report before building the final named package and verifying GitHub sync |
+| `make current-submit-check` | For the current known-blocker version, validates real metadata, runs handoff gates, builds the named package, and verifies GitHub sync without requiring the full MATH result table |
+| `make ready-to-submit-check` | Validates real metadata, requires a verified Git-tracked full MATH `manual_v1` table, and checks the updated report before building the final named package and verifying GitHub sync |
 | `experiments/finalize_submission.py --dry-run ...` | Previews final metadata lines and named package contents without writing |
 | `experiments/finalize_submission.py ...` | Requires a clean tracked worktree, builds and verifies a filled-metadata zip/PDF, checks report metadata inside the archive, then restores local `report/main.tex` and `report/main.pdf` placeholders unless `--keep-filled-report` is passed |
 

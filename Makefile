@@ -42,7 +42,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan verify-math-manual-result verify-final-report-ready summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check status-summary handoff-check post-push-check ready-to-submit-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan verify-math-manual-result verify-final-report-ready summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check status-summary handoff-check post-push-check current-submit-check ready-to-submit-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -130,10 +130,20 @@ handoff-check: final-check verify-known-warnings verify-math-manual-plan summari
 
 post-push-check: handoff-check verify-github-sync
 
+current-submit-check:
+	@test -n "$(FINAL_NAME)" || (echo "Set FINAL_NAME='Your Name'" && exit 1)
+	@test -n "$(FINAL_STUDENT_ID)" || (echo "Set FINAL_STUDENT_ID='Your ID'" && exit 1)
+	@test -n "$(FINAL_EMAIL)" || (echo "Set FINAL_EMAIL='you@example.com'" && exit 1)
+	$(MAKE) finalize-submission-dry-run
+	$(MAKE) handoff-check
+	$(MAKE) finalize-submission
+	$(MAKE) verify-github-sync
+
 ready-to-submit-check:
 	@test -n "$(FINAL_NAME)" || (echo "Set FINAL_NAME='Your Name'" && exit 1)
 	@test -n "$(FINAL_STUDENT_ID)" || (echo "Set FINAL_STUDENT_ID='Your ID'" && exit 1)
 	@test -n "$(FINAL_EMAIL)" || (echo "Set FINAL_EMAIL='you@example.com'" && exit 1)
+	$(MAKE) finalize-submission-dry-run
 	@test -f "$(MATH_MANUAL_OUTPUT)" || (echo "Missing $(MATH_MANUAL_OUTPUT); finish MATH manual_v1 chunks and run make collect-math-manual-chunked" && exit 1)
 	@git ls-files --error-unmatch "$(MATH_MANUAL_OUTPUT)" >/dev/null 2>&1 || (echo "$(MATH_MANUAL_OUTPUT) is not tracked by Git; run git add and commit it before final submission" && exit 1)
 	$(MAKE) verify-math-manual-result

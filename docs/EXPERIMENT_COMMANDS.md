@@ -142,6 +142,7 @@ make final-package-check
 make status-summary
 make handoff-check
 make post-push-check
+make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
 
@@ -168,6 +169,7 @@ python experiments/verify_git_sync.py
 `make status-summary` prints the known-warning check, current MATH chunk status, and GitHub sync status without building packages.
 `make handoff-check` runs all local no-API gates: audit/dry-run packaging, known-warning verification, MATH chunk-plan verification, chunk status summary, finalization dry-run, and final package verification.
 `make post-push-check` runs `make handoff-check` and then verifies local `main` is synchronized with GitHub.
+`make current-submit-check` is the one-command path for submitting the current known-blocker version after real metadata is available; it does not require the full MATH `manual_v1` table.
 `make ready-to-submit-check` is the strict final gate after quota and metadata are resolved: it requires a Git-tracked full MATH `manual_v1` table, verifies the report no longer has stale pending-run language, builds the named package, and verifies GitHub sync.
 Default packaging refuses uncommitted tracked changes; use `experiments/finalize_submission.py` for the final filled-metadata archive because it allows only the temporary `report/main.tex` metadata edit.
 

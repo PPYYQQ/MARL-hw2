@@ -95,6 +95,12 @@ After pushing the final handoff commit, run the full local gate plus GitHub sync
 make post-push-check
 ```
 
+If you will submit the current package without restoring Kimi quota, but real metadata is available, run:
+
+```bash
+make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+```
+
 After the full MATH `manual_v1` table is tracked in Git and real metadata is available, run the complete final-submission gate:
 
 ```bash

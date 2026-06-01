@@ -49,6 +49,12 @@ make handoff-check
 
 预期结果是 0 failures，只有两个 warning：学生信息占位符和 full MATH `manual_v1` test 表缺失。`handoff-check` 还会运行 known-warning 门禁，如果出现其他 warning 会失败，避免把新问题混在已知外部缺口里。拿到学生信息后再运行最终打包命令。
 
+如果决定不补 Kimi 额度、直接提交当前版本，并且已经拿到真实姓名学号邮箱，可以用一个命令完成当前版本 gate、实名 zip、GitHub 同步检查：
+
+```bash
+make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+```
+
 如果只想单独检查 warning 是否仍然只来自已知外部缺口，运行：
 
 ```bash
@@ -137,6 +143,8 @@ full MATH `manual_v1` 表已经提交到 Git，并且真实姓名学号邮箱都
 ```bash
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
+
+`current-submit-check` 面向不补 Kimi 额度的当前版本提交；`ready-to-submit-check` 面向 full MATH `manual_v1` 已补齐后的严格最终提交。
 
 ## 不要做的事
 
