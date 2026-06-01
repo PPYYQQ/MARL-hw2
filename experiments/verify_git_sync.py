@@ -35,9 +35,9 @@ def git_stdout(args: list[str]) -> str:
 def main() -> None:
     args = parse_args()
 
-    dirty = git_stdout(["status", "--porcelain", "--untracked-files=all"])
+    dirty = git_stdout(["status", "--porcelain=v1", "--untracked-files=all"])
     if dirty:
-        changed = ", ".join(line[3:] for line in dirty.splitlines()[:10])
+        changed = ", ".join(line[2:].strip() for line in dirty.splitlines()[:10])
         raise SystemExit(f"FAIL: Worktree has uncommitted changes: {changed}")
 
     upstream_result = run_git(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"], check=False)

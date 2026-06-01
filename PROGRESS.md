@@ -156,6 +156,8 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Tightened `experiments/verify_final_report_ready.py` so it requires one report line to contain the full MATH result's method, score, calls, and tokens together instead of accepting those values anywhere in the report.
 - Added `make status-summary` as a lightweight progress snapshot that runs the known-warning check, MATH chunk summary, and GitHub synchronization check without rebuilding packages.
 - Tightened final metadata handling so `fill_report_metadata.py` and `finalize_submission.py` reject placeholder/example metadata for real writes, while still allowing the dedicated test metadata path in dry-run mode.
+- Expanded `docs/REQUIREMENT_RUN_MATRIX.md` with an execution-command and evidence matrix, including the exact API commands behind each completed assignment requirement, the remaining MATH `manual_v1` full-test command, and a note explaining MATH rescored table values versus raw evidence CSV scores.
+- Fixed `experiments/verify_git_sync.py` so dirty-worktree diagnostics preserve full filenames such as `PROGRESS.md` when reporting files that still need to be committed.
 
 ## Next Steps
 

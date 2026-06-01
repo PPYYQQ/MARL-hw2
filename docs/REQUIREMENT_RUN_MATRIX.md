@@ -15,6 +15,24 @@ This document maps the assignment's required experiments to the runs completed i
 | Token/efficiency analysis | 统计调用量、token 和精度/成本权衡 | `report/tables/efficiency_summary.md` 和 `report/tables/api_budget_summary.md` 已生成 | 已完成 | 无 |
 | Report/package | PDF 报告、代码、证据、提交 zip | 默认 PDF、证据、package builder、package verifier、默认 zip 都已准备 | 默认包完成 | 最终提交前需要姓名、学号、邮箱 |
 
+## 执行命令与证据矩阵
+
+| 作业要求 | 已执行/应执行命令 | 当前产物和证据 | 是否还要跑 |
+| --- | --- | --- | --- |
+| MATH direct baseline | `python experiments/run_baselines.py --dataset MATH --baseline direct --split test --max-concurrency 4` | `report/tables/math_test_baselines.md`、`report/evidence/math_test_baselines/direct/` | 不需要 |
+| MATH CoT baseline | `python experiments/run_baselines.py --dataset MATH --baseline cot --split test --max-concurrency 4` | `report/tables/math_test_baselines.md`、`report/evidence/math_test_baselines/cot/` | 不需要 |
+| HumanEval direct baseline | `python experiments/run_baselines.py --dataset HumanEval --baseline direct --split test --max-concurrency 8` | `report/tables/humaneval_test_results.md`、`report/evidence/humaneval_test/direct/` | 不需要 |
+| HumanEval CoT baseline | `python experiments/run_baselines.py --dataset HumanEval --baseline cot --split test --max-concurrency 8` | `report/tables/humaneval_test_results.md`、`report/evidence/humaneval_test/cot/` | 不需要 |
+| MATH workflow validation | `python experiments/run_workflows.py --dataset MATH --workflow manual_v1 --sample-size 50 --sample-seed 1 --max-concurrency 2` | `report/tables/math_validation50_results.md`、`report/evidence/math_validate50/manual_v1/` | full test 还要补跑 |
+| HumanEval workflow full test | `python experiments/run_workflows.py --dataset HumanEval --workflow manual_v1 --split test --max-concurrency 8` | `report/tables/humaneval_test_results.md`、`report/evidence/humaneval_test/manual_v1/` | 不需要 |
+| MATH ablation | `python experiments/run_workflows.py --dataset MATH --workflow ablation_single --sample-size 50 --sample-seed 1 --max-concurrency 2` | `report/tables/math_validation50_results.md`、`report/evidence/math_validate50/ablation_single/` | 不需要，除非补 full ablation |
+| HumanEval ablation | `python experiments/run_workflows.py --dataset HumanEval --workflow ablation_no_public_test --split test --max-concurrency 8` | `report/tables/humaneval_test_results.md`、`report/evidence/humaneval_test/ablation_no_public_test/` | 不需要 |
+| Missing MATH workflow full test | `make resume-math-manual-chunk`，完成后 `make collect-math-manual-chunked` | 计划已由 `make verify-math-manual-plan` 验证；当前 `make summarize-math-manual-chunks` 显示 0/25 chunks 完成 | 需要 Kimi 余额或新 API key |
+| Local handoff verification | `make post-push-check` | audit、evidence verification、package verification、GitHub sync 均通过；只保留已知外部 blocker warnings | 每次关键 commit 后重跑 |
+| Final course package | `make finalize-submission FINAL_NAME=... FINAL_STUDENT_ID=... FINAL_EMAIL=...` | 默认 zip 已可生成和验证；最终命名 zip 需要真实 metadata | 需要姓名、学号、邮箱 |
+
+说明：MATH 表格使用 `experiments/collect_results.py --rescore-math` 的当前 evaluator 重新评分；`report/evidence/` 中部分 CSV 文件名和 `raw_average_score` 反映的是原始 AFlow 评分，不是最终报告采用的重评分数。
+
 ## 额度使用矩阵
 
 | 用途 | runs | calls | tokens | 估算 Kimi K2.5 成本 | 说明 |
