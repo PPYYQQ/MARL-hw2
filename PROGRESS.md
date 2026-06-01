@@ -186,6 +186,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Continued the restored full MATH `manual_v1` run through chunk 4. The run now has 5/25 chunks completed, covering indices 0-99 with aggregate score `0.93000`, 500 LLM calls, and 560,382 tokens; the next missing chunk is chunk 5, indices 100-119.
 - Continued the full MATH `manual_v1` chunked run through chunk 9. The run now has 10/25 chunks completed, covering indices 0-199 with aggregate score `0.93000`, 1,000 LLM calls, and 1,182,014 tokens; the next missing chunk is chunk 10, indices 200-219.
 - Continued the full MATH `manual_v1` chunked run through chunk 14. The run now has 15/25 chunks completed, covering indices 0-299 with aggregate score `0.92333`, 1,499 LLM calls, and 1,982,561 tokens; the next missing chunk is chunk 15, indices 300-319.
+- Continued the full MATH `manual_v1` chunked run through chunk 19. The run now has 20/25 chunks completed, covering indices 0-399 with aggregate score `0.91750`, 2,001 LLM calls, and 3,117,592 tokens; the next missing chunk is chunk 20, indices 400-419.
 
 ## Next Steps
 
