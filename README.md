@@ -11,6 +11,7 @@ This repository contains the implementation, experiment runners, evidence, and r
 - `report/evidence/`: copied CSV/config/log/token-summary artifacts for the cited final runs.
 - `docs/`: setup notes, ablation notes, experiment command ledger, paper notes, chunked-run guide, completion audit, and submission status.
 - `docs/REQUIREMENT_RUN_MATRIX.md`: assignment requirement matrix showing required runs, completed runs, gaps, and evidence.
+- `docs/FINAL_HANDOFF_CN.md`: Chinese final handoff checklist for submission metadata, quota recovery, and final commands.
 - `PROGRESS.md`: chronological work log.
 
 ## Current Result Summary

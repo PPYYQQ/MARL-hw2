@@ -28,6 +28,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/verify_submission_package.py`: validates generated zip contents against tracked files, manifest commit, PDF inclusion, manifest checksums, zero-failure audit summary, and secret hygiene.
 - `docs/COMPLETION_AUDIT.md`: requirement-by-requirement handoff audit with evidence paths and remaining external inputs.
 - `docs/REQUIREMENT_RUN_MATRIX.md`: matrix of assignment-required experiment coverage, completed runs, remaining gaps, and evidence files.
+- `docs/FINAL_HANDOFF_CN.md`: Chinese final handoff checklist covering what can be submitted now, what external inputs remain, and exact final commands.
 - `docs/EXPERIMENT_COMMANDS.md`: command ledger for API runs, table generation, analysis, evidence export, audit, and packaging.
 - `docs/PAPER_NOTES.md`: notes linking AFlow and multi-agent debate ideas to the implemented workflows.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
