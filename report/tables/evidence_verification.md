@@ -15,3 +15,4 @@ MATH rows are rescored with the current evaluator; HumanEval rows use saved eval
 | humaneval_test | ablation_no_public_test | 131 | 0.99237 | 0.99237 | 409 | 303127 | ok |
 | math_test_baselines | direct | 486 | 0.88889 | 0.88889 | 486 | 425052 | ok |
 | math_test_baselines | cot | 486 | 0.89300 | 0.89300 | 486 | 459130 | ok |
+| math_test_manual | manual_v1 | 486 | 0.91770 | 0.91770 | 2431 | 3786936 | ok |

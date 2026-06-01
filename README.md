@@ -11,8 +11,8 @@ This repository contains the implementation, experiment runners, evidence, and r
 - `report/evidence/`: copied CSV/config/log/token-summary artifacts for the cited final runs.
 - `docs/`: setup notes, ablation notes, experiment command ledger, paper notes, chunked-run guide, completion audit, and submission status.
 - `docs/REQUIREMENT_RUN_MATRIX.md`: assignment requirement matrix showing required runs, completed runs, gaps, and evidence.
-- `docs/FINAL_HANDOFF_CN.md`: Chinese final handoff checklist for submission metadata, quota recovery, and final commands.
-- `docs/KIMI_QUOTA_RECOVERY_CN.md`: Chinese runbook for safely resuming the remaining full MATH workflow after recharge.
+- `docs/FINAL_HANDOFF_CN.md`: Chinese final handoff checklist for submission metadata, completed experiment evidence, and final commands.
+- `docs/KIMI_QUOTA_RECOVERY_CN.md`: Chinese runbook for reproducing or extending the checkpointed full MATH workflow.
 - `PROGRESS.md`: chronological work log.
 
 ## Current Result Summary
@@ -21,9 +21,9 @@ This repository contains the implementation, experiment runners, evidence, and r
 - MATH 50-sample validation: `manual_v1` reaches `0.98000`, above direct at `0.96000` and CoT at `0.94000`.
 - HumanEval full test: no-public-test ablation reaches `0.99237`; CoT and `manual_v1` both reach `0.98473`.
 - MATH full test baselines: direct reaches `0.88889`; CoT reaches `0.89300`.
-- MATH full `manual_v1` estimate: about `2,430` calls and `3.40M` raw tokens for the 486-example test split.
-- Efficiency tradeoff: MATH `manual_v1` costs `9.16x` direct tokens on 50 validation samples; HumanEval no-public-test costs `6.19x` direct tokens on the full test split.
-- API budget summary: recorded runs use about `2.41M` tracked tokens; the remaining full MATH `manual_v1` run is estimated at `3.40M` tokens.
+- MATH full `manual_v1`: reaches `0.91770`, above direct and CoT, with `2,431` calls and `3.79M` tracked tokens.
+- Efficiency tradeoff: MATH full `manual_v1` costs `8.91x` direct tokens; HumanEval no-public-test costs `6.19x` direct tokens on the full test split.
+- API budget summary: recorded required runs use about `6.20M` tracked tokens; no required API run remains.
 
 ## Quick Checks
 
@@ -39,7 +39,7 @@ Or use the Makefile shortcut:
 make final-check
 ```
 
-Confirm that any audit warnings are only the known external blockers:
+Confirm that any audit warnings are only the maintained warning cases:
 
 ```bash
 make verify-known-warnings
@@ -101,13 +101,13 @@ After pushing the final handoff commit, run the full local gate plus GitHub sync
 make post-push-check
 ```
 
-If you will submit the current package without restoring Kimi quota, but real metadata is available, run:
+If real metadata is available, run the current submission gate:
 
 ```bash
 make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
 
-After the full MATH `manual_v1` table is tracked in Git and real metadata is available, run the complete final-submission gate:
+After the full MATH `manual_v1` table is tracked in Git and real metadata is available, run the strict final-submission gate:
 
 ```bash
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
@@ -186,7 +186,7 @@ Verify the local PDF is current for the TeX sources:
 make verify-report-pdf
 ```
 
-Verify the planned full MATH `manual_v1` chunks before spending API quota:
+Verify the full MATH `manual_v1` chunk plan before reproducing or extending the run:
 
 ```bash
 make verify-math-manual-plan
@@ -204,13 +204,13 @@ Summarize current chunked-run progress without making API calls:
 make summarize-math-manual-chunks
 ```
 
-After quota is restored, resume one checkpointed MATH `manual_v1` chunk:
+To reproduce or extend the checkpointed MATH `manual_v1` run, resume one chunk:
 
 ```bash
 make resume-math-manual-chunk
 ```
 
-For the full low-risk recharge and resume sequence, see `docs/KIMI_QUOTA_RECOVERY_CN.md`.
+For the full checkpointed-run sequence, see `docs/KIMI_QUOTA_RECOVERY_CN.md`.
 
 Collect completed chunked outputs into the local report table:
 
@@ -238,5 +238,4 @@ conda run -n marl_hw2 python experiments/fill_report_metadata.py --name "Your Na
 
 ## Known Blockers
 
-- New Kimi API calls currently fail with an insufficient-balance quota error, so full MATH `manual_v1` test evaluation is not complete.
 - `report/main.tex` still contains placeholder student name, ID, and email fields; use `experiments/fill_report_metadata.py` after those values are known.

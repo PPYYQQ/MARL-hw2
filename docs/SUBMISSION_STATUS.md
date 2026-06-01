@@ -1,6 +1,6 @@
 # Submission Status
 
-This document tracks what is ready for submission, what is reproducible, and what still needs external support.
+This document tracks what is ready for submission, what is reproducible, and what still needs final metadata.
 
 ## Current Deliverables
 
@@ -13,7 +13,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/run_chunked_workflows.py`: checkpointed workflow runner for expensive full-test jobs.
 - `experiments/collect_results.py`: result table collection and MATH rescoring utility.
 - `experiments/analyze_efficiency.py`: token-efficiency summary utility.
-- `experiments/analyze_api_budget.py`: summarizes recorded Kimi token usage, estimated stopped-run usage, and remaining full MATH `manual_v1` budget.
+- `experiments/analyze_api_budget.py`: summarizes recorded Kimi token usage, estimated stopped-run usage, and remaining required API budget.
 - `experiments/estimate_math_manual_test.py`: estimates full MATH `manual_v1` resource needs from tracked evidence.
 - `experiments/verify_chunked_plan.py`: verifies the planned full MATH `manual_v1` chunks without API calls.
 - `experiments/verify_result_table.py`: verifies that a collected Markdown result table contains an expected experiment row.
@@ -21,7 +21,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/verify_report_pdf.py`: verifies that the local report PDF is current for tracked TeX sources.
 - `experiments/verify_metadata_validation.py`: verifies final metadata placeholder rejection and explicit test-metadata opt-in behavior.
 - `experiments/verify_package_verifier.py`: verifies package-verifier regression checks for manifest count drift and active API key leakage.
-- `experiments/verify_audit_warnings.py`: verifies that submission-audit warnings are limited to known external blockers.
+- `experiments/verify_audit_warnings.py`: verifies that submission-audit warnings are limited to maintained warning cases.
 - `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
 - `experiments/verify_evidence.py`: verifies tracked evidence against cited scores, row counts, calls, and token totals.
 - `experiments/fill_report_metadata.py`: fills author name, student ID, and email when provided.
@@ -32,16 +32,16 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/package_submission.py`: tracked-file submission zip builder with optional student/name/assignment output naming.
 - `experiments/verify_submission_package.py`: validates generated zip contents against tracked files, clean tracked worktree state, manifest commit, manifest output path, manifest file counts, PDF inclusion, archive/filesystem checksums, zero-failure audit summary, forbidden paths, and active `KIMI_API_KEY` leakage when available.
 - `docs/COMPLETION_AUDIT.md`: requirement-by-requirement handoff audit with evidence paths and remaining external inputs.
-- `docs/REQUIREMENT_RUN_MATRIX.md`: matrix of assignment-required experiment coverage, completed runs, remaining gaps, and evidence files.
-- `docs/FINAL_HANDOFF_CN.md`: Chinese final handoff checklist covering what can be submitted now, what external inputs remain, and exact final commands.
-- `docs/KIMI_QUOTA_RECOVERY_CN.md`: Chinese low-risk recharge and resume runbook for the remaining full MATH workflow.
+- `docs/REQUIREMENT_RUN_MATRIX.md`: matrix of assignment-required experiment coverage, completed runs, remaining submission steps, and evidence files.
+- `docs/FINAL_HANDOFF_CN.md`: Chinese final handoff checklist covering what can be submitted now, what metadata remains, and exact final commands.
+- `docs/KIMI_QUOTA_RECOVERY_CN.md`: Chinese checkpoint runbook for reproducing or extending the full MATH workflow.
 - `docs/EXPERIMENT_COMMANDS.md`: command ledger for API runs, table generation, analysis, evidence export, audit, and packaging.
 - `docs/PAPER_NOTES.md`: notes linking AFlow and multi-agent debate ideas to the implemented workflows.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
 - `report/main.pdf`: locally compiled report PDF, included in generated submission packages when present.
 - `report/evidence/`: raw CSV/config/log/token-summary evidence for the cited final runs.
 - `PROGRESS.md`: chronological implementation and experiment log.
-- Report coverage includes research context, AFlow engineering structure, environment setup, baseline prompts, workflow algorithm details, validation/test results, ablations, failure analysis, efficiency analysis, limitations, and remaining blockers.
+- Report coverage includes research context, AFlow engineering structure, environment setup, baseline prompts, workflow algorithm details, validation/test results, ablations, failure analysis, efficiency analysis, limitations, and optional follow-up work.
 
 ## Current Results
 
@@ -51,10 +51,10 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - HumanEval full test: direct `0.97710`, CoT `0.98473`, `manual_v1` `0.98473`, no-public-test ablation `0.99237`.
 - HumanEval full-test failure analysis: CoT, `manual_v1`, and no-public-test all fix the three direct failures; no-public-test has the fewest regressions against direct.
 - MATH full test baselines: direct `0.88889`, CoT `0.89300`.
-- Efficiency summary: MATH 50-sample `manual_v1` gains `+0.02000` over direct at `9.16x` tokens; HumanEval no-public-test gains `+0.01527` at `6.19x` tokens.
-- API budget summary: recorded runs use `2.41M` tracked tokens; the remaining full MATH `manual_v1` run is estimated at `3.40M` tokens and about `CNY 34-41` before retry margin.
-- MATH full `manual_v1` estimate: about `2,430` LLM calls and `3.40M` raw tokens for 486 test examples, split into 25 chunks at chunk size 20.
-- Evidence verification: all 10 tracked cited runs in `report/evidence/` reproduce their expected rows, scores, call counts, and token totals.
+- MATH full `manual_v1`: score `0.91770`, 2,431 LLM calls, 3,786,936 tracked tokens, split into 25 completed chunks at chunk size 20.
+- Efficiency summary: MATH full `manual_v1` gains `+0.02881` over direct at `8.91x` tokens; HumanEval no-public-test gains `+0.01527` at `6.19x` tokens.
+- API budget summary: recorded required runs use `6.20M` tracked tokens for estimated `CNY 73.15-82.43`; no required API run remains.
+- Evidence verification: all 11 tracked cited runs in `report/evidence/` reproduce their expected rows, scores, call counts, and token totals.
 
 ## Reproducibility Commands
 
@@ -127,9 +127,9 @@ Audit only:
 conda run -n marl_hw2 python experiments/audit_submission.py
 ```
 
-The audit is expected to warn until the Kimi quota, report metadata, and full MATH `manual_v1` test run are resolved.
+The audit is expected to warn until report metadata is filled, and may also warn if `KIMI_API_KEY` is not set in the current shell.
 
-Verify that audit warnings are limited to the known external blockers:
+Verify that audit warnings are limited to the maintained warning cases:
 
 ```bash
 make verify-known-warnings
@@ -212,7 +212,7 @@ Run all local no-API handoff gates:
 make handoff-check
 ```
 
-This also fails if `experiments/audit_submission.py` emits any warning outside the maintained known-blocker allowlist.
+This also fails if `experiments/audit_submission.py` emits any warning outside the maintained warning allowlist.
 
 Print a shorter current-status snapshot:
 
@@ -232,13 +232,13 @@ After the final handoff commit is pushed, run the package/audit gates plus GitHu
 make post-push-check
 ```
 
-If submitting the current known-blocker version after real metadata is available:
+If submitting the current version after real metadata is available:
 
 ```bash
 make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
 
-This runs the current handoff gates, builds the named metadata-filled zip, and verifies GitHub sync without requiring the missing full MATH `manual_v1` result table.
+This runs the current handoff gates, builds the named metadata-filled zip, and verifies GitHub sync.
 
 After the full MATH `manual_v1` result table is tracked in Git and real metadata is available, run the final submission gate:
 
@@ -282,7 +282,7 @@ Default packaging refuses uncommitted tracked changes; finalization only permits
 Finalization refuses to start if any tracked file already has uncommitted changes.
 Finalization rejects placeholder/example metadata such as `Your Name`, `Your ID`, `you@example.com`, `Test Student`, `TEST123`, `test@example.com`, case variants, `TODO`, and angle-bracket placeholder values for normal finalization and real-metadata dry-runs; the built-in `make finalize-dry-run` path is the only maintained path that enables `--allow-test-metadata`, and it writes no files.
 
-After Kimi quota is restored, resume the missing full MATH workflow evaluation:
+To reproduce or extend the checkpointed full MATH workflow evaluation:
 
 ```bash
 make resume-math-manual-chunk
@@ -300,7 +300,7 @@ The summary also prints the next non-completed chunk and the suggested follow-up
 
 Rerun the same command to process the next incomplete chunk. Override `MATH_MANUAL_MAX_CHUNKS` to process more chunks in one invocation.
 
-After enough chunks complete, refresh the local result table:
+After chunks complete or if local artifacts are refreshed, regenerate the local result table:
 
 ```bash
 make collect-math-manual-chunked
@@ -322,13 +322,10 @@ make verify-final-report-ready
 
 ## Known Blockers
 
-- New Kimi API calls currently fail with an insufficient-balance quota error; the current budget estimate recommends at least CNY 50 before resuming the missing run.
-- Full MATH `manual_v1` test results are therefore not available yet.
 - `report/main.tex` still contains placeholder student name, student ID, and email fields; use `experiments/fill_report_metadata.py` after those values are known.
 
 ## Next Actions
 
-1. Recharge the Kimi account or provide another valid `KIMI_API_KEY`.
-2. Resume full MATH `manual_v1` with the chunked runner.
-3. Collect the chunked MATH result table after enough chunks complete.
-4. Run `experiments/finalize_submission.py --name ... --student-id ... --email ...` to fill metadata, rebuild the PDF, and create the final named zip.
+1. Provide the real student name, student ID, and email.
+2. Run `experiments/finalize_submission.py --name ... --student-id ... --email ...` to fill metadata, rebuild the PDF, and create the final named zip.
+3. Use `docs/KIMI_QUOTA_RECOVERY_CN.md` only for optional reproduction or follow-up experiments.

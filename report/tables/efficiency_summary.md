@@ -12,5 +12,6 @@ Score deltas and multipliers are computed against the direct baseline within eac
 | HumanEval test | cot | 0.98473 | +0.00763 | 131 | 1.00x | 120573 | 2.46x |
 | HumanEval test | direct | 0.97710 | +0.00000 | 131 | 1.00x | 48941 | 1.00x |
 | HumanEval test | manual_v1 | 0.98473 | +0.00763 | 287 | 2.19x | 134751 | 2.75x |
-| MATH test baselines | cot | 0.89300 | +0.00411 | 486 | 1.00x | 459130 | 1.08x |
-| MATH test baselines | direct | 0.88889 | +0.00000 | 486 | 1.00x | 425052 | 1.00x |
+| MATH test | cot | 0.89300 | +0.00411 | 486 | 1.00x | 459130 | 1.08x |
+| MATH test | direct | 0.88889 | +0.00000 | 486 | 1.00x | 425052 | 1.00x |
+| MATH test | manual_v1 | 0.91770 | +0.02881 | 2431 | 5.00x | 3786936 | 8.91x |

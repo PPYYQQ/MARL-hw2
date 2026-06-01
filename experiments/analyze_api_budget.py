@@ -14,6 +14,7 @@ from typing import Any
 DEFAULT_RUNS_DIR = Path("experiments/runs")
 DEFAULT_MANUAL_VALIDATE_RUN = Path("report/evidence/math_validate50/manual_v1")
 DEFAULT_DIRECT_TEST_RUN = Path("report/evidence/math_test_baselines/direct")
+DEFAULT_MANUAL_TEST_RUN = Path("experiments/chunked_runs/MATH/manual_v1/math-test-manual-v1")
 DEFAULT_OUTPUT = Path("report/tables/api_budget_summary.md")
 
 INPUT_CACHE_HIT_CNY_PER_MILLION = 0.70
@@ -39,6 +40,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--runs-dir", type=Path, default=DEFAULT_RUNS_DIR)
     parser.add_argument("--manual-validate-run", type=Path, default=DEFAULT_MANUAL_VALIDATE_RUN)
     parser.add_argument("--direct-test-run", type=Path, default=DEFAULT_DIRECT_TEST_RUN)
+    parser.add_argument("--manual-test-run", type=Path, default=DEFAULT_MANUAL_TEST_RUN)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     return parser.parse_args()
 
@@ -135,6 +137,22 @@ def estimate_remaining_manual_run(
     )
 
 
+def completed_manual_run(manual_test_run: Path) -> UsageRow | None:
+    config_path = manual_test_run / "run_config.json"
+    if not config_path.is_file():
+        return None
+    config = read_json(config_path)
+    if not config.get("is_complete"):
+        return None
+    return UsageRow(
+        group="MATH full manual_v1 workflow",
+        runs=1,
+        calls=int(config.get("llm_call_count") or 0),
+        input_tokens=int(config.get("total_input_tokens") or 0),
+        output_tokens=int(config.get("total_output_tokens") or 0),
+    )
+
+
 def cny_range(row: UsageRow) -> str:
     cache_hit = (
         row.input_tokens * INPUT_CACHE_HIT_CNY_PER_MILLION
@@ -188,7 +206,7 @@ def total_row(group: str, rows: list[UsageRow]) -> UsageRow:
 def render_markdown(
     recorded_rows: list[UsageRow],
     partial_rows: list[UsageRow],
-    remaining_row: UsageRow,
+    remaining_row: UsageRow | None,
     unmetered_runs: int,
 ) -> str:
     recorded_total = total_row("Recorded subtotal", recorded_rows)
@@ -197,11 +215,11 @@ def render_markdown(
     lines = [
         "# API Budget Summary",
         "",
-        "This table summarizes local Kimi API usage from saved `run_config.json` files and estimates the remaining full MATH `manual_v1` run. It does not make API calls.",
+        "This table summarizes local Kimi API usage from saved `run_config.json` files. It does not make API calls.",
         "",
         "Pricing basis checked on 2026-06-01 from Kimi documentation: Kimi K2.5 input is CNY 0.70/1M tokens for cache hits or CNY 4.00/1M tokens for cache misses; output is CNY 21.00/1M tokens. The cost column is therefore a cache-hit to cache-miss input range.",
         "",
-        "Kimi rate-limit basis checked on 2026-06-01: Tier0 has 1.5M tokens per day; Tier1 starts at CNY 50 cumulative recharge and removes the daily token cap. The remaining run is larger than the Tier0 daily cap, so a CNY 50 recharge is the practical minimum if the account is currently at Tier0.",
+        "Kimi rate-limit basis checked on 2026-06-01: Tier0 has 1.5M tokens per day; Tier1 starts at CNY 50 cumulative recharge and removes the daily token cap. The completed full MATH `manual_v1` run is larger than the Tier0 daily cap, so a Tier1 account or equivalent quota is required to reproduce it in one day.",
         "",
         "## Recorded Usage",
         "",
@@ -219,20 +237,21 @@ def render_markdown(
     )
     lines.extend(render_usage_table(partial_rows + [known_total]))
 
+    lines.extend(["", "## Remaining Required API Budget", ""])
+    if remaining_row is None:
+        lines.append("No required API run remains for the assignment experiments. Additional Kimi budget is only needed for optional follow-up ablations or prompt tuning.")
+    else:
+        lines.extend(render_usage_table([remaining_row]))
+        lines.extend(
+            [
+                "",
+                "Recommendation: keep at least CNY 50 available before resuming full MATH `manual_v1`; CNY 80-100 leaves room for retries or a small follow-up validation run.",
+            ]
+        )
     lines.extend(
         [
             "",
-            "## Remaining Required API Budget",
-            "",
-        ]
-    )
-    lines.extend(render_usage_table([remaining_row]))
-    lines.extend(
-        [
-            "",
-            "Recommendation: keep at least CNY 50 available before resuming full MATH `manual_v1`; CNY 80-100 leaves room for retries or a small follow-up validation run.",
-            "",
-            "Sources: `report/evidence/math_validate50/manual_v1/run_config.json`, `report/evidence/math_test_baselines/direct/run_config.json`, and saved run configs under `experiments/runs/`.",
+            "Sources: `report/evidence/math_validate50/manual_v1/run_config.json`, `report/evidence/math_test_baselines/direct/run_config.json`, `experiments/chunked_runs/MATH/manual_v1/math-test-manual-v1/run_config.json`, and saved run configs under `experiments/runs/`.",
         ]
     )
     return "\n".join(lines) + "\n"
@@ -243,8 +262,12 @@ def main() -> None:
     manual_config = read_json(args.manual_validate_run / "run_config.json")
     direct_test_config = read_json(args.direct_test_run / "run_config.json")
     recorded_rows, unmetered_runs = load_recorded_usage(args.runs_dir)
+    manual_test_row = completed_manual_run(args.manual_test_run)
+    if manual_test_row is not None:
+        recorded_rows.append(manual_test_row)
+        recorded_rows = sorted(recorded_rows, key=lambda row: row.group)
     partial_rows = estimate_partial_runs(args.runs_dir, manual_config)
-    remaining_row = estimate_remaining_manual_run(manual_config, direct_test_config)
+    remaining_row = None if manual_test_row is not None else estimate_remaining_manual_run(manual_config, direct_test_config)
     markdown = render_markdown(recorded_rows, partial_rows, remaining_row, unmetered_runs)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(markdown, encoding="utf-8")

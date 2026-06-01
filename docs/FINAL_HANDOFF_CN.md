@@ -1,6 +1,6 @@
 # 最终交接清单
 
-本文件面向最后接手提交的人，回答三个问题：现在能交什么、还缺什么、如果拿到外部支持应该怎么继续。
+本文件面向最后接手提交的人，回答三个问题：现在能交什么、还缺什么、如果还要复现实验应该怎么继续。
 
 ## 当前可交付状态
 
@@ -32,14 +32,14 @@
 make finalize-submission-dry-run FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
 
-## 如果不补 Kimi 额度
+## 当前实验状态
 
-可以提交当前版本，但报告会明确说明 full MATH `manual_v1` test 因 Kimi 余额不足未完成。当前已有证据仍支持：
+现在必跑实验已经完成，当前证据支持：
 
-- MATH direct/CoT full test 已完成。
+- MATH direct/CoT/`manual_v1` full test 已完成，其中 full MATH `manual_v1` 分数为 `0.91770`。
 - HumanEval direct/CoT/`manual_v1`/ablation full test 已完成。
 - MATH `manual_v1` 在 validate20 和 validate50 上超过 direct 与 CoT。
-- 成本、失败案例、消融和证据验证都已完成。
+- 成本、失败案例、消融、chunked checkpoint 和证据验证都已完成。
 
 提交前运行：
 
@@ -47,9 +47,9 @@ make finalize-submission-dry-run FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your I
 make handoff-check
 ```
 
-预期结果是 0 failures，只有两个 warning：学生信息占位符和 full MATH `manual_v1` test 表缺失。`handoff-check` 还会运行 known-warning 门禁，如果出现其他 warning 会失败，避免把新问题混在已知外部缺口里。拿到学生信息后再运行最终打包命令。
+预期结果是 0 failures，warning 只应来自学生信息占位符，以及当前 shell 没有设置 `KIMI_API_KEY` 时的环境提示。`handoff-check` 还会运行 known-warning 门禁，如果出现其他 warning 会失败，避免把新问题混在已知外部缺口里。拿到学生信息后再运行最终打包命令。
 
-如果决定不补 Kimi 额度、直接提交当前版本，并且已经拿到真实姓名学号邮箱，可以用一个命令完成当前版本 gate、实名 zip、GitHub 同步检查：
+如果已经拿到真实姓名学号邮箱，可以用一个命令完成当前版本 gate、实名 zip、GitHub 同步检查：
 
 ```bash
 make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
@@ -79,10 +79,9 @@ make verify-github-sync
 make post-push-check
 ```
 
-## 如果补到 Kimi 额度
+## 如果要复现或扩展 Kimi 实验
 
-建议至少准备 CNY 50；CNY 80-100 更稳。剩余 full MATH `manual_v1` 预计约 2,430 次调用、3.40M raw tokens、25 个 chunk。
-详细恢复流程见 `docs/KIMI_QUOTA_RECOVERY_CN.md`；下面是最短命令序列。
+必跑的 full MATH `manual_v1` 已完成：25/25 chunks、2,431 次调用、3,786,936 tracked tokens。详细 checkpoint 流程见 `docs/KIMI_QUOTA_RECOVERY_CN.md`；下面命令主要用于复现、刷新或扩展实验。
 
 先预览计划，不调用 API：
 
@@ -90,19 +89,19 @@ make post-push-check
 make dry-run-math-manual-chunks
 ```
 
-然后先跑一个 chunk，确认余额、限速和 checkpoint 都正常：
+如果要复现或在失败 chunk 后继续，先跑一个 chunk，确认余额、限速和 checkpoint 都正常：
 
 ```bash
 make resume-math-manual-chunk
 ```
 
-查看当前 chunk 完成情况和下一个待跑 chunk：
+查看当前 chunk 完成情况：
 
 ```bash
 make summarize-math-manual-chunks
 ```
 
-这个命令会输出 completed/quota-failed/missing 数量、下一个未完成 chunk，以及建议下一条 Make 命令。
+这个命令会输出 completed/quota-failed/missing 数量、下一个未完成 chunk（如果有），以及建议下一条 Make 命令。
 
 继续重复同一命令，或按需要提高每次 chunk 数：
 
@@ -144,14 +143,14 @@ full MATH `manual_v1` 表已经提交到 Git，并且真实姓名学号邮箱都
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
 
-`current-submit-check` 面向不补 Kimi 额度的当前版本提交；`ready-to-submit-check` 面向 full MATH `manual_v1` 已补齐后的严格最终提交。
+`current-submit-check` 是当前可提交版本的快捷 gate；`ready-to-submit-check` 是 full MATH `manual_v1` 已补齐后的严格最终提交 gate。
 
 ## 不要做的事
 
 - 不要把 `KIMI_API_KEY`、`.env`、`AFlow/config/config2.yaml` 或平台账号信息提交到 Git。
 - 不要直接删除 `experiments/runs/` 或 `experiments/chunked_runs/` 中的本地结果；这些目录被忽略，但仍可能用于重新导出证据。
 - 不要在有未提交 tracked 改动时打包；package 脚本会拒绝这种状态。
-- 不要把 full MATH `manual_v1` 的 validation 分数当作 full test 分数写入报告。
+- 不要把 full MATH `manual_v1` 的 validation 分数当作 full test 分数写入报告；full test 分数是 `0.91770`。
 
 ## 快速定位
 
@@ -160,7 +159,7 @@ make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FIN
 | 作业要求跑什么、实际跑了什么 | `docs/REQUIREMENT_RUN_MATRIX.md` |
 | 每一步干了什么 | `PROGRESS.md` |
 | 所有实验命令 | `docs/EXPERIMENT_COMMANDS.md` |
-| Kimi 额度恢复后怎么继续跑 | `docs/KIMI_QUOTA_RECOVERY_CN.md` |
+| Kimi 实验怎么复现或扩展 | `docs/KIMI_QUOTA_RECOVERY_CN.md` |
 | 还差什么才能最终提交 | `docs/COMPLETION_AUDIT.md` |
 | 当前提交状态 | `docs/SUBMISSION_STATUS.md` |
 | 额度花在哪里、还要多少 | `report/tables/api_budget_summary.md` |

@@ -9,9 +9,13 @@ from pathlib import Path
 
 
 DEFAULT_COMPARISONS = [
-    ("MATH validate50", Path("report/tables/math_validation50_results.md"), "direct"),
-    ("HumanEval test", Path("report/tables/humaneval_test_results.md"), "direct"),
-    ("MATH test baselines", Path("report/tables/math_test_baselines.md"), "direct"),
+    ("MATH validate50", [Path("report/tables/math_validation50_results.md")], "direct"),
+    ("HumanEval test", [Path("report/tables/humaneval_test_results.md")], "direct"),
+    (
+        "MATH test",
+        [Path("report/tables/math_test_baselines.md"), Path("report/tables/math_test_manual_chunked.md")],
+        "direct",
+    ),
 ]
 
 
@@ -84,11 +88,15 @@ def render_markdown() -> str:
         "| " + " | ".join(["---"] * len(headers)) + " |",
     ]
 
-    for group, path, baseline_method in DEFAULT_COMPARISONS:
-        rows = parse_markdown_table(path, group)
+    for group, paths, baseline_method in DEFAULT_COMPARISONS:
+        rows: list[ResultRow] = []
+        for path in paths:
+            if path.is_file():
+                rows.extend(parse_markdown_table(path, group))
         baseline = next((row for row in rows if row.method == baseline_method), None)
         if baseline is None:
-            raise ValueError(f"Missing baseline {baseline_method!r} in {path}")
+            path_text = ", ".join(path.as_posix() for path in paths)
+            raise ValueError(f"Missing baseline {baseline_method!r} in {path_text}")
         for row in sorted(rows, key=lambda item: (item.group, item.method)):
             score_delta = row.score - baseline.score
             call_multiplier = row.calls / baseline.calls if baseline.calls else 0.0

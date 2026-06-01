@@ -86,5 +86,5 @@ make py-compile
 Expected result:
 
 ```text
-The commands should pass locally without making API calls. `make final-check` may warn about missing final student metadata and the quota-blocked full MATH `manual_v1` test table until those external inputs are resolved.
+The commands should pass locally without making API calls. `make final-check` may warn about missing final student metadata and `KIMI_API_KEY` if the current shell does not export it.
 ```

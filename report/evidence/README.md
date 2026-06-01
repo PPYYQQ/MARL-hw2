@@ -16,3 +16,4 @@ For MATH rows, `raw_average_score` is the original CSV score; report tables may 
 | humaneval_test | ablation_no_public_test | 131 | 0.99237 | 409 | 303127 | report/evidence/humaneval_test/ablation_no_public_test |
 | math_test_baselines | direct | 486 | 0.88889 | 486 | 425052 | report/evidence/math_test_baselines/direct |
 | math_test_baselines | cot | 486 | 0.89300 | 486 | 459130 | report/evidence/math_test_baselines/cot |
+| math_test_manual | manual_v1 | 486 | 0.91770 | 2431 | 3786936 | report/evidence/math_test_manual/manual_v1 |

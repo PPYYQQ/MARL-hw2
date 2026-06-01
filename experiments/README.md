@@ -162,7 +162,7 @@ Verify the assignment run matrix against tracked result and budget tables:
 python experiments/verify_requirement_matrix.py
 ```
 
-Use `--strict` before final packaging when the Kimi quota, student metadata, and local PDF build blockers have been resolved.
+Use `--strict` before final packaging when student metadata and local PDF build blockers have been resolved.
 
 Run the maintained Make gates before handoff or final submission:
 
@@ -174,7 +174,7 @@ make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINA
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
 
-Use `current-submit-check` for the current known-blocker package after real metadata is available. Use `ready-to-submit-check` only after the full MATH `manual_v1` table is generated, tracked, and reflected in the report.
+Use `current-submit-check` for the current package after real metadata is available. Use `ready-to-submit-check` after the full MATH `manual_v1` table is tracked and reflected in the report.
 
 Create a submission zip from tracked files and an optional `report/main.pdf`:
 

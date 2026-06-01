@@ -27,14 +27,14 @@
 ]
 
 \begin{abstract}
-This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. The current experiments include MATH validation subsets, full HumanEval test runs, and full MATH direct/CoT test baselines. The main remaining experiment is the expensive full MATH \texttt{manual\_v1} workflow run, which now requires a recharged Kimi account or another valid API key.
+This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. The final experiments include MATH validation subsets, full HumanEval test runs, full MATH direct/CoT test baselines, and a checkpointed full MATH \texttt{manual\_v1} workflow run.
 \end{abstract}
 
 \section{Introduction}
 
 Large language model agents can improve reasoning by decomposing a task into multiple model calls, critiques, revisions, code execution steps, or ensemble decisions. AFlow formulates this idea as a search problem over code-represented agentic workflows, where reusable operators become nodes in a workflow graph and an optimizer searches for better graph structures \cite{zhang2025aflow}. Related work on multi-agent debate \cite{du2024debate} and optimizable agent graphs \cite{zhuge2024gptswarm} motivates comparing direct model calls against explicit multi-agent reasoning.
 
-The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. The current project focuses on a reproducible engineering base: safe API configuration, benchmark runners, manual workflows, validation subsets, full-test result tables where available, and resumable execution for expensive workflow runs.
+The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. The project focuses on a reproducible engineering base: safe API configuration, benchmark runners, manual workflows, validation subsets, full-test result tables, and resumable execution for expensive workflow runs.
 
 \section{Research Context}
 
@@ -198,15 +198,16 @@ Method & Score & Calls & Tokens \\
 \midrule
 direct & 0.88889 & 486 & 425,052 \\
 CoT & 0.89300 & 486 & 459,130 \\
+manual\_v1 & 0.91770 & 2,431 & 3,786,936 \\
 \bottomrule
 \end{tabular}
 \end{small}
 \end{center}
 \end{table}
 
-Table~\ref{tab:mathtest} reports full MATH test split baselines. CoT is slightly better than direct prompting, but the gap is small. A full \texttt{manual\_v1} test run was attempted with concurrency 2; it stalled in a long API wait before writing the final CSV. The 50-sample validation result therefore remains the current evidence for the MATH manual workflow, and full MATH workflow evaluation should be rerun in smaller chunks so partial results are checkpointed.
+Table~\ref{tab:mathtest} reports full MATH test split results. CoT is slightly better than direct prompting, but the gap is small. The checkpointed \texttt{manual\_v1} run completed all 25 chunks and improves the full-test score to 0.91770, above direct at 0.88889 and CoT at 0.89300. This gain is expensive: the full workflow used 2,431 LLM calls and 3,786,936 tracked tokens, so the result is best interpreted as a quality--cost tradeoff rather than a free accuracy improvement.
 
-To support that rerun, the project includes \path{experiments/run_chunked_workflows.py}. For MATH test with chunk size 20, it plans 25 chunks, skips completed chunks when rerun with the same \texttt{run-id}, and refreshes an aggregate CSV/config after every completed chunk. A first chunked attempt after the MATH baselines returned an insufficient-balance API error, so no full-test \texttt{manual\_v1} chunk is reported yet.
+The full workflow run used \path{experiments/run_chunked_workflows.py}. For MATH test with chunk size 20, it plans 25 chunks, skips completed chunks when rerun with the same \texttt{run-id}, and refreshes an aggregate CSV/config after every completed chunk. This checkpointing avoided losing completed work during quota and long-wait interruptions.
 
 \begin{table}[t]
 \caption{Efficiency tradeoffs against direct prompting.}
@@ -225,32 +226,32 @@ HumanEval test & CoT & +0.00763 & 2.46 \\
 HumanEval test & manual\_v1 & +0.00763 & 2.75 \\
 HumanEval test & no public test & +0.01527 & 6.19 \\
 MATH test & CoT & +0.00411 & 1.08 \\
+MATH test & manual\_v1 & +0.02881 & 8.91 \\
 \bottomrule
 \end{tabular}
 \end{scriptsize}
 \end{center}
 \end{table}
 
-Table~\ref{tab:efficiency} summarizes the score and token tradeoff against direct prompting. The clearest MATH validation improvement, \texttt{manual\_v1}, costs 9.16 times the direct baseline tokens for a 0.02 absolute score gain on the 50-sample subset. On HumanEval, the no-public-test ablation has the highest score and fixes the most direct failures, but costs 6.19 times the direct baseline tokens.
+Table~\ref{tab:efficiency} summarizes the score and token tradeoff against direct prompting. The clearest MATH validation improvement, \texttt{manual\_v1}, costs 9.16 times the direct baseline tokens for a 0.02 absolute score gain on the 50-sample subset. The full MATH test result confirms the same direction with a larger 0.02881 absolute gain, but still costs 8.91 times the direct baseline tokens. On HumanEval, the no-public-test ablation has the highest score and fixes the most direct failures, but costs 6.19 times the direct baseline tokens.
 
-\section{Remaining Experiments}
+\section{Optional Follow-up Experiments}
 
-Most planned infrastructure and several full benchmark runs are now complete. The remaining experimental sequence is:
+The required experiment set is complete except for final student metadata. Optional follow-up experiments would mainly test whether the MATH accuracy gain can be retained at lower cost:
 
 \begin{enumerate}
     \item Use the 50-sample MATH failure analysis to decide whether the shared arc-length failure can be addressed without increasing the already high token budget.
     \item Tune MATH prompts or add verification only on validation data if a low-cost fix is clear.
-    \item Rerun full MATH \texttt{manual\_v1} in checkpointed chunks rather than one monolithic job.
-    \item Add larger ablations: remove ensemble, reduce candidate count, and compare non-thinking against thinking-enabled Kimi K2.5.
+    \item Add larger MATH ablations on the full test split: remove ensemble, reduce candidate count, and compare non-thinking against thinking-enabled Kimi K2.5.
 \end{enumerate}
 
 \section{Limitations}
 
-Current MATH workflow results are validation subsets and should not be interpreted as final benchmark gains. The manual workflows increase token usage and latency, especially for MATH where three candidates plus ensemble selection used 151,117 tokens on 20 problems and 349,515 tokens on 50 problems. Extrapolating from the tracked 50-sample validation run, the 486-example MATH test split would require about 2,430 LLM calls and 3.40M raw tokens, or 25 chunks at chunk size 20. Because the imported AFlow cost table does not price Kimi K2.5, the repository separately records a Kimi budget summary in \path{report/tables/api_budget_summary.md}. Using Kimi K2.5 prices checked on 2026-06-01, the recorded metered runs consumed 2.41M tokens for an estimated CNY 34--37, while the remaining full MATH \texttt{manual\_v1} run is estimated at 1.82M input tokens and 1.57M output tokens, or about CNY 34--40 before retry margin. The same summary notes that Tier0 is capped at 1.5M tokens per day, so a CNY 50 Tier1 recharge is the practical minimum for completing the missing full workflow run. The current Kimi account still returns an insufficient-balance quota error for new requests, so additional API experiments require a recharge or another valid API key.
+The manual workflows increase token usage and latency, especially for MATH. The full MATH \texttt{manual\_v1} run improves accuracy but uses 2,431 calls and 3,786,936 tracked tokens, which is 5.00 times the direct baseline calls and 8.91 times the direct baseline tokens. Because the imported AFlow cost table does not price Kimi K2.5, the repository separately records a Kimi budget summary in \path{report/tables/api_budget_summary.md}. Using Kimi K2.5 prices checked on 2026-06-01, the full MATH \texttt{manual\_v1} workflow alone is estimated at CNY 38.73--45.36, and the recorded required API subtotal is estimated at CNY 73.15--82.43. Further full-test ablations would require additional API budget.
 
 \section{Conclusion}
 
-The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, ablations, token-aware validation tables, MATH full-test baselines, HumanEval full-test workflow results, checkpointed workflow execution, a compiled report PDF, and submission packaging. The remaining core work is to resume the expensive full MATH workflow evaluation after the API quota issue is resolved, fill the student metadata, rebuild the PDF, and decide whether the MATH validation accuracy gain justifies its token cost.
+The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, ablations, token-aware validation tables, MATH full-test results, HumanEval full-test workflow results, checkpointed workflow execution, a compiled report PDF, and submission packaging. The remaining required work is to fill the real student metadata and rebuild the final named package; further experiments are optional cost-reduction studies for the MATH workflow.
 
 \bibliography{references}
 \bibliographystyle{icml2022}

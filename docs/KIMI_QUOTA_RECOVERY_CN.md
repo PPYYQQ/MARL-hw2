@@ -1,6 +1,6 @@
-# Kimi 额度恢复后运行手册
+# Kimi checkpoint 运行手册
 
-本手册只覆盖当前唯一需要继续消耗 API 的任务：补跑 full MATH `manual_v1` test。目标是先确认额度和 checkpoint 正常，再逐步完成 25 个 chunk，避免一次性长跑失败后丢失进度。
+本手册覆盖 full MATH `manual_v1` test 的 checkpoint 复现和扩展流程。当前作业必跑实验已经完成；这些步骤用于复现实验、恢复失败 chunk，或继续做可选 ablation/prompt tuning。
 
 ## 当前状态
 
@@ -13,11 +13,12 @@
 | 总 chunk 数 | 25 |
 | 当前 checkpoint run id | `math-test-manual-v1` |
 | 当前进度命令 | `make summarize-math-manual-chunks` |
-| 预计剩余调用 | 2,430 LLM calls |
-| 预计剩余 token | 约 3.40M raw tokens |
-| 建议余额 | 至少 CNY 50；CNY 80-100 更稳 |
+| 当前完成度 | 25/25 chunks |
+| 已记录调用 | 2,431 LLM calls |
+| 已记录 token | 3,786,936 tracked tokens |
+| 必跑剩余额度 | 0；更多额度只用于复现或可选扩展 |
 
-## 恢复前检查
+## 复现前检查
 
 先确认本地没有未提交改动，且 GitHub 同步：
 
@@ -25,10 +26,7 @@
 make status-summary
 ```
 
-预期只看到两个已知外部 blocker：
-
-- 报告仍有学生信息占位符。
-- full MATH `manual_v1` test 表还没有生成。
+预期 warning 只应来自学生信息占位符，以及当前 shell 没有设置 `KIMI_API_KEY` 时的环境提示。
 
 确认 chunk 计划覆盖 486 道题：
 
@@ -42,9 +40,9 @@ make verify-math-manual-plan
 make dry-run-math-manual-chunks
 ```
 
-## 第一个 API chunk
+## 复现或继续一个 API chunk
 
-额度恢复后，先只跑 1 个 chunk：
+默认 run id 已完成 25/25 chunks；再次运行会跳过已完成 chunk。若要复现新 run，请先设置新的 run id 或在明确知道影响的情况下清理本地 ignored run 目录。复现时建议先只跑 1 个 chunk：
 
 ```bash
 make resume-math-manual-chunk
@@ -56,13 +54,13 @@ make resume-math-manual-chunk
 make summarize-math-manual-chunks
 ```
 
-如果 completed 从 `0/25` 变为 `1/25`，说明额度、限速和 checkpoint 都正常。随后可以继续一次跑 1 个 chunk，或者小幅提高批量：
+如果 completed 数量增加，说明额度、限速和 checkpoint 都正常。随后可以继续一次跑 1 个 chunk，或者小幅提高批量：
 
 ```bash
 MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk
 ```
 
-不建议一开始就把 `MATH_MANUAL_MAX_CHUNKS` 调得很大；当前 workflow 预计每 20 题约 100 calls，长时间运行更容易受限速、网络和余额影响。
+不建议一开始就把 `MATH_MANUAL_MAX_CHUNKS` 调得很大；当前 workflow 每 20 题约 100 calls，长时间运行更容易受限速、网络和余额影响。
 
 ## 失败时怎么判断
 
@@ -83,9 +81,9 @@ MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk
 - 先运行 `make status-summary` 确认 Git 状态。
 - 不要把失败 chunk 当作完成结果写入报告。
 
-## 全部 chunk 完成后
+## 全部 chunk 完成后或刷新结果时
 
-汇总 chunked 结果表：
+当前 full MATH `manual_v1` 已完成。需要刷新表格时，汇总 chunked 结果表：
 
 ```bash
 make collect-math-manual-chunked
@@ -99,7 +97,7 @@ make verify-math-manual-result
 
 该 gate 默认还会要求至少 `2400` calls 和 `2500000` tokens，避免部分 chunk 结果被误当作完整 full-test 表。
 
-之后需要把 full-test 分数、calls、tokens 写入 `report/main.tex`，并确认报告不再保留 pending-run 表述：
+之后需要确认 `report/main.tex` 中的 full-test 分数、calls、tokens 与表格一致，并确认报告不保留 pending-run 表述：
 
 ```bash
 make verify-final-report-ready
@@ -132,4 +130,4 @@ make post-push-check
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
 
-如果不补 Kimi 额度，也可以跳过本手册的 API 步骤，按 `docs/FINAL_HANDOFF_CN.md` 的“如果不补 Kimi 额度”流程提交当前版本。
+如果不需要复现或扩展实验，可以跳过本手册的 API 步骤，按 `docs/FINAL_HANDOFF_CN.md` 的当前实验状态流程提交当前版本。

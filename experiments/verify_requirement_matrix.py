@@ -27,6 +27,14 @@ RESULT_ROWS = [
         "samples": "486",
     },
     {
+        "table": "report/tables/math_test_manual_chunked.md",
+        "dataset": "MATH",
+        "method": "manual_v1",
+        "display_method": "`manual_v1`",
+        "split": "test",
+        "samples": "486",
+    },
+    {
         "table": "report/tables/math_validation50_results.md",
         "dataset": "MATH",
         "method": "direct",
@@ -98,9 +106,9 @@ BUDGET_ROWS = [
     ("HumanEval full test experiments", "HumanEval full test experiments"),
     ("MATH 50-example validation experiments", "MATH 50-example validation experiments"),
     ("MATH full direct/CoT baselines", "MATH full direct/CoT baselines"),
+    ("MATH full manual_v1 workflow", "MATH full `manual_v1` workflow"),
     ("Recorded subtotal", "Recorded subtotal"),
     ("Unmetered stopped MATH manual_v1 attempt (15 examples)", "Stopped MATH `manual_v1` attempt estimate"),
-    ("Remaining full MATH manual_v1 test estimate", "Remaining full MATH `manual_v1` estimate"),
 ]
 
 REQUIRED_STATUS_SNIPPETS = [
@@ -112,7 +120,7 @@ REQUIRED_STATUS_SNIPPETS = [
     "| Full benchmark comparison | 尽可能全量比较 direct、CoT、workflow、ablation |",
     "| Token/efficiency analysis | 统计调用量、token 和精度/成本权衡 |",
     "| Report/package | PDF 报告、代码、证据、提交 zip |",
-    "| Missing MATH workflow full test | `make resume-math-manual-chunk`，完成后 `make collect-math-manual-chunked` |",
+    "| Full MATH workflow test | `make resume-math-manual-chunk`，完成后 `make collect-math-manual-chunked` |",
     "| Local handoff verification | `make post-push-check` |",
     "| Final course package | `make finalize-submission FINAL_NAME=... FINAL_STUDENT_ID=... FINAL_EMAIL=...` |",
     "make verify-requirement-matrix",
@@ -123,6 +131,14 @@ PENDING_MATH_SNIPPETS = [
     "full test pending quota",
     "需要 Kimi 余额或新 API key",
     "0/25 chunks 完成",
+]
+
+COMPLETED_MATH_SNIPPETS = [
+    "full test 已完成",
+    "Full test complete",
+    "25/25 chunks 完成",
+    "`0.91770`",
+    "`report/tables/math_test_manual_chunked.md`",
 ]
 
 
@@ -213,6 +229,9 @@ def verify_status_text(matrix_text: str) -> int:
     if full_math_table.exists():
         if any(snippet in matrix_text for snippet in PENDING_MATH_SNIPPETS):
             raise SystemExit("FAIL: Full MATH manual table exists, but requirement matrix still says it is pending")
+        missing_completed = [snippet for snippet in COMPLETED_MATH_SNIPPETS if snippet not in matrix_text]
+        if missing_completed:
+            raise SystemExit("FAIL: Missing completed full-MATH status snippets: " + "; ".join(missing_completed))
     else:
         missing_pending = [snippet for snippet in PENDING_MATH_SNIPPETS if snippet not in matrix_text]
         if missing_pending:

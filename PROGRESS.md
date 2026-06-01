@@ -187,19 +187,18 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Continued the full MATH `manual_v1` chunked run through chunk 9. The run now has 10/25 chunks completed, covering indices 0-199 with aggregate score `0.93000`, 1,000 LLM calls, and 1,182,014 tokens; the next missing chunk is chunk 10, indices 200-219.
 - Continued the full MATH `manual_v1` chunked run through chunk 14. The run now has 15/25 chunks completed, covering indices 0-299 with aggregate score `0.92333`, 1,499 LLM calls, and 1,982,561 tokens; the next missing chunk is chunk 15, indices 300-319.
 - Continued the full MATH `manual_v1` chunked run through chunk 19. The run now has 20/25 chunks completed, covering indices 0-399 with aggregate score `0.91750`, 2,001 LLM calls, and 3,117,592 tokens; the next missing chunk is chunk 20, indices 400-419.
+- Completed the full MATH `manual_v1` chunked run through chunk 24. The run now has 25/25 chunks completed, covering all 486 test examples with score `0.91770`, 2,431 LLM calls, and 3,786,936 tracked tokens; generated `report/tables/math_test_manual_chunked.md` and exported `report/evidence/math_test_manual/manual_v1/`.
+- Refreshed the API budget, efficiency, evidence, report, requirement matrix, completion audit, Kimi checkpoint runbook, and README/status handoff docs so they now state that no required API run remains.
 
 ## Next Steps
 
-1. Recharge the Kimi account or provide another valid `KIMI_API_KEY`; the practical minimum is CNY 50 for Tier1 limits, with CNY 80-100 leaving retry margin.
-2. Resume full MATH `manual_v1` with the chunked runner in 20-example chunks, starting with `--max-chunks 1` to confirm quota and checkpointing.
-3. After chunks complete, collect the full MATH `manual_v1` table, export evidence, rebuild the report, and rerun `make handoff-check`.
-4. Run `experiments/finalize_submission.py` with final student name, student ID, and email before course submission.
-5. Keep pushing each new key commit to GitHub after local validation.
+1. Run the no-API validation gates, rebuild the report PDF, and push the completed full MATH result commit.
+2. Run `experiments/finalize_submission.py` with final student name, student ID, and email before course submission.
+3. Use `docs/KIMI_QUOTA_RECOVERY_CN.md` only for optional reproduction, prompt tuning, or follow-up ablations.
+4. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 
-- Full API experiments require a valid `KIMI_API_KEY` in the shell environment.
-- The Kimi account currently returns an insufficient-balance quota error for new calls; further API experiments require recharge or another valid `KIMI_API_KEY`.
-- Full MATH `manual_v1` test evaluation is the main missing benchmark run.
 - Report metadata still needs the final student name, student ID, and email.
+- Optional follow-up API experiments still require a valid `KIMI_API_KEY` in the shell environment.
 - GitHub push works through the SSH remote `git@github.com:PPYYQQ/MARL-hw2.git`.

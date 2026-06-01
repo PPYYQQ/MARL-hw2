@@ -40,6 +40,7 @@ EXPECTED_RUNS = [
     ExpectedRun("humaneval_test", "ablation_no_public_test", "HumanEval", "test", 131, 0.99237, 409, 303127),
     ExpectedRun("math_test_baselines", "direct", "MATH", "test", 486, 0.88889, 486, 425052),
     ExpectedRun("math_test_baselines", "cot", "MATH", "test", 486, 0.89300, 486, 459130),
+    ExpectedRun("math_test_manual", "manual_v1", "MATH", "test", 486, 0.91770, 2431, 3786936),
 ]
 
 

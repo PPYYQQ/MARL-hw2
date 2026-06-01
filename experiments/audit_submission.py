@@ -77,6 +77,7 @@ REQUIRED_FILES = [
     "report/tables/humaneval_test_results.md",
     "report/tables/humaneval_test_failure_analysis.md",
     "report/tables/math_test_baselines.md",
+    "report/tables/math_test_manual_chunked.md",
     "report/evidence/README.md",
 ]
 
@@ -121,7 +122,7 @@ REPORT_SECTIONS = [
     r"\section{Manual Workflow Design}",
     r"\section{Workflow Algorithm Details}",
     r"\section{Validation Results}",
-    r"\section{Remaining Experiments}",
+    r"\section{Optional Follow-up Experiments}",
     r"\section{Limitations}",
     r"\section{Conclusion}",
 ]
@@ -142,12 +143,14 @@ EXPECTED_TABLE_SNIPPETS = {
     ],
     "report/tables/api_budget_summary.md": [
         "| MATH full direct/CoT baselines | 2 | 972 | 107,606 | 776,576 | 884,182 | CNY 16.38-16.74 |",
-        "| Remaining full MATH manual_v1 test estimate | 1 | 2,430 | 1,822,432 | 1,574,854 | 3,397,286 | CNY 34.35-40.36 |",
+        "| MATH full manual_v1 workflow | 1 | 2,431 | 2,009,595 | 1,777,341 | 3,786,936 | CNY 38.73-45.36 |",
+        "No required API run remains for the assignment experiments.",
     ],
     "report/tables/evidence_verification.md": [
         "| math_validate50 | manual_v1 | 50 | 0.98000 | 0.98000 | 250 | 349515 | ok |",
         "| humaneval_test | ablation_no_public_test | 131 | 0.99237 | 0.99237 | 409 | 303127 | ok |",
         "| math_test_baselines | cot | 486 | 0.89300 | 0.89300 | 486 | 459130 | ok |",
+        "| math_test_manual | manual_v1 | 486 | 0.91770 | 0.91770 | 2431 | 3786936 | ok |",
     ],
     "report/tables/math_validation50_failure_analysis.md": [
         "| manual_v1 | 0.98000 | 1 | 2 | 0 | 1 | 250 | 349515 |",
@@ -165,9 +168,13 @@ EXPECTED_TABLE_SNIPPETS = {
         "| MATH | direct | kimi-k2.5 | test | 486 | 0.88889",
         "| MATH | cot | kimi-k2.5 | test | 486 | 0.89300",
     ],
+    "report/tables/math_test_manual_chunked.md": [
+        "| MATH | manual_v1 | kimi-k2.5 | test | 486 | 0.91770 | 2431 | 2009595 | 1777341 | 3786936 |",
+    ],
     "report/evidence/README.md": [
         "| math_test_baselines | direct | 486 | 0.88889 | 486 | 425052 | report/evidence/math_test_baselines/direct |",
         "| humaneval_test | ablation_no_public_test | 131 | 0.99237 | 409 | 303127 | report/evidence/humaneval_test/ablation_no_public_test |",
+        "| math_test_manual | manual_v1 | 486 | 0.91770 | 2431 | 3786936 | report/evidence/math_test_manual/manual_v1 |",
     ],
 }
 
@@ -192,7 +199,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk",
     ],
     "docs/KIMI_QUOTA_RECOVERY_CN.md": [
-        "## 恢复前检查",
+        "## 复现前检查",
         "make status-summary",
         "make verify-math-manual-plan",
         "make dry-run-math-manual-chunks",
@@ -205,15 +212,16 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "## 中文交接矩阵",
         "| MATH 多智能体 workflow | 设计 workflow，并证明优于 direct 和 CoT |",
         "## 额度使用矩阵",
-        "| Remaining full MATH `manual_v1` estimate | 1 | 2,430 | 3,397,286 | CNY 34.35-40.36 |",
+        "| MATH full `manual_v1` workflow | 1 | 2,431 | 3,786,936 | CNY 38.73-45.36 |",
+        "| MATH | `manual_v1` | test, 486 | `0.91770` | 2,431 | 3,786,936 |",
         "make verify-requirement-matrix",
     ],
     "docs/EXPERIMENT_COMMANDS.md": [
         "make verify-requirement-matrix",
         "make current-submit-check FINAL_NAME=",
         "make ready-to-submit-check FINAL_NAME=",
-        "`make current-submit-check` is the one-command path for submitting the current known-blocker version",
-        "`make ready-to-submit-check` is the strict final gate after quota and metadata are resolved",
+        "`make current-submit-check` is the one-command path for submitting the current version",
+        "`make ready-to-submit-check` is the strict final gate after metadata is resolved",
     ],
     "docs/COMPLETION_AUDIT.md": [
         "## Remaining External Inputs",
@@ -235,7 +243,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "For final packaging, prefer `make finalize-submission-dry-run` and `make finalize-submission`",
         "make current-submit-check FINAL_NAME=",
         "make ready-to-submit-check FINAL_NAME=",
-        "Use `current-submit-check` for the current known-blocker package",
+        "Use `current-submit-check` for the current package",
     ],
 }
 

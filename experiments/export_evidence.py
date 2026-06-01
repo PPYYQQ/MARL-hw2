@@ -37,6 +37,7 @@ EVIDENCE_RUNS = [
     ),
     EvidenceRun("math_test_baselines", "direct", Path("experiments/runs/MATH/direct/20260531_102239")),
     EvidenceRun("math_test_baselines", "cot", Path("experiments/runs/MATH/cot/20260531_102239")),
+    EvidenceRun("math_test_manual", "manual_v1", Path("experiments/chunked_runs/MATH/manual_v1/math-test-manual-v1")),
 ]
 
 

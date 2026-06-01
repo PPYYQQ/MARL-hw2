@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify that submission-audit warnings are limited to known blockers."""
+"""Verify that submission-audit warnings are limited to maintained cases."""
 
 from __future__ import annotations
 
@@ -13,7 +13,6 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 ALLOWED_WARNINGS = {
     "Report still contains student metadata placeholders",
     "KIMI_API_KEY is not set in this shell",
-    "Full MATH manual_v1 test table is not available yet",
 }
 
 
@@ -47,7 +46,7 @@ def main() -> None:
         sys.exit(1)
 
     if warnings:
-        print("PASS: audit warnings are limited to known external blockers")
+        print("PASS: audit warnings are limited to maintained warning cases")
         for warning in warnings:
             print(f"WARN: {warning}")
     else:
