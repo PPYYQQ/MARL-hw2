@@ -10,6 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from fill_report_metadata import validate_metadata
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REPORT_PATH = Path("report/main.tex")
@@ -124,6 +126,10 @@ def verify_command(args: argparse.Namespace, output: Path) -> list[str]:
 
 def main() -> None:
     args = parse_args()
+    try:
+        validate_metadata(args.name, args.student_id, args.email, allow_test_metadata=args.dry_run)
+    except ValueError as exc:
+        raise SystemExit(f"FAIL: {exc}") from exc
     check_clean_tracked_files()
     output = output_path(args)
     if args.dry_run:

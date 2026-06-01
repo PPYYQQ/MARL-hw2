@@ -65,5 +65,6 @@ This document maps the assignment requirements to the current repository evidenc
 - The MATH validate50 failure analysis classifies the remaining shared failure at index `91` as a reasoning error rather than a rescoring issue.
 - The default generated zip is usable for review, but the final course submission should be regenerated from a clean worktree with real metadata and the named package command.
 - The finalization helper starts from a clean tracked worktree, checks filled metadata inside the generated archive, and avoids leaving personal metadata in the worktree by default; use `--keep-filled-report` only if you intentionally want `report/main.tex` and `report/main.pdf` to remain filled locally.
+- Final metadata commands reject placeholder/example metadata for real writes; `make finalize-dry-run` is the only maintained path that intentionally uses test metadata.
 - `make final-check` now fails if required files are present locally but not tracked by Git.
 - `make verify-known-warnings` keeps expected external blockers separate from new audit warnings that should be fixed before handoff.

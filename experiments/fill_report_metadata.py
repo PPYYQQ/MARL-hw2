@@ -37,6 +37,35 @@ def latex_escape(value: str) -> str:
     return "".join(replacements.get(char, char) for char in value)
 
 
+def validate_metadata(name: str, student_id: str, email: str, allow_test_metadata: bool = False) -> None:
+    values = {
+        "name": name.strip(),
+        "student ID": student_id.strip(),
+        "email": email.strip(),
+    }
+    for label, value in values.items():
+        if not value:
+            raise ValueError(f"{label} must not be empty")
+
+    placeholder_values = {
+        "Your Name",
+        "Your ID",
+        "you@example.com",
+        "Student Name",
+        "TODO",
+        "TODO@example.com",
+    }
+    test_values = {"Test Student", "TEST123", "test@example.com"}
+    disallowed = placeholder_values | (set() if allow_test_metadata else test_values)
+    for label, value in values.items():
+        if value in disallowed or "TODO" in value:
+            raise ValueError(f"{label} still looks like placeholder metadata: {value}")
+
+    if "@" not in values["email"] or values["email"].endswith("@example.com"):
+        if not (allow_test_metadata and values["email"] == "test@example.com"):
+            raise ValueError(f"email does not look like a real submission address: {email}")
+
+
 def replace_once(pattern: str, replacement: str, text: str) -> str:
     new_text, count = re.subn(pattern, lambda _: replacement, text, count=1)
     if count != 1:
@@ -67,6 +96,10 @@ def fill_metadata(report_text: str, name: str, student_id: str, email: str) -> s
 
 def main() -> None:
     args = parse_args()
+    try:
+        validate_metadata(args.name, args.student_id, args.email, allow_test_metadata=args.dry_run)
+    except ValueError as exc:
+        raise SystemExit(f"FAIL: {exc}") from exc
     report_text = args.report.read_text(encoding="utf-8")
     updated_text = fill_metadata(report_text, args.name, args.student_id, args.email)
     if args.dry_run:

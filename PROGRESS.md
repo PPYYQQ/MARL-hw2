@@ -155,6 +155,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Refreshed `docs/EXPERIMENT_COMMANDS.md`, `experiments/README.md`, and `docs/CHUNKED_WORKFLOWS.md` so the command ledger includes the latest result-table, report-readiness, post-push, and final-submission gates.
 - Tightened `experiments/verify_final_report_ready.py` so it requires one report line to contain the full MATH result's method, score, calls, and tokens together instead of accepting those values anywhere in the report.
 - Added `make status-summary` as a lightweight progress snapshot that runs the known-warning check, MATH chunk summary, and GitHub synchronization check without rebuilding packages.
+- Tightened final metadata handling so `fill_report_metadata.py` and `finalize_submission.py` reject placeholder/example metadata for real writes, while still allowing the dedicated test metadata path in dry-run mode.
 
 ## Next Steps
 
