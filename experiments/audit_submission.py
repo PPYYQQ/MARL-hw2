@@ -52,6 +52,7 @@ REQUIRED_FILES = [
     "docs/CHUNKED_WORKFLOWS.md",
     "docs/COMPLETION_AUDIT.md",
     "docs/EXPERIMENT_COMMANDS.md",
+    "docs/FINAL_HANDOFF_CN.md",
     "docs/REQUIREMENT_RUN_MATRIX.md",
     "docs/PAPER_NOTES.md",
     "docs/SUBMISSION_STATUS.md",
@@ -154,6 +155,27 @@ EXPECTED_TABLE_SNIPPETS = {
 }
 
 
+EXPECTED_HANDOFF_SNIPPETS = {
+    "docs/FINAL_HANDOFF_CN.md": [
+        "## 当前可交付状态",
+        "## 最终提交前必须补的信息",
+        "make handoff-check",
+        "MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk",
+    ],
+    "docs/REQUIREMENT_RUN_MATRIX.md": [
+        "## 中文交接矩阵",
+        "| MATH 多智能体 workflow | 设计 workflow，并证明优于 direct 和 CoT |",
+        "## 额度使用矩阵",
+        "| Remaining full MATH `manual_v1` estimate | 1 | 2,430 | 3,397,286 | CNY 34.35-40.36 |",
+    ],
+    "docs/COMPLETION_AUDIT.md": [
+        "## Remaining External Inputs",
+        "`make handoff-check`",
+        "Full MATH `manual_v1` test result",
+    ],
+}
+
+
 @dataclass
 class AuditResult:
     passed: list[str]
@@ -238,6 +260,19 @@ def check_result_tables(result: AuditResult) -> None:
         result.pass_check(f"Verified {len(EXPECTED_TABLE_SNIPPETS)} result tables")
 
 
+def check_handoff_docs(result: AuditResult) -> None:
+    missing_snippets: list[str] = []
+    for path, snippets in EXPECTED_HANDOFF_SNIPPETS.items():
+        doc_text = read_text(path)
+        for snippet in snippets:
+            if snippet not in doc_text:
+                missing_snippets.append(f"{path}: {snippet}")
+    if missing_snippets:
+        result.fail("Handoff document snippets missing: " + "; ".join(missing_snippets))
+    else:
+        result.pass_check(f"Verified {len(EXPECTED_HANDOFF_SNIPPETS)} handoff documents")
+
+
 def check_secret_hygiene(result: AuditResult) -> None:
     tracked_local_config = git_ls_files("AFlow/config/config2.yaml")
     if tracked_local_config:
@@ -319,6 +354,7 @@ def main() -> None:
     check_python_compile(result)
     check_report_sections(result)
     check_result_tables(result)
+    check_handoff_docs(result)
     check_secret_hygiene(result)
     check_external_blockers(result)
     print_result(result, args.strict)
