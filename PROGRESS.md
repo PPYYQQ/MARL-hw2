@@ -163,6 +163,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `make current-submit-check` as the one-command path for submitting the current known-blocker version after real metadata is available; it first validates metadata with a dry run, then runs handoff gates, builds the named package, and verifies GitHub sync without requiring the missing full MATH table.
 - Changed metadata validation so test values such as `Test Student` are accepted only when `--allow-test-metadata` is explicitly passed; normal real-metadata dry-runs now reject those example values before packaging.
 - Tightened metadata validation further so case variants, `TODO`, `your ...`, and angle-bracket placeholder values are rejected before final report/package generation.
+- Added `experiments/verify_metadata_validation.py` and `make verify-metadata-validation`, then wired it into `make handoff-check` so metadata placeholder rejection has a no-API regression check.
 
 ## Next Steps
 

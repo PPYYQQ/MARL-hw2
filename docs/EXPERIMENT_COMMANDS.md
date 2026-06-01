@@ -24,6 +24,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/verify_result_table.py \
   experiments/verify_final_report_ready.py \
   experiments/verify_report_pdf.py \
+  experiments/verify_metadata_validation.py \
   experiments/verify_audit_warnings.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
@@ -130,6 +131,7 @@ python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your
 make refresh-evidence
 make build-report
 make verify-report-pdf
+make verify-metadata-validation
 make verify-math-manual-plan
 make verify-known-warnings
 make final-check
@@ -166,6 +168,7 @@ python experiments/verify_git_sync.py
 
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
 `make finalize-dry-run` previews the final filled-metadata path with overrideable `FINALIZE_DRY_RUN_*` Make variables and writes no files.
+`make verify-metadata-validation` checks the final metadata validation rules without writing files.
 `make status-summary` prints the known-warning check, current MATH chunk status, and GitHub sync status without building packages.
 `make handoff-check` runs all local no-API gates: audit/dry-run packaging, known-warning verification, MATH chunk-plan verification, chunk status summary, finalization dry-run, and final package verification.
 `make post-push-check` runs `make handoff-check` and then verifies local `main` is synchronized with GitHub.
