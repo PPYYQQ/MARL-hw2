@@ -146,7 +146,7 @@ make finalize-dry-run
 By default, finalization verifies the generated zip and then restores local `report/main.tex` and `report/main.pdf` placeholders so personal metadata is not left in the worktree. The generated zip still contains the filled report source and PDF.
 The finalization verifier checks that the zip's report source contains the provided name, student ID, and email.
 Default packaging refuses uncommitted tracked changes; finalization only allows the temporary `report/main.tex` metadata edit needed for the filled archive.
-Finalization also refuses to start if any tracked file already has uncommitted changes. Package verification likewise refuses dirty tracked files unless an explicit temporary allowlist is provided by the finalization helper.
+Finalization also refuses to start if any tracked file already has uncommitted changes. Package verification likewise refuses dirty tracked files unless an explicit temporary allowlist is provided by the finalization helper, and it scans generated archives for the active `KIMI_API_KEY` value when that environment variable is set.
 
 The equivalent packaging shortcut is:
 

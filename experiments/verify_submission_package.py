@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import re
 import subprocess
 import zipfile
@@ -184,6 +185,24 @@ def verify_entries(entries: set[str], expected_files: set[str]) -> list[str]:
     return failures
 
 
+def verify_secret_hygiene(archive: zipfile.ZipFile, entries: set[str]) -> list[str]:
+    kimi_api_key = os.environ.get("KIMI_API_KEY", "")
+    if len(kimi_api_key) < 8:
+        return []
+
+    secret_bytes = kimi_api_key.encode("utf-8")
+    leaked_entries: list[str] = []
+    for entry in sorted(entries):
+        if entry == MANIFEST:
+            continue
+        with archive.open(entry) as file_handle:
+            if secret_bytes in file_handle.read():
+                leaked_entries.append(entry)
+    if leaked_entries:
+        return ["KIMI_API_KEY value appears in package entries: " + ", ".join(leaked_entries)]
+    return []
+
+
 def verify_report_metadata(archive: zipfile.ZipFile, entries: set[str], args: argparse.Namespace) -> list[str]:
     expected_values = [args.expect_name, args.expect_student_id, args.expect_email]
     if not any(expected_values):
@@ -224,12 +243,14 @@ def main() -> None:
         manifest_text = archive.read(MANIFEST).decode("utf-8") if MANIFEST in entries else ""
         metadata_failures = verify_report_metadata(archive, entries, args)
         checksum_failures = verify_manifest_checksums(archive, entries, manifest_text, expected_files)
+        secret_failures = verify_secret_hygiene(archive, entries)
 
     failures = verify_manifest(entries, manifest_text, current_commit(), len(tracked), len(optional))
     failures.extend(clean_failures)
     failures.extend(verify_entries(entries, expected_files))
     failures.extend(metadata_failures)
     failures.extend(checksum_failures)
+    failures.extend(secret_failures)
     if failures:
         for failure in failures:
             print(f"FAIL: {failure}")
@@ -239,7 +260,7 @@ def main() -> None:
     print(f"PASS: Manifest references commit {current_commit()}")
     print("PASS: Manifest file counts match expected package contents")
     print("PASS: Manifest checksums match archive contents")
-    print("PASS: No forbidden package entries found")
+    print("PASS: No forbidden package entries or active API key values found")
     if args.expect_name or args.expect_student_id or args.expect_email:
         print("PASS: Report metadata matches expected values")
 

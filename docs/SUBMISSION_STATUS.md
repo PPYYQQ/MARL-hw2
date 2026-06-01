@@ -29,7 +29,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
 - `experiments/package_submission.py`: tracked-file submission zip builder with optional student/name/assignment output naming.
-- `experiments/verify_submission_package.py`: validates generated zip contents against tracked files, clean tracked worktree state, manifest commit, manifest file counts, PDF inclusion, archive/filesystem checksums, zero-failure audit summary, and secret hygiene.
+- `experiments/verify_submission_package.py`: validates generated zip contents against tracked files, clean tracked worktree state, manifest commit, manifest file counts, PDF inclusion, archive/filesystem checksums, zero-failure audit summary, forbidden paths, and active `KIMI_API_KEY` leakage when available.
 - `docs/COMPLETION_AUDIT.md`: requirement-by-requirement handoff audit with evidence paths and remaining external inputs.
 - `docs/REQUIREMENT_RUN_MATRIX.md`: matrix of assignment-required experiment coverage, completed runs, remaining gaps, and evidence files.
 - `docs/FINAL_HANDOFF_CN.md`: Chinese final handoff checklist covering what can be submitted now, what external inputs remain, and exact final commands.
@@ -190,7 +190,7 @@ Verify the generated default zip:
 make verify-package
 ```
 
-Package verification checks tracked entries, clean tracked worktree state, optional PDF inclusion, manifest commit, manifest file counts, per-file SHA-256 checksums against both the archive and current filesystem, the embedded zero-failure audit summary, and forbidden secret/run paths.
+Package verification checks tracked entries, clean tracked worktree state, optional PDF inclusion, manifest commit, manifest file counts, per-file SHA-256 checksums against both the archive and current filesystem, the embedded zero-failure audit summary, forbidden secret/run paths, and the active `KIMI_API_KEY` value when it is set.
 
 Create and verify the default zip in one command:
 
