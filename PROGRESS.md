@@ -145,6 +145,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `make post-push-check` so the final pushed handoff state can run package/audit gates and GitHub synchronization verification in one command.
 - Added `make finalize-submission` with required `FINAL_NAME`, `FINAL_STUDENT_ID`, and `FINAL_EMAIL` variables to reduce final metadata/package command errors.
 - Added `make finalize-submission-dry-run` so real student metadata can be previewed through the final packaging path without writing files.
+- Added `experiments/summarize_chunked_run.py` and `make summarize-math-manual-chunks` to report completed, quota-failed, missing, and next chunk status for the remaining full MATH `manual_v1` run without making API calls.
 
 ## Next Steps
 

@@ -159,6 +159,12 @@ Preview the chunked runner plan without making API calls:
 make dry-run-math-manual-chunks
 ```
 
+Summarize current chunked-run progress without making API calls:
+
+```bash
+make summarize-math-manual-chunks
+```
+
 After quota is restored, resume one checkpointed MATH `manual_v1` chunk:
 
 ```bash

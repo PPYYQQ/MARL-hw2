@@ -76,6 +76,12 @@ make dry-run-math-manual-chunks
 make resume-math-manual-chunk
 ```
 
+查看当前 chunk 完成情况和下一个待跑 chunk：
+
+```bash
+make summarize-math-manual-chunks
+```
+
 继续重复同一命令，或按需要提高每次 chunk 数：
 
 ```bash

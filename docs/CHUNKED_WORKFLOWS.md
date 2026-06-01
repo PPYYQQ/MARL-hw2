@@ -65,6 +65,12 @@ Preview the exact chunk plan without making API calls:
 make dry-run-math-manual-chunks
 ```
 
+Summarize the current checkpoint status without making API calls:
+
+```bash
+make summarize-math-manual-chunks
+```
+
 Rerun the command to pick up the next incomplete chunk, or use `--start-chunk` to jump to a later chunk.
 
 If the API returns quota or insufficient-balance errors for every item in a chunk, the chunk is marked `failed_quota` rather than `completed`, and the runner stops without counting that chunk in the aggregate.

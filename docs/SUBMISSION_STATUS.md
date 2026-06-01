@@ -234,6 +234,12 @@ After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 make resume-math-manual-chunk
 ```
 
+Check current chunked MATH progress without making API calls:
+
+```bash
+make summarize-math-manual-chunks
+```
+
 Rerun the same command to process the next incomplete chunk. Override `MATH_MANUAL_MAX_CHUNKS` to process more chunks in one invocation.
 
 After enough chunks complete, refresh the local result table:

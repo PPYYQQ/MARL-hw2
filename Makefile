@@ -22,6 +22,7 @@ PY_COMPILE_FILES = \
 	experiments/analyze_efficiency.py \
 	experiments/analyze_api_budget.py \
 	experiments/estimate_math_manual_test.py \
+	experiments/summarize_chunked_run.py \
 	experiments/verify_chunked_plan.py \
 	experiments/verify_report_pdf.py \
 	experiments/export_evidence.py \
@@ -36,7 +37,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -55,6 +56,9 @@ analyze-api-budget:
 
 verify-math-manual-plan:
 	$(PYTHON) experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
+
+summarize-math-manual-chunks:
+	$(PYTHON) experiments/summarize_chunked_run.py --dataset MATH --workflow manual_v1 --run-id "$(MATH_MANUAL_RUN_ID)"
 
 dry-run-math-manual-chunks:
 	$(PYTHON) experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 --split test --chunk-size $(MATH_MANUAL_CHUNK_SIZE) --run-id "$(MATH_MANUAL_RUN_ID)" --dry-run
@@ -106,6 +110,6 @@ final-package-check: verify-report-pdf package verify-package
 
 final-check: analyze-api-budget audit package-dry-run
 
-handoff-check: final-check verify-math-manual-plan finalize-dry-run final-package-check
+handoff-check: final-check verify-math-manual-plan summarize-math-manual-chunks finalize-dry-run final-package-check
 
 post-push-check: handoff-check verify-github-sync
