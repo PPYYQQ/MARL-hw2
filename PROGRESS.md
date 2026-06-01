@@ -137,6 +137,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Updated the report limitations section so the PDF now reflects the verified Kimi budget summary instead of saying Kimi pricing still needs to be added.
 - Extended MATH failure analysis so the remaining shared validate50 failure is explicitly classified as a reasoning error rather than a local rescoring issue.
 - Added `make resume-math-manual-chunk` and `make collect-math-manual-chunked` so the quota-restored full MATH `manual_v1` continuation path is a short, documented command instead of a long hand-written invocation.
+- Added `make dry-run-math-manual-chunks` to preview the chunked full MATH `manual_v1` plan without making API calls.
 
 ## Next Steps
 

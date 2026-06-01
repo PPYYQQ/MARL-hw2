@@ -59,6 +59,12 @@ The shortcut defaults to `MATH_MANUAL_RUN_ID=math-test-manual-v1`, `MATH_MANUAL_
 make resume-math-manual-chunk MATH_MANUAL_MAX_CHUNKS=2
 ```
 
+Preview the exact chunk plan without making API calls:
+
+```bash
+make dry-run-math-manual-chunks
+```
+
 Rerun the command to pick up the next incomplete chunk, or use `--start-chunk` to jump to a later chunk.
 
 If the API returns quota or insufficient-balance errors for every item in a chunk, the chunk is marked `failed_quota` rather than `completed`, and the runner stops without counting that chunk in the aggregate.

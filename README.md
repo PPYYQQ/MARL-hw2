@@ -128,6 +128,12 @@ Verify the planned full MATH `manual_v1` chunks before spending API quota:
 make verify-math-manual-plan
 ```
 
+Preview the chunked runner plan without making API calls:
+
+```bash
+make dry-run-math-manual-chunks
+```
+
 After quota is restored, resume one checkpointed MATH `manual_v1` chunk:
 
 ```bash

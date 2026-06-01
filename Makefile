@@ -31,7 +31,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence estimate-math-manual analyze-api-budget verify-math-manual-plan resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run final-package-check final-check handoff-check
+.PHONY: py-compile verify-evidence estimate-math-manual analyze-api-budget verify-math-manual-plan dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run final-package-check final-check handoff-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -47,6 +47,9 @@ analyze-api-budget:
 
 verify-math-manual-plan:
 	$(PYTHON) experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
+
+dry-run-math-manual-chunks:
+	$(PYTHON) experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 --split test --chunk-size $(MATH_MANUAL_CHUNK_SIZE) --run-id "$(MATH_MANUAL_RUN_ID)" --dry-run
 
 resume-math-manual-chunk:
 	$(PYTHON) experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 --split test --chunk-size $(MATH_MANUAL_CHUNK_SIZE) --max-concurrency $(MATH_MANUAL_MAX_CONCURRENCY) --run-id "$(MATH_MANUAL_RUN_ID)" --max-chunks $(MATH_MANUAL_MAX_CHUNKS)
