@@ -203,6 +203,12 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "## 额度使用矩阵",
         "| Remaining full MATH `manual_v1` estimate | 1 | 2,430 | 3,397,286 | CNY 34.35-40.36 |",
     ],
+    "docs/EXPERIMENT_COMMANDS.md": [
+        "make current-submit-check FINAL_NAME=",
+        "make ready-to-submit-check FINAL_NAME=",
+        "`make current-submit-check` is the one-command path for submitting the current known-blocker version",
+        "`make ready-to-submit-check` is the strict final gate after quota and metadata are resolved",
+    ],
     "docs/COMPLETION_AUDIT.md": [
         "## Remaining External Inputs",
         "`make finalize-submission-dry-run FINAL_NAME=\"...\" FINAL_STUDENT_ID=\"...\" FINAL_EMAIL=\"...\"`",
@@ -216,6 +222,13 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "`make verify-math-manual-result`",
         "`make verify-final-report-ready`",
         "Full MATH `manual_v1` test result",
+    ],
+    "experiments/README.md": [
+        "Generated run outputs go under `experiments/runs/` and `experiments/chunked_runs/`, which are ignored by Git.",
+        "For final packaging, prefer `make finalize-submission-dry-run` and `make finalize-submission`",
+        "make current-submit-check FINAL_NAME=",
+        "make ready-to-submit-check FINAL_NAME=",
+        "Use `current-submit-check` for the current known-blocker package",
     ],
 }
 

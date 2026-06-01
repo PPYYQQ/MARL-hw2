@@ -172,6 +172,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Current no-API state remains ready for real-metadata current submission via `make current-submit-check FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."`.
 - Corrected `docs/KIMI_QUOTA_RECOVERY_CN.md` so the post-quota commit command no longer tries to `git add` the ignored local `report/main.pdf`; the PDF remains generated locally and included by packaging.
 - Refreshed `experiments/README.md` so it documents both ignored run-output directories and distinguishes `current-submit-check` for the current known-blocker package from `ready-to-submit-check` for the post-quota final package.
+- Extended `experiments/audit_submission.py` so the no-API audit now checks the experiment command ledger and `experiments/README.md` for the maintained current-submit and ready-to-submit gate instructions.
 
 ## Next Steps
 
