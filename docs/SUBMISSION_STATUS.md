@@ -240,6 +240,8 @@ Check current chunked MATH progress without making API calls:
 make summarize-math-manual-chunks
 ```
 
+The summary also prints the next non-completed chunk and the suggested follow-up Make command.
+
 Rerun the same command to process the next incomplete chunk. Override `MATH_MANUAL_MAX_CHUNKS` to process more chunks in one invocation.
 
 After enough chunks complete, refresh the local result table:

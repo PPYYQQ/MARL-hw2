@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shlex
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -42,6 +43,33 @@ def chunk_status(run_dir: Path, chunk: dict[str, Any]) -> tuple[str, Path]:
     return str(config.get("status") or "unknown"), config_path
 
 
+def math_manual_make_prefix(args: argparse.Namespace) -> str:
+    assignments = []
+    if args.run_id != "math-test-manual-v1":
+        assignments.append(f"MATH_MANUAL_RUN_ID={shlex.quote(args.run_id)}")
+    return " ".join(assignments)
+
+
+def print_suggested_command(args: argparse.Namespace, next_status: str | None) -> None:
+    if args.dataset != "MATH" or args.workflow != "manual_v1":
+        return
+
+    prefix = math_manual_make_prefix(args)
+    if next_status is None:
+        command = "make collect-math-manual-chunked"
+        if prefix:
+            command = f"{prefix} {command}"
+        print(f"Suggested command: {command}")
+        return
+
+    command = "make resume-math-manual-chunk"
+    if prefix:
+        command = f"{prefix} {command}"
+    print(f"Suggested command: {command}")
+    if next_status == "failed_quota":
+        print("Quota note: recharge Kimi or set a replacement KIMI_API_KEY before retrying.")
+
+
 def main() -> None:
     args = parse_args()
     runs_dir = args.runs_dir if args.runs_dir.is_absolute() else REPO_ROOT / args.runs_dir
@@ -51,6 +79,7 @@ def main() -> None:
     if not manifest_path.exists():
         print(f"Chunked run not started: {run_dir}")
         print("Run `make dry-run-math-manual-chunks` to write the planned manifest.")
+        print_suggested_command(args, "missing")
         return
 
     manifest = read_json(manifest_path)
@@ -91,6 +120,7 @@ def main() -> None:
 
     if next_chunk is None:
         print("Next chunk: none; all planned chunks are completed")
+        print_suggested_command(args, None)
     else:
         indices = list(next_chunk["indices"])
         print(
@@ -99,6 +129,7 @@ def main() -> None:
             f"indices {indices[0]}-{indices[-1]} "
             f"status={next_status}"
         )
+        print_suggested_command(args, next_status)
 
 
 if __name__ == "__main__":

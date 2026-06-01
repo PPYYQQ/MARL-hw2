@@ -82,6 +82,8 @@ make resume-math-manual-chunk
 make summarize-math-manual-chunks
 ```
 
+这个命令会输出 completed/quota-failed/missing 数量、下一个未完成 chunk，以及建议下一条 Make 命令。
+
 继续重复同一命令，或按需要提高每次 chunk 数：
 
 ```bash
