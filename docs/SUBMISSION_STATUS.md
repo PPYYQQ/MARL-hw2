@@ -40,7 +40,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 
 - MATH 20-sample validation: direct `0.90000`, CoT `0.95000`, `manual_v1` `1.00000`, single-candidate ablation `0.90000`.
 - MATH 50-sample validation: direct `0.96000`, CoT `0.94000`, `manual_v1` `0.98000`, single-candidate ablation `0.94000`.
-- MATH 50-sample failure analysis: `manual_v1` fixes two of three CoT failures with no CoT-relative regressions; the remaining failure is index `91`, missed by every compared method.
+- MATH 50-sample failure analysis: `manual_v1` fixes two of three CoT failures with no CoT-relative regressions; the remaining failure is index `91`, missed by every compared method and classified as a reasoning error rather than a rescoring issue.
 - HumanEval full test: direct `0.97710`, CoT `0.98473`, `manual_v1` `0.98473`, no-public-test ablation `0.99237`.
 - HumanEval full-test failure analysis: CoT, `manual_v1`, and no-public-test all fix the three direct failures; no-public-test has the fewest regressions against direct.
 - MATH full test baselines: direct `0.88889`, CoT `0.89300`.

@@ -21,3 +21,7 @@ Scores are recomputed from saved predictions with the current MATH evaluator.
 | 91 | \frac{25 \sqrt{10}}{4} | direct:0, cot:0, manual_v1:0, single:0 | direct:\dfrac{17\sqrt{10}}{2}; cot:\dfrac{17\sqrt{10}}{2}; manual_v1:\dfrac{17\sqrt{10}... | A tennis ball dipped in red paint rolls around on the coordinate plane, so that it is a... |
 | 97 | \frac{10}{19} | direct:1, cot:1, manual_v1:1, single:0 | direct:\dfrac{10}{19}; cot:\dfrac{10}{19}; manual_v1:\dfrac{10}{19}; single:\dfrac{6}{19} | A regular dodecahedron is a convex polyhedron with 12 regular pentagonal faces and 20 v... |
 | 100 | \frac{3}{16} | direct:1, cot:0, manual_v1:1, single:1 | direct:\dfrac{3}{16}; cot:\dfrac{11}{64}; manual_v1:\dfrac{3}{16}; single:\dfrac{3}{16} | While staying in a 15-story hotel, Polya plays the following game. She enters an elevat... |
+
+## Interpretation Notes
+
+- Shared failures across every compared method are unlikely to be fixed by rescoring alone: index `91` has reference `\frac{25 \sqrt{10}}{4}` and extracted predictions `\dfrac{17\sqrt{10}}{2}`.

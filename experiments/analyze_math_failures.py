@@ -128,6 +128,32 @@ def render_table(headers: list[str], rows: list[list[object]]) -> list[str]:
     return lines
 
 
+def render_interpretation_notes(runs: list[MethodRun], all_indices: list[int]) -> list[str]:
+    lines = ["", "## Interpretation Notes", ""]
+
+    all_failed_indices = [
+        index for index in all_indices if all(method_run.results[index].score == 0 for method_run in runs)
+    ]
+    if all_failed_indices:
+        details = []
+        for index in all_failed_indices:
+            reference = runs[0].results[index].reference_answer
+            answers = sorted({method_run.results[index].predicted_answer for method_run in runs})
+            details.append(
+                f"index `{index}` has reference `{reference}` and extracted predictions "
+                f"{', '.join(f'`{answer}`' for answer in answers)}"
+            )
+        lines.append(
+            "- Shared failures across every compared method are unlikely to be fixed by rescoring alone: "
+            + "; ".join(details)
+            + "."
+        )
+    else:
+        lines.append("- No compared index failed under every method.")
+
+    return lines
+
+
 def score_mean(method_run: MethodRun) -> float:
     return mean(result.score for result in method_run.results.values()) if method_run.results else 0.0
 
@@ -225,6 +251,8 @@ def render_markdown(runs: list[MethodRun], baseline_name: str, limit: int) -> st
     lines.extend(render_table(["index", "reference", "scores", "extracted_answers", "question"], detail_rows))
     if len(disagreement_indices) > limit:
         lines.append(f"\nOnly the first {limit} of {len(disagreement_indices)} disagreement cases are shown.")
+
+    lines.extend(render_interpretation_notes(runs, all_indices))
 
     return "\n".join(lines) + "\n"
 
