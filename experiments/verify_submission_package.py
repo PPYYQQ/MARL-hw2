@@ -193,8 +193,6 @@ def verify_secret_hygiene(archive: zipfile.ZipFile, entries: set[str]) -> list[s
     secret_bytes = kimi_api_key.encode("utf-8")
     leaked_entries: list[str] = []
     for entry in sorted(entries):
-        if entry == MANIFEST:
-            continue
         with archive.open(entry) as file_handle:
             if secret_bytes in file_handle.read():
                 leaked_entries.append(entry)

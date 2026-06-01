@@ -177,6 +177,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Further tightened package verification so `verify_submission_package.py` refuses dirty tracked files by default and compares manifest checksums against both archive entries and current filesystem files; `finalize_submission.py` now explicitly allows only its temporary filled `report/main.tex` edit during final zip verification.
 - Added active `KIMI_API_KEY` leakage scanning to `experiments/verify_submission_package.py`; when the environment variable is set, generated archives now fail verification if they contain the exact key value.
 - Added `experiments/verify_package_verifier.py` and `make verify-package-verifier`, then wired it into `make handoff-check` so package-verifier manifest-count and active-key leak checks have no-API regression coverage.
+- Corrected package secret scanning so `SUBMISSION_MANIFEST.txt` is checked for the active `KIMI_API_KEY` value too, matching the documented whole-archive safety guarantee.
 
 ## Next Steps
 

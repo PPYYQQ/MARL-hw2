@@ -95,9 +95,10 @@ def verify_active_key_scan() -> None:
                 )
 
             with zipfile.ZipFile(manifest_only_zip) as archive:
-                assert_no_failures(
+                assert_failure_contains(
                     verify_secret_hygiene(archive, set(archive.namelist())),
-                    "manifest-only key mention",
+                    "KIMI_API_KEY value appears",
+                    "manifest key scan",
                 )
 
 
