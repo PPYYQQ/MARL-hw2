@@ -112,7 +112,7 @@ make handoff-check
 
 如果新增结果表被报告引用，还应把对应 evidence 导出并提交。
 
-full MATH `manual_v1` 表和真实姓名学号邮箱都补齐后，可以用一个最终提交 gate 同时检查 handoff、生成实名 zip、并确认 GitHub 同步：
+full MATH `manual_v1` 表已经提交到 Git，并且真实姓名学号邮箱都补齐后，可以用一个最终提交 gate 同时检查 handoff、生成实名 zip、并确认 GitHub 同步：
 
 ```bash
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"

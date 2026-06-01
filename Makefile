@@ -119,7 +119,11 @@ handoff-check: final-check verify-known-warnings verify-math-manual-plan summari
 post-push-check: handoff-check verify-github-sync
 
 ready-to-submit-check:
+	@test -n "$(FINAL_NAME)" || (echo "Set FINAL_NAME='Your Name'" && exit 1)
+	@test -n "$(FINAL_STUDENT_ID)" || (echo "Set FINAL_STUDENT_ID='Your ID'" && exit 1)
+	@test -n "$(FINAL_EMAIL)" || (echo "Set FINAL_EMAIL='you@example.com'" && exit 1)
 	@test -f "$(MATH_MANUAL_OUTPUT)" || (echo "Missing $(MATH_MANUAL_OUTPUT); finish MATH manual_v1 chunks and run make collect-math-manual-chunked" && exit 1)
+	@git ls-files --error-unmatch "$(MATH_MANUAL_OUTPUT)" >/dev/null 2>&1 || (echo "$(MATH_MANUAL_OUTPUT) is not tracked by Git; run git add and commit it before final submission" && exit 1)
 	$(MAKE) handoff-check
 	$(MAKE) finalize-submission
 	$(MAKE) verify-github-sync

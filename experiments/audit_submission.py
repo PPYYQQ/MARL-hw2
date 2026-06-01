@@ -172,6 +172,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "make post-push-check",
         "make verify-known-warnings",
         "make ready-to-submit-check",
+        "full MATH `manual_v1` 表已经提交到 Git",
         "MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk",
     ],
     "docs/REQUIREMENT_RUN_MATRIX.md": [
