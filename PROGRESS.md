@@ -173,6 +173,8 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Corrected `docs/KIMI_QUOTA_RECOVERY_CN.md` so the post-quota commit command no longer tries to `git add` the ignored local `report/main.pdf`; the PDF remains generated locally and included by packaging.
 - Refreshed `experiments/README.md` so it documents both ignored run-output directories and distinguishes `current-submit-check` for the current known-blocker package from `ready-to-submit-check` for the post-quota final package.
 - Extended `experiments/audit_submission.py` so the no-API audit now checks the experiment command ledger and `experiments/README.md` for the maintained current-submit and ready-to-submit gate instructions.
+- Tightened `experiments/verify_submission_package.py` so generated zips must have manifest tracked-file and optional-file counts matching the current expected package contents.
+- Further tightened package verification so `verify_submission_package.py` refuses dirty tracked files by default and compares manifest checksums against both archive entries and current filesystem files; `finalize_submission.py` now explicitly allows only its temporary filled `report/main.tex` edit during final zip verification.
 
 ## Next Steps
 

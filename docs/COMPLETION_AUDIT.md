@@ -49,7 +49,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make build-report` | Rebuilds `report/main.pdf` with Tectonic |
 | `make verify-report-pdf` | Confirms `report/main.pdf` is present and newer than the TeX source files |
 | `make package` | Writes `submission/MARL-hw2-submission.zip` from a clean tracked worktree, `report/main.pdf`, and `SUBMISSION_MANIFEST.txt` |
-| `make verify-package` | Verifies the zip against tracked files, current commit, included PDF, manifest checksums, zero-failure audit summary, and forbidden secret/run paths |
+| `make verify-package` | Verifies the zip against tracked files, clean tracked worktree state, current commit, included PDF, manifest file counts, archive/filesystem checksums, zero-failure audit summary, and forbidden secret/run paths |
 | `make finalize-dry-run` | Previews finalization with test metadata without writing files |
 | `make finalize-submission-dry-run FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` | Previews the final named package path using real metadata without writing files |
 | `make finalize-submission FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` | Builds and verifies the final named package once real student metadata is known |

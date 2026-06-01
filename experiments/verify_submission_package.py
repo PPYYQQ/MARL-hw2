@@ -34,6 +34,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--expect-name", help="Expected filled report author name.")
     parser.add_argument("--expect-student-id", help="Expected filled student ID.")
     parser.add_argument("--expect-email", help="Expected filled report email.")
+    parser.add_argument(
+        "--allow-dirty",
+        action="append",
+        default=[],
+        metavar="PATH",
+        help="Allow one tracked path to differ from HEAD while verifying the package.",
+    )
     return parser.parse_args()
 
 
@@ -58,16 +65,39 @@ def tracked_files() -> set[str]:
     return {line for line in output.splitlines() if line}
 
 
+def dirty_tracked_files() -> set[str]:
+    output = run_command(["git", "diff", "--name-only", "HEAD", "--"])
+    return {line for line in output.splitlines() if line}
+
+
+def check_clean_tracked_files(allowed_paths: list[str]) -> list[str]:
+    allowed = set(allowed_paths)
+    disallowed = sorted(dirty_tracked_files() - allowed)
+    if disallowed:
+        return ["Worktree has uncommitted tracked changes: " + ", ".join(disallowed)]
+    return []
+
+
 def optional_existing_files(tracked: set[str]) -> set[str]:
     return {path for path in OPTIONAL_FILES if path not in tracked and (REPO_ROOT / path).is_file()}
 
 
-def verify_manifest(entries: set[str], manifest_text: str, expected_commit: str) -> list[str]:
+def verify_manifest(
+    entries: set[str],
+    manifest_text: str,
+    expected_commit: str,
+    tracked_count: int,
+    optional_count: int,
+) -> list[str]:
     failures: list[str] = []
     if MANIFEST not in entries:
         failures.append(f"Missing {MANIFEST}")
     if f"Git commit: {expected_commit}" not in manifest_text:
         failures.append(f"Manifest does not reference current commit {expected_commit}")
+    if f"Tracked files: {tracked_count}" not in manifest_text:
+        failures.append(f"Manifest tracked-file count does not match expected count {tracked_count}")
+    if f"Optional files: {optional_count}" not in manifest_text:
+        failures.append(f"Manifest optional-file count does not match expected count {optional_count}")
     summary_match = re.search(r"^Summary: \d+ passed, \d+ warnings, (?P<failures>\d+) failures$", manifest_text, re.MULTILINE)
     if not summary_match:
         failures.append("Manifest does not include a parseable audit summary")
@@ -86,6 +116,14 @@ def parse_manifest_checksums(manifest_text: str) -> dict[str, str]:
 def archive_sha256(archive: zipfile.ZipFile, entry: str) -> str:
     digest = hashlib.sha256()
     with archive.open(entry) as file_handle:
+        for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as file_handle:
         for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
@@ -116,6 +154,13 @@ def verify_manifest_checksums(
         actual_sha256 = archive_sha256(archive, entry)
         if actual_sha256 != expected_sha256:
             failures.append(f"Checksum mismatch for {entry}")
+        filesystem_path = REPO_ROOT / entry
+        if not filesystem_path.is_file():
+            failures.append(f"Checksum source missing from filesystem: {entry}")
+            continue
+        filesystem_sha256 = file_sha256(filesystem_path)
+        if filesystem_sha256 != expected_sha256:
+            failures.append(f"Filesystem checksum mismatch for {entry}")
     return failures
 
 
@@ -169,8 +214,10 @@ def verify_report_metadata(archive: zipfile.ZipFile, entries: set[str], args: ar
 def main() -> None:
     args = parse_args()
     package_path = args.package if args.package.is_absolute() else REPO_ROOT / args.package
+    clean_failures = check_clean_tracked_files(args.allow_dirty)
     tracked = tracked_files()
-    expected_files = tracked | optional_existing_files(tracked)
+    optional = optional_existing_files(tracked)
+    expected_files = tracked | optional
 
     with zipfile.ZipFile(package_path) as archive:
         entries = set(archive.namelist())
@@ -178,7 +225,8 @@ def main() -> None:
         metadata_failures = verify_report_metadata(archive, entries, args)
         checksum_failures = verify_manifest_checksums(archive, entries, manifest_text, expected_files)
 
-    failures = verify_manifest(entries, manifest_text, current_commit())
+    failures = verify_manifest(entries, manifest_text, current_commit(), len(tracked), len(optional))
+    failures.extend(clean_failures)
     failures.extend(verify_entries(entries, expected_files))
     failures.extend(metadata_failures)
     failures.extend(checksum_failures)
@@ -189,6 +237,7 @@ def main() -> None:
 
     print(f"PASS: Package {args.package} contains {len(entries)} entries")
     print(f"PASS: Manifest references commit {current_commit()}")
+    print("PASS: Manifest file counts match expected package contents")
     print("PASS: Manifest checksums match archive contents")
     print("PASS: No forbidden package entries found")
     if args.expect_name or args.expect_student_id or args.expect_email:

@@ -128,6 +128,8 @@ def verify_command(args: argparse.Namespace, output: Path) -> list[str]:
         args.student_id,
         "--expect-email",
         args.email,
+        "--allow-dirty",
+        REPORT_PATH.as_posix(),
     ]
 
 
