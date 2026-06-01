@@ -163,6 +163,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "## 最终提交前必须补的信息",
         "make handoff-check",
         "make verify-github-sync",
+        "make post-push-check",
         "MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk",
     ],
     "docs/REQUIREMENT_RUN_MATRIX.md": [
@@ -174,6 +175,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
     "docs/COMPLETION_AUDIT.md": [
         "## Remaining External Inputs",
         "`make handoff-check`",
+        "`make post-push-check`",
         "Full MATH `manual_v1` test result",
     ],
 }

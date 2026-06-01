@@ -187,6 +187,12 @@ After pushing a key commit, verify that the local branch matches its GitHub upst
 make verify-github-sync
 ```
 
+After the final handoff commit is pushed, run the package/audit gates plus GitHub sync in one command:
+
+```bash
+make post-push-check
+```
+
 After filling report metadata, preview the course-style named zip:
 
 ```bash

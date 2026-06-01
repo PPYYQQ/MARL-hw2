@@ -74,6 +74,12 @@ After pushing a key commit, confirm local `main` matches GitHub:
 make verify-github-sync
 ```
 
+After pushing the final handoff commit, run the full local gate plus GitHub sync check:
+
+```bash
+make post-push-check
+```
+
 Refresh the API budget summary without making API calls:
 
 ```bash

@@ -48,6 +48,12 @@ make handoff-check
 make verify-github-sync
 ```
 
+如果要做一次完整的 push 后交接检查，运行：
+
+```bash
+make post-push-check
+```
+
 ## 如果补到 Kimi 额度
 
 建议至少准备 CNY 50；CNY 80-100 更稳。剩余 full MATH `manual_v1` 预计约 2,430 次调用、3.40M raw tokens、25 个 chunk。
