@@ -13,6 +13,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/run_chunked_workflows.py`: checkpointed workflow runner for expensive full-test jobs.
 - `experiments/collect_results.py`: result table collection and MATH rescoring utility.
 - `experiments/analyze_efficiency.py`: token-efficiency summary utility.
+- `experiments/analyze_api_budget.py`: summarizes recorded Kimi token usage, estimated stopped-run usage, and remaining full MATH `manual_v1` budget.
 - `experiments/estimate_math_manual_test.py`: estimates full MATH `manual_v1` resource needs from tracked evidence.
 - `experiments/verify_chunked_plan.py`: verifies the planned full MATH `manual_v1` chunks without API calls.
 - `experiments/verify_report_pdf.py`: verifies that the local report PDF is current for tracked TeX sources.
@@ -44,6 +45,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - HumanEval full-test failure analysis: CoT, `manual_v1`, and no-public-test all fix the three direct failures; no-public-test has the fewest regressions against direct.
 - MATH full test baselines: direct `0.88889`, CoT `0.89300`.
 - Efficiency summary: MATH 50-sample `manual_v1` gains `+0.02000` over direct at `9.16x` tokens; HumanEval no-public-test gains `+0.01527` at `6.19x` tokens.
+- API budget summary: recorded runs use `2.41M` tracked tokens; the remaining full MATH `manual_v1` run is estimated at `3.40M` tokens and about `CNY 34-41` before retry margin.
 - MATH full `manual_v1` estimate: about `2,430` LLM calls and `3.40M` raw tokens for 486 test examples, split into 25 chunks at chunk size 20.
 - Evidence verification: all 10 tracked cited runs in `report/evidence/` reproduce their expected rows, scores, call counts, and token totals.
 
@@ -64,6 +66,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/run_chunked_workflows.py \
   experiments/collect_results.py \
   experiments/analyze_efficiency.py \
+  experiments/analyze_api_budget.py \
   experiments/estimate_math_manual_test.py \
   experiments/verify_chunked_plan.py \
   experiments/verify_report_pdf.py \

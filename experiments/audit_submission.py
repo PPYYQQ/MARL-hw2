@@ -34,6 +34,7 @@ REQUIRED_FILES = [
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
     "experiments/analyze_efficiency.py",
+    "experiments/analyze_api_budget.py",
     "experiments/estimate_math_manual_test.py",
     "experiments/verify_chunked_plan.py",
     "experiments/verify_report_pdf.py",
@@ -51,6 +52,7 @@ REQUIRED_FILES = [
     "docs/CHUNKED_WORKFLOWS.md",
     "docs/COMPLETION_AUDIT.md",
     "docs/EXPERIMENT_COMMANDS.md",
+    "docs/REQUIREMENT_RUN_MATRIX.md",
     "docs/PAPER_NOTES.md",
     "docs/SUBMISSION_STATUS.md",
     "report/main.tex",
@@ -58,6 +60,7 @@ REQUIRED_FILES = [
     "report/tables/validation20_results.md",
     "report/tables/math_validation50_results.md",
     "report/tables/efficiency_summary.md",
+    "report/tables/api_budget_summary.md",
     "report/tables/math_manual_test_estimate.md",
     "report/tables/evidence_verification.md",
     "report/tables/math_validation50_failure_analysis.md",
@@ -74,6 +77,7 @@ PYTHON_FILES = [
     "experiments/run_chunked_workflows.py",
     "experiments/collect_results.py",
     "experiments/analyze_efficiency.py",
+    "experiments/analyze_api_budget.py",
     "experiments/estimate_math_manual_test.py",
     "experiments/verify_chunked_plan.py",
     "experiments/verify_report_pdf.py",
@@ -117,6 +121,10 @@ EXPECTED_TABLE_SNIPPETS = {
     "report/tables/efficiency_summary.md": [
         "| MATH validate50 | manual_v1 | 0.98000 | +0.02000 | 250 | 5.00x | 349515 | 9.16x |",
         "| HumanEval test | ablation_no_public_test | 0.99237 | +0.01527 | 409 | 3.12x | 303127 | 6.19x |",
+    ],
+    "report/tables/api_budget_summary.md": [
+        "| MATH full direct/CoT baselines | 2 | 972 | 107,606 | 776,576 | 884,182 | CNY 16.38-16.74 |",
+        "| Remaining full MATH manual_v1 test estimate | 1 | 2,430 | 1,822,432 | 1,574,854 | 3,397,286 | CNY 34.35-40.36 |",
     ],
     "report/tables/evidence_verification.md": [
         "| math_validate50 | manual_v1 | 50 | 0.98000 | 0.98000 | 250 | 349515 | ok |",

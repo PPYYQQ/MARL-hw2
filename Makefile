@@ -11,6 +11,7 @@ PY_COMPILE_FILES = \
 	experiments/run_chunked_workflows.py \
 	experiments/collect_results.py \
 	experiments/analyze_efficiency.py \
+	experiments/analyze_api_budget.py \
 	experiments/estimate_math_manual_test.py \
 	experiments/verify_chunked_plan.py \
 	experiments/verify_report_pdf.py \
@@ -25,7 +26,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence estimate-math-manual verify-math-manual-plan verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run final-package-check final-check handoff-check
+.PHONY: py-compile verify-evidence estimate-math-manual analyze-api-budget verify-math-manual-plan verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run final-package-check final-check handoff-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -35,6 +36,9 @@ verify-evidence:
 
 estimate-math-manual:
 	$(PYTHON) experiments/estimate_math_manual_test.py --output report/tables/math_manual_test_estimate.md
+
+analyze-api-budget:
+	$(PYTHON) experiments/analyze_api_budget.py --output report/tables/api_budget_summary.md
 
 verify-math-manual-plan:
 	$(PYTHON) experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
@@ -66,6 +70,6 @@ finalize-dry-run:
 
 final-package-check: verify-report-pdf package verify-package
 
-final-check: audit package-dry-run
+final-check: analyze-api-budget audit package-dry-run
 
 handoff-check: final-check verify-math-manual-plan finalize-dry-run final-package-check

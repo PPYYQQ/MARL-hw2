@@ -133,6 +133,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `make handoff-check` to run all local no-API handoff gates in one command: final audit/package dry-run, MATH chunk-plan verification, finalization dry-run, and final package verification.
 - Refreshed `docs/SETUP.md` so the local validation section points at the maintained Makefile gates instead of an outdated hand-written `py_compile` command.
 - Added `docs/REQUIREMENT_RUN_MATRIX.md` to show the assignment-required experiment matrix, completed runs, status, and evidence paths in one place.
+- Added `experiments/analyze_api_budget.py`, `make analyze-api-budget`, and `report/tables/api_budget_summary.md` to track historical Kimi token usage, stopped-run estimates, and the remaining full MATH `manual_v1` budget.
 
 ## Next Steps
 

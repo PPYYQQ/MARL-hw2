@@ -13,6 +13,7 @@ This document maps the assignment's required experiments to the runs completed i
 | Ablation experiments | Compare final workflow against reduced variants | MATH `ablation_single`; HumanEval `ablation_no_public_test` | Complete |
 | Full benchmark comparison | Compare direct, CoT, workflow, and ablations where feasible | HumanEval full comparison complete; MATH full direct and CoT complete; MATH workflow full test not complete | Partially blocked by Kimi quota |
 | Token and efficiency analysis | Track calls, tokens, and score/cost tradeoffs | `report/tables/efficiency_summary.md` reports call and token multipliers | Complete |
+| API budget accounting | Explain historical quota usage and remaining quota needs | `report/tables/api_budget_summary.md` summarizes recorded usage, stopped-run estimate, and remaining full MATH budget | Complete |
 | Failure analysis | Explain where workflows fix or regress against baselines | MATH validate50 failure analysis and HumanEval full-test failure analysis complete | Complete |
 | Report and package | Produce a PDF report, code, evidence, and submission package | `report/main.pdf`, tracked evidence, package builder, package verifier, and default zip exist | Default package complete; final named package needs metadata |
 

@@ -21,6 +21,7 @@ This repository contains the implementation, experiment runners, evidence, and r
 - MATH full test baselines: direct reaches `0.88889`; CoT reaches `0.89300`.
 - MATH full `manual_v1` estimate: about `2,430` calls and `3.40M` raw tokens for the 486-example test split.
 - Efficiency tradeoff: MATH `manual_v1` costs `9.16x` direct tokens on 50 validation samples; HumanEval no-public-test costs `6.19x` direct tokens on the full test split.
+- API budget summary: recorded runs use about `2.41M` tracked tokens; the remaining full MATH `manual_v1` run is estimated at `3.40M` tokens.
 
 ## Quick Checks
 
@@ -64,6 +65,12 @@ Run every local no-API handoff gate:
 
 ```bash
 make handoff-check
+```
+
+Refresh the API budget summary without making API calls:
+
+```bash
+make analyze-api-budget
 ```
 
 After filling report metadata, create the course-style named zip:

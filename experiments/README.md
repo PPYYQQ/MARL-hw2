@@ -101,6 +101,7 @@ Summarize score and token-efficiency tradeoffs from tracked result tables:
 
 ```bash
 python experiments/analyze_efficiency.py --output report/tables/efficiency_summary.md
+python experiments/analyze_api_budget.py --output report/tables/api_budget_summary.md
 ```
 
 Export raw evidence for the cited result runs:
