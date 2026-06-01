@@ -76,6 +76,7 @@ make post-push-check
 ## 如果补到 Kimi 额度
 
 建议至少准备 CNY 50；CNY 80-100 更稳。剩余 full MATH `manual_v1` 预计约 2,430 次调用、3.40M raw tokens、25 个 chunk。
+详细恢复流程见 `docs/KIMI_QUOTA_RECOVERY_CN.md`；下面是最短命令序列。
 
 先预览计划，不调用 API：
 
@@ -151,6 +152,7 @@ make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FIN
 | 作业要求跑什么、实际跑了什么 | `docs/REQUIREMENT_RUN_MATRIX.md` |
 | 每一步干了什么 | `PROGRESS.md` |
 | 所有实验命令 | `docs/EXPERIMENT_COMMANDS.md` |
+| Kimi 额度恢复后怎么继续跑 | `docs/KIMI_QUOTA_RECOVERY_CN.md` |
 | 还差什么才能最终提交 | `docs/COMPLETION_AUDIT.md` |
 | 当前提交状态 | `docs/SUBMISSION_STATUS.md` |
 | 额度花在哪里、还要多少 | `report/tables/api_budget_summary.md` |

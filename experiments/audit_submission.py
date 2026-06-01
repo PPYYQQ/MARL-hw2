@@ -58,6 +58,7 @@ REQUIRED_FILES = [
     "docs/COMPLETION_AUDIT.md",
     "docs/EXPERIMENT_COMMANDS.md",
     "docs/FINAL_HANDOFF_CN.md",
+    "docs/KIMI_QUOTA_RECOVERY_CN.md",
     "docs/REQUIREMENT_RUN_MATRIX.md",
     "docs/PAPER_NOTES.md",
     "docs/SUBMISSION_STATUS.md",
@@ -169,6 +170,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
     "docs/FINAL_HANDOFF_CN.md": [
         "## 当前可交付状态",
         "## 最终提交前必须补的信息",
+        "docs/KIMI_QUOTA_RECOVERY_CN.md",
         "make finalize-submission-dry-run FINAL_NAME=",
         "make finalize-submission FINAL_NAME=",
         "make handoff-check",
@@ -181,6 +183,16 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "make verify-final-report-ready",
         "full MATH `manual_v1` 表已经提交到 Git",
         "MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk",
+    ],
+    "docs/KIMI_QUOTA_RECOVERY_CN.md": [
+        "## 恢复前检查",
+        "make status-summary",
+        "make verify-math-manual-plan",
+        "make dry-run-math-manual-chunks",
+        "make resume-math-manual-chunk",
+        "MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk",
+        "make verify-math-manual-result",
+        "make ready-to-submit-check",
     ],
     "docs/REQUIREMENT_RUN_MATRIX.md": [
         "## 中文交接矩阵",

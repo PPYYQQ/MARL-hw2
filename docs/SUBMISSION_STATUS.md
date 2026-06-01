@@ -32,6 +32,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `docs/COMPLETION_AUDIT.md`: requirement-by-requirement handoff audit with evidence paths and remaining external inputs.
 - `docs/REQUIREMENT_RUN_MATRIX.md`: matrix of assignment-required experiment coverage, completed runs, remaining gaps, and evidence files.
 - `docs/FINAL_HANDOFF_CN.md`: Chinese final handoff checklist covering what can be submitted now, what external inputs remain, and exact final commands.
+- `docs/KIMI_QUOTA_RECOVERY_CN.md`: Chinese low-risk recharge and resume runbook for the remaining full MATH workflow.
 - `docs/EXPERIMENT_COMMANDS.md`: command ledger for API runs, table generation, analysis, evidence export, audit, and packaging.
 - `docs/PAPER_NOTES.md`: notes linking AFlow and multi-agent debate ideas to the implemented workflows.
 - `report/main.tex`: ICML-style draft report with current methods and result tables.
@@ -262,6 +263,8 @@ After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 ```bash
 make resume-math-manual-chunk
 ```
+
+Use `docs/KIMI_QUOTA_RECOVERY_CN.md` for the full step-by-step sequence before increasing `MATH_MANUAL_MAX_CHUNKS`.
 
 Check current chunked MATH progress without making API calls:
 

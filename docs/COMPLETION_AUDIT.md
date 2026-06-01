@@ -29,6 +29,7 @@ This document maps the assignment requirements to the current repository evidenc
 | Student name, ID, and email | Required for final report metadata and named package; finalization restores source placeholders by default after packaging | `conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com"` |
 | Kimi account balance or replacement API key | Current Kimi calls return insufficient-balance quota errors; `report/tables/api_budget_summary.md` estimates CNY 50 as the practical minimum recharge for Tier1 limits | `conda run -n marl_hw2 python experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 --split test --chunk-size 20 --max-concurrency 2 --run-id math-test-manual-v1 --max-chunks 1` |
 | Full MATH `manual_v1` test result | Depends on restored API quota; estimated at about 2,430 calls and 3.40M raw tokens | `conda run -n marl_hw2 python experiments/collect_results.py --runs-dir experiments/chunked_runs --latest-only --rescore-math --dataset MATH --split test --output report/tables/math_test_manual_chunked.md` |
+| Quota recovery procedure | Documented so the remaining API task can resume one checkpointed chunk at a time instead of a fragile monolithic run | `docs/KIMI_QUOTA_RECOVERY_CN.md` |
 
 ## Current Validation Gates
 

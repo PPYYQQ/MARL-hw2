@@ -12,6 +12,7 @@ This repository contains the implementation, experiment runners, evidence, and r
 - `docs/`: setup notes, ablation notes, experiment command ledger, paper notes, chunked-run guide, completion audit, and submission status.
 - `docs/REQUIREMENT_RUN_MATRIX.md`: assignment requirement matrix showing required runs, completed runs, gaps, and evidence.
 - `docs/FINAL_HANDOFF_CN.md`: Chinese final handoff checklist for submission metadata, quota recovery, and final commands.
+- `docs/KIMI_QUOTA_RECOVERY_CN.md`: Chinese runbook for safely resuming the remaining full MATH workflow after recharge.
 - `PROGRESS.md`: chronological work log.
 
 ## Current Result Summary
@@ -190,6 +191,8 @@ After quota is restored, resume one checkpointed MATH `manual_v1` chunk:
 ```bash
 make resume-math-manual-chunk
 ```
+
+For the full low-risk recharge and resume sequence, see `docs/KIMI_QUOTA_RECOVERY_CN.md`.
 
 Collect completed chunked outputs into the local report table:
 
