@@ -30,6 +30,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_final_report_ready.py \
 	experiments/verify_report_pdf.py \
 	experiments/verify_metadata_validation.py \
+	experiments/verify_package_verifier.py \
 	experiments/verify_audit_warnings.py \
 	experiments/export_evidence.py \
 	experiments/verify_evidence.py \
@@ -43,7 +44,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan verify-math-manual-result verify-final-report-ready summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-metadata-validation verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check status-summary handoff-check post-push-check current-submit-check ready-to-submit-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan verify-math-manual-result verify-final-report-ready summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-metadata-validation verify-package-verifier verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check status-summary handoff-check post-push-check current-submit-check ready-to-submit-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -86,6 +87,9 @@ verify-report-pdf:
 
 verify-metadata-validation:
 	$(PYTHON) experiments/verify_metadata_validation.py
+
+verify-package-verifier:
+	$(PYTHON) experiments/verify_package_verifier.py
 
 verify-known-warnings:
 	$(PYTHON) experiments/verify_audit_warnings.py
@@ -130,7 +134,7 @@ final-check: analyze-api-budget audit package-dry-run
 
 status-summary: verify-known-warnings summarize-math-manual-chunks verify-github-sync
 
-handoff-check: final-check verify-known-warnings verify-metadata-validation verify-math-manual-plan summarize-math-manual-chunks finalize-dry-run final-package-check
+handoff-check: final-check verify-known-warnings verify-metadata-validation verify-package-verifier verify-math-manual-plan summarize-math-manual-chunks finalize-dry-run final-package-check
 
 post-push-check: handoff-check verify-github-sync
 

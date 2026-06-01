@@ -25,6 +25,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/verify_final_report_ready.py \
   experiments/verify_report_pdf.py \
   experiments/verify_metadata_validation.py \
+  experiments/verify_package_verifier.py \
   experiments/verify_audit_warnings.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
@@ -132,6 +133,7 @@ make refresh-evidence
 make build-report
 make verify-report-pdf
 make verify-metadata-validation
+make verify-package-verifier
 make verify-math-manual-plan
 make verify-known-warnings
 make final-check
@@ -157,6 +159,7 @@ python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your
 cd report && conda run -n marl_hw2 tectonic main.tex
 python experiments/verify_report_pdf.py
 python experiments/verify_audit_warnings.py
+python experiments/verify_package_verifier.py
 python experiments/audit_submission.py
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
@@ -169,8 +172,9 @@ python experiments/verify_git_sync.py
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
 `make finalize-dry-run` previews the final filled-metadata path with overrideable `FINALIZE_DRY_RUN_*` Make variables and writes no files.
 `make verify-metadata-validation` checks the final metadata validation rules without writing files.
+`make verify-package-verifier` checks the package verifier's manifest-count and active-key leak regression cases without writing project files.
 `make status-summary` prints the known-warning check, current MATH chunk status, and GitHub sync status without building packages.
-`make handoff-check` runs all local no-API gates: audit/dry-run packaging, known-warning verification, MATH chunk-plan verification, chunk status summary, finalization dry-run, and final package verification.
+`make handoff-check` runs all local no-API gates: audit/dry-run packaging, known-warning verification, package-verifier regression checks, MATH chunk-plan verification, chunk status summary, finalization dry-run, and final package verification.
 `make post-push-check` runs `make handoff-check` and then verifies local `main` is synchronized with GitHub.
 `make current-submit-check` is the one-command path for submitting the current known-blocker version after real metadata is available; it does not require the full MATH `manual_v1` table.
 `make ready-to-submit-check` is the strict final gate after quota and metadata are resolved: it requires a Git-tracked full MATH `manual_v1` table, verifies the report no longer has stale pending-run language, builds the named package, and verifies GitHub sync.

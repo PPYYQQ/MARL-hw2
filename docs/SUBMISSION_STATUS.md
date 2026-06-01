@@ -20,6 +20,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/verify_final_report_ready.py`: verifies that the final report reflects the completed full MATH `manual_v1` result.
 - `experiments/verify_report_pdf.py`: verifies that the local report PDF is current for tracked TeX sources.
 - `experiments/verify_metadata_validation.py`: verifies final metadata placeholder rejection and explicit test-metadata opt-in behavior.
+- `experiments/verify_package_verifier.py`: verifies package-verifier regression checks for manifest count drift and active API key leakage.
 - `experiments/verify_audit_warnings.py`: verifies that submission-audit warnings are limited to known external blockers.
 - `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
 - `experiments/verify_evidence.py`: verifies tracked evidence against cited scores, row counts, calls, and token totals.
@@ -80,6 +81,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/verify_final_report_ready.py \
   experiments/verify_report_pdf.py \
   experiments/verify_metadata_validation.py \
+  experiments/verify_package_verifier.py \
   experiments/verify_audit_warnings.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
@@ -137,6 +139,12 @@ Verify final metadata validation behavior:
 
 ```bash
 make verify-metadata-validation
+```
+
+Verify package-verifier regression behavior:
+
+```bash
+make verify-package-verifier
 ```
 
 Build the report PDF with Tectonic:
