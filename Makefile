@@ -4,6 +4,11 @@ FINALIZE_DRY_RUN_NAME ?= Test Student
 FINALIZE_DRY_RUN_ID ?= TEST123
 FINALIZE_DRY_RUN_EMAIL ?= test@example.com
 FINALIZE_DRY_RUN_ASSIGNMENT ?= MARL-hw2
+MATH_MANUAL_RUN_ID ?= math-test-manual-v1
+MATH_MANUAL_CHUNK_SIZE ?= 20
+MATH_MANUAL_MAX_CONCURRENCY ?= 2
+MATH_MANUAL_MAX_CHUNKS ?= 1
+MATH_MANUAL_OUTPUT ?= report/tables/math_test_manual_chunked.md
 
 PY_COMPILE_FILES = \
 	experiments/run_baselines.py \
@@ -26,7 +31,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence estimate-math-manual analyze-api-budget verify-math-manual-plan verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run final-package-check final-check handoff-check
+.PHONY: py-compile verify-evidence estimate-math-manual analyze-api-budget verify-math-manual-plan resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run final-package-check final-check handoff-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -42,6 +47,12 @@ analyze-api-budget:
 
 verify-math-manual-plan:
 	$(PYTHON) experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
+
+resume-math-manual-chunk:
+	$(PYTHON) experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 --split test --chunk-size $(MATH_MANUAL_CHUNK_SIZE) --max-concurrency $(MATH_MANUAL_MAX_CONCURRENCY) --run-id "$(MATH_MANUAL_RUN_ID)" --max-chunks $(MATH_MANUAL_MAX_CHUNKS)
+
+collect-math-manual-chunked:
+	$(PYTHON) experiments/collect_results.py --runs-dir experiments/chunked_runs --latest-only --rescore-math --dataset MATH --split test --output $(MATH_MANUAL_OUTPUT)
 
 verify-report-pdf:
 	$(PYTHON) experiments/verify_report_pdf.py

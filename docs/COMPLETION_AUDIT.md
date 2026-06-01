@@ -37,6 +37,8 @@ This document maps the assignment requirements to the current repository evidenc
 | `make final-check` | Passes with warnings only for student metadata and missing full MATH `manual_v1` test table |
 | `make analyze-api-budget` | Refreshes the recorded usage and remaining Kimi budget table without making API calls |
 | `make verify-math-manual-plan` | Confirms the full MATH `manual_v1` test plan covers 486 examples in 25 contiguous chunks |
+| `make resume-math-manual-chunk` | After quota is restored, resumes one checkpointed full MATH `manual_v1` chunk by default |
+| `make collect-math-manual-chunked` | Collects completed chunked full MATH `manual_v1` outputs into the report table |
 | `make build-report` | Rebuilds `report/main.pdf` with Tectonic |
 | `make verify-report-pdf` | Confirms `report/main.pdf` is present and newer than the TeX source files |
 | `make package` | Writes `submission/MARL-hw2-submission.zip` from a clean tracked worktree, `report/main.pdf`, and `SUBMISSION_MANIFEST.txt` |

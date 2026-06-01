@@ -63,6 +63,8 @@ python experiments/run_baselines.py --dataset MATH --baseline cot --split test -
 Quota-safe MATH full workflow resume command:
 
 ```bash
+make resume-math-manual-chunk
+
 python experiments/run_chunked_workflows.py \
   --dataset MATH \
   --workflow manual_v1 \
@@ -83,6 +85,7 @@ python experiments/collect_results.py --runs-dir experiments/runs --latest-only 
 python experiments/analyze_efficiency.py --output report/tables/efficiency_summary.md
 python experiments/analyze_api_budget.py --output report/tables/api_budget_summary.md
 python experiments/estimate_math_manual_test.py --output report/tables/math_manual_test_estimate.md
+make collect-math-manual-chunked
 python experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
 python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 ```

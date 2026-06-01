@@ -136,6 +136,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/analyze_api_budget.py`, `make analyze-api-budget`, and `report/tables/api_budget_summary.md` to track historical Kimi token usage, stopped-run estimates, and the remaining full MATH `manual_v1` budget.
 - Updated the report limitations section so the PDF now reflects the verified Kimi budget summary instead of saying Kimi pricing still needs to be added.
 - Extended MATH failure analysis so the remaining shared validate50 failure is explicitly classified as a reasoning error rather than a local rescoring issue.
+- Added `make resume-math-manual-chunk` and `make collect-math-manual-chunked` so the quota-restored full MATH `manual_v1` continuation path is a short, documented command instead of a long hand-written invocation.
 
 ## Next Steps
 

@@ -47,6 +47,18 @@ python experiments/run_chunked_workflows.py \
   --max-chunks 1
 ```
 
+Makefile shortcut:
+
+```bash
+make resume-math-manual-chunk
+```
+
+The shortcut defaults to `MATH_MANUAL_RUN_ID=math-test-manual-v1`, `MATH_MANUAL_CHUNK_SIZE=20`, `MATH_MANUAL_MAX_CONCURRENCY=2`, and `MATH_MANUAL_MAX_CHUNKS=1`. Override those variables if needed, for example:
+
+```bash
+make resume-math-manual-chunk MATH_MANUAL_MAX_CHUNKS=2
+```
+
 Rerun the command to pick up the next incomplete chunk, or use `--start-chunk` to jump to a later chunk.
 
 If the API returns quota or insufficient-balance errors for every item in a chunk, the chunk is marked `failed_quota` rather than `completed`, and the runner stops without counting that chunk in the aggregate.
@@ -93,4 +105,10 @@ python experiments/collect_results.py \
   --dataset MATH \
   --split test \
   --output report/tables/math_test_manual_chunked.md
+```
+
+Makefile shortcut:
+
+```bash
+make collect-math-manual-chunked
 ```

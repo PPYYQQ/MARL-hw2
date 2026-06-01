@@ -128,6 +128,18 @@ Verify the planned full MATH `manual_v1` chunks before spending API quota:
 make verify-math-manual-plan
 ```
 
+After quota is restored, resume one checkpointed MATH `manual_v1` chunk:
+
+```bash
+make resume-math-manual-chunk
+```
+
+Collect completed chunked outputs into the local report table:
+
+```bash
+make collect-math-manual-chunked
+```
+
 Fill the report author metadata before final packaging:
 
 ```bash

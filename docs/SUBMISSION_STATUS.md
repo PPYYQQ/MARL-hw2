@@ -206,17 +206,16 @@ Finalization refuses to start if any tracked file already has uncommitted change
 After Kimi quota is restored, resume the missing full MATH workflow evaluation:
 
 ```bash
-conda run -n marl_hw2 python experiments/run_chunked_workflows.py \
-  --dataset MATH \
-  --workflow manual_v1 \
-  --split test \
-  --chunk-size 20 \
-  --max-concurrency 2 \
-  --run-id math-test-manual-v1 \
-  --max-chunks 1
+make resume-math-manual-chunk
 ```
 
-Rerun the same command to process the next incomplete chunk. Remove `--max-chunks 1` to run continuously.
+Rerun the same command to process the next incomplete chunk. Override `MATH_MANUAL_MAX_CHUNKS` to process more chunks in one invocation.
+
+After enough chunks complete, refresh the local result table:
+
+```bash
+make collect-math-manual-chunked
+```
 
 ## Known Blockers
 
