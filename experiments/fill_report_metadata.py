@@ -57,13 +57,30 @@ def validate_metadata(name: str, student_id: str, email: str, allow_test_metadat
         "Your ID",
         "you@example.com",
         "Student Name",
+        "Student ID",
+        "student@example.com",
+        "Name",
+        "ID",
+        "Email",
         "TODO",
         "TODO@example.com",
+        "N/A",
+        "NA",
+        "xxx",
     }
     test_values = {"Test Student", "TEST123", "test@example.com"}
-    disallowed = placeholder_values | (set() if allow_test_metadata else test_values)
+    disallowed = {value.casefold() for value in placeholder_values}
+    if not allow_test_metadata:
+        disallowed |= {value.casefold() for value in test_values}
     for label, value in values.items():
-        if value in disallowed or "TODO" in value:
+        normalized = value.casefold()
+        if (
+            normalized in disallowed
+            or "todo" in normalized
+            or "your " in normalized
+            or "<" in value
+            or ">" in value
+        ):
             raise ValueError(f"{label} still looks like placeholder metadata: {value}")
 
     if "@" not in values["email"] or values["email"].endswith("@example.com"):

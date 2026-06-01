@@ -162,6 +162,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Tightened `make verify-math-manual-result` with default minimum full-run thresholds of 2,400 calls and 2.5M tokens so a partial chunked MATH table cannot satisfy the final result gate.
 - Added `make current-submit-check` as the one-command path for submitting the current known-blocker version after real metadata is available; it first validates metadata with a dry run, then runs handoff gates, builds the named package, and verifies GitHub sync without requiring the missing full MATH table.
 - Changed metadata validation so test values such as `Test Student` are accepted only when `--allow-test-metadata` is explicitly passed; normal real-metadata dry-runs now reject those example values before packaging.
+- Tightened metadata validation further so case variants, `TODO`, `your ...`, and angle-bracket placeholder values are rejected before final report/package generation.
 
 ## Next Steps
 

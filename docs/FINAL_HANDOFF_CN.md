@@ -24,7 +24,7 @@
 | 邮箱 | 报告 corresponding author 需要 | 同上 |
 
 `finalize_submission.py` 默认会临时填入个人信息、重编译 PDF、生成带姓名学号的 zip、验证 zip 内的元数据，然后恢复本地 `report/main.tex` 和 `report/main.pdf` 的占位符，避免把个人信息留在工作树里。
-真实打包和真实信息 dry-run 都会拒绝 `Your Name`、`Your ID`、`you@example.com`、`Test Student`、`TEST123` 这类示例值；只有维护用的 `make finalize-dry-run` 会显式打开 `--allow-test-metadata`。下面命令里的值必须替换成真实信息。
+真实打包和真实信息 dry-run 都会拒绝 `Your Name`、`Your ID`、`you@example.com`、`Test Student`、`TEST123`、大小写变体、`TODO` 和尖括号占位符这类示例值；只有维护用的 `make finalize-dry-run` 会显式打开 `--allow-test-metadata`。下面命令里的值必须替换成真实信息。
 
 正式打包前可以先用真实信息预演，不写文件：
 
