@@ -139,10 +139,10 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 
 ## Next Steps
 
-1. Inspect 50-sample MATH failure logs to decide whether a low-cost workflow improvement is obvious.
-2. Use the chunked runner to resume full MATH `manual_v1` in 20-example chunks.
-3. Consider a lower-token MATH workflow variant because `manual_v1` is accurate but expensive.
-4. Run `experiments/finalize_submission.py` with final student metadata before submission.
+1. Recharge the Kimi account or provide another valid `KIMI_API_KEY`; the practical minimum is CNY 50 for Tier1 limits, with CNY 80-100 leaving retry margin.
+2. Resume full MATH `manual_v1` with the chunked runner in 20-example chunks, starting with `--max-chunks 1` to confirm quota and checkpointing.
+3. After chunks complete, collect the full MATH `manual_v1` table, export evidence, rebuild the report, and rerun `make handoff-check`.
+4. Run `experiments/finalize_submission.py` with final student name, student ID, and email before course submission.
 5. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues

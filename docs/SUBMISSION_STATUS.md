@@ -220,7 +220,7 @@ Rerun the same command to process the next incomplete chunk. Remove `--max-chunk
 
 ## Known Blockers
 
-- New Kimi API calls currently fail with an insufficient-balance quota error.
+- New Kimi API calls currently fail with an insufficient-balance quota error; the current budget estimate recommends at least CNY 50 before resuming the missing run.
 - Full MATH `manual_v1` test results are therefore not available yet.
 - `report/main.tex` still contains placeholder student name, student ID, and email fields; use `experiments/fill_report_metadata.py` after those values are known.
 

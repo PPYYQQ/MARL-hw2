@@ -16,6 +16,7 @@ This document maps the assignment requirements to the current repository evidenc
 | Compare against baselines | Complete for available runs | `report/main.tex` section `Validation Results`; `report/tables/efficiency_summary.md` |
 | Include ablations | Complete | `AFlow/workspace/MATH/workflows/ablation_single/graph.py`; `AFlow/workspace/HumanEval/workflows/ablation_no_public_test/graph.py`; `docs/ABLATIONS.md` |
 | Analyze failures | Complete for MATH validation50 and HumanEval full test | `report/tables/math_validation50_failure_analysis.md`; `report/tables/humaneval_test_failure_analysis.md` |
+| Account for API budget | Complete locally | `report/tables/api_budget_summary.md`; `experiments/analyze_api_budget.py`; `Makefile` target `analyze-api-budget` |
 | Track raw evidence | Complete for cited runs | `report/evidence/`; `report/tables/evidence_verification.md`; `experiments/verify_evidence.py` |
 | Prepare report PDF | Complete locally, needs final metadata rebuild | `report/main.pdf`; `Makefile` targets `build-report` and `verify-report-pdf`; `experiments/finalize_submission.py` |
 | Prepare submission package | Complete default package; final named package needs metadata | `experiments/package_submission.py`; `experiments/finalize_submission.py`; `submission/MARL-hw2-submission.zip` |
@@ -26,7 +27,7 @@ This document maps the assignment requirements to the current repository evidenc
 | Item | Why it remains open | Next command |
 | --- | --- | --- |
 | Student name, ID, and email | Required for final report metadata and named package; finalization restores source placeholders by default after packaging | `conda run -n marl_hw2 python experiments/finalize_submission.py --name "Your Name" --student-id "Your ID" --email "you@example.com"` |
-| Kimi account balance or replacement API key | Current Kimi calls return insufficient-balance quota errors | `conda run -n marl_hw2 python experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 --split test --chunk-size 20 --max-concurrency 2 --run-id math-test-manual-v1 --max-chunks 1` |
+| Kimi account balance or replacement API key | Current Kimi calls return insufficient-balance quota errors; `report/tables/api_budget_summary.md` estimates CNY 50 as the practical minimum recharge for Tier1 limits | `conda run -n marl_hw2 python experiments/run_chunked_workflows.py --dataset MATH --workflow manual_v1 --split test --chunk-size 20 --max-concurrency 2 --run-id math-test-manual-v1 --max-chunks 1` |
 | Full MATH `manual_v1` test result | Depends on restored API quota; estimated at about 2,430 calls and 3.40M raw tokens | `conda run -n marl_hw2 python experiments/collect_results.py --runs-dir experiments/chunked_runs --latest-only --rescore-math --dataset MATH --split test --output report/tables/math_test_manual_chunked.md` |
 
 ## Current Validation Gates
@@ -34,6 +35,7 @@ This document maps the assignment requirements to the current repository evidenc
 | Gate | Expected outcome |
 | --- | --- |
 | `make final-check` | Passes with warnings only for student metadata and missing full MATH `manual_v1` test table |
+| `make analyze-api-budget` | Refreshes the recorded usage and remaining Kimi budget table without making API calls |
 | `make verify-math-manual-plan` | Confirms the full MATH `manual_v1` test plan covers 486 examples in 25 contiguous chunks |
 | `make build-report` | Rebuilds `report/main.pdf` with Tectonic |
 | `make verify-report-pdf` | Confirms `report/main.pdf` is present and newer than the TeX source files |
@@ -48,6 +50,7 @@ This document maps the assignment requirements to the current repository evidenc
 ## Submission Risk Notes
 
 - The report already states that full MATH `manual_v1` test evaluation is pending quota and uses validation evidence for the MATH workflow claim.
+- The MATH validate50 failure analysis classifies the remaining shared failure at index `91` as a reasoning error rather than a rescoring issue.
 - The default generated zip is usable for review, but the final course submission should be regenerated from a clean worktree with real metadata and the named package command.
 - The finalization helper starts from a clean tracked worktree, checks filled metadata inside the generated archive, and avoids leaving personal metadata in the worktree by default; use `--keep-filled-report` only if you intentionally want `report/main.tex` and `report/main.pdf` to remain filled locally.
 - `make final-check` now fails if required files are present locally but not tracked by Git.
