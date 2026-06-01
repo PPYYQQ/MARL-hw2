@@ -38,6 +38,7 @@ REQUIRED_FILES = [
     "experiments/estimate_math_manual_test.py",
     "experiments/verify_chunked_plan.py",
     "experiments/verify_report_pdf.py",
+    "experiments/verify_git_sync.py",
     "experiments/export_evidence.py",
     "experiments/verify_evidence.py",
     "experiments/fill_report_metadata.py",
@@ -82,6 +83,7 @@ PYTHON_FILES = [
     "experiments/estimate_math_manual_test.py",
     "experiments/verify_chunked_plan.py",
     "experiments/verify_report_pdf.py",
+    "experiments/verify_git_sync.py",
     "experiments/export_evidence.py",
     "experiments/verify_evidence.py",
     "experiments/fill_report_metadata.py",
@@ -160,6 +162,7 @@ EXPECTED_HANDOFF_SNIPPETS = {
         "## 当前可交付状态",
         "## 最终提交前必须补的信息",
         "make handoff-check",
+        "make verify-github-sync",
         "MATH_MANUAL_MAX_CHUNKS=3 make resume-math-manual-chunk",
     ],
     "docs/REQUIREMENT_RUN_MATRIX.md": [

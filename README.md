@@ -68,6 +68,12 @@ Run every local no-API handoff gate:
 make handoff-check
 ```
 
+After pushing a key commit, confirm local `main` matches GitHub:
+
+```bash
+make verify-github-sync
+```
+
 Refresh the API budget summary without making API calls:
 
 ```bash

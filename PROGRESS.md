@@ -141,6 +141,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Expanded `docs/REQUIREMENT_RUN_MATRIX.md` with Chinese handoff tables for assignment-required runs, completed runs, remaining support needs, historical quota use, and the remaining MATH `manual_v1` budget.
 - Added `docs/FINAL_HANDOFF_CN.md` as a Chinese final handoff checklist for submit-ready artifacts, missing student metadata, optional Kimi quota recovery, and final packaging commands.
 - Extended `experiments/audit_submission.py` so the no-API submission audit now requires the Chinese final handoff checklist and verifies key handoff-document snippets.
+- Added `experiments/verify_git_sync.py` and `make verify-github-sync` so each pushed key commit can be checked against the configured GitHub upstream.
 
 ## Next Steps
 

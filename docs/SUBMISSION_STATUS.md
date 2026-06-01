@@ -181,6 +181,12 @@ Run all local no-API handoff gates:
 make handoff-check
 ```
 
+After pushing a key commit, verify that the local branch matches its GitHub upstream:
+
+```bash
+make verify-github-sync
+```
+
 After filling report metadata, preview the course-style named zip:
 
 ```bash

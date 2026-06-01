@@ -42,6 +42,12 @@ make handoff-check
 
 预期结果是 0 failures，只有两个 warning：学生信息占位符和 full MATH `manual_v1` test 表缺失。拿到学生信息后再运行最终打包命令。
 
+每次关键提交 push 后，确认本地分支和 GitHub 同步：
+
+```bash
+make verify-github-sync
+```
+
 ## 如果补到 Kimi 额度
 
 建议至少准备 CNY 50；CNY 80-100 更稳。剩余 full MATH `manual_v1` 预计约 2,430 次调用、3.40M raw tokens、25 个 chunk。

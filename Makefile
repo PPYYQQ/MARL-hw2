@@ -22,6 +22,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_report_pdf.py \
 	experiments/export_evidence.py \
 	experiments/verify_evidence.py \
+	experiments/verify_git_sync.py \
 	experiments/fill_report_metadata.py \
 	experiments/finalize_submission.py \
 	experiments/analyze_math_failures.py \
@@ -31,13 +32,16 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence estimate-math-manual analyze-api-budget verify-math-manual-plan dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run final-package-check final-check handoff-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run final-package-check final-check handoff-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
 
 verify-evidence:
 	$(PYTHON) experiments/verify_evidence.py --output report/tables/evidence_verification.md
+
+verify-github-sync:
+	$(PYTHON) experiments/verify_git_sync.py
 
 estimate-math-manual:
 	$(PYTHON) experiments/estimate_math_manual_test.py --output report/tables/math_manual_test_estimate.md
