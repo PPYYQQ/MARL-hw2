@@ -17,6 +17,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/estimate_math_manual_test.py`: estimates full MATH `manual_v1` resource needs from tracked evidence.
 - `experiments/verify_chunked_plan.py`: verifies the planned full MATH `manual_v1` chunks without API calls.
 - `experiments/verify_result_table.py`: verifies that a collected Markdown result table contains an expected experiment row.
+- `experiments/verify_final_report_ready.py`: verifies that the final report reflects the completed full MATH `manual_v1` result.
 - `experiments/verify_report_pdf.py`: verifies that the local report PDF is current for tracked TeX sources.
 - `experiments/verify_audit_warnings.py`: verifies that submission-audit warnings are limited to known external blockers.
 - `experiments/export_evidence.py`: copies cited run artifacts into tracked report evidence.
@@ -74,6 +75,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/summarize_chunked_run.py \
   experiments/verify_chunked_plan.py \
   experiments/verify_result_table.py \
+  experiments/verify_final_report_ready.py \
   experiments/verify_report_pdf.py \
   experiments/verify_audit_warnings.py \
   experiments/export_evidence.py \
@@ -274,6 +276,12 @@ Verify the collected full MATH `manual_v1` table before final submission:
 
 ```bash
 make verify-math-manual-result
+```
+
+Verify the report has been updated from pending-run language to the completed full-test result:
+
+```bash
+make verify-final-report-ready
 ```
 
 ## Known Blockers

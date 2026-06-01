@@ -39,6 +39,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make analyze-api-budget` | Refreshes the recorded usage and remaining Kimi budget table without making API calls |
 | `make verify-math-manual-plan` | Confirms the full MATH `manual_v1` test plan covers 486 examples in 25 contiguous chunks |
 | `make verify-math-manual-result` | Confirms the collected full MATH `manual_v1` result table has one 486-example MATH test row with valid score, call, token, and model fields |
+| `make verify-final-report-ready` | Confirms the report source includes the completed full MATH `manual_v1` score/calls/tokens and does not retain stale pending-run language |
 | `make dry-run-math-manual-chunks` | Prints the chunked runner's full MATH `manual_v1` plan without making API calls |
 | `make summarize-math-manual-chunks` | Prints completed, quota-failed, missing, and next chunk status without making API calls |
 | `make resume-math-manual-chunk` | After quota is restored, resumes one checkpointed full MATH `manual_v1` chunk by default |
@@ -53,7 +54,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make final-package-check` | Creates the default zip and verifies it in one local gate |
 | `make handoff-check` | Runs all local no-API handoff gates, including known-warning verification, in one target |
 | `make post-push-check` | Runs `make handoff-check` and then verifies the local branch matches its GitHub upstream |
-| `make ready-to-submit-check` | Requires real metadata and a verified, Git-tracked full MATH `manual_v1` table, runs handoff gates, builds the final named package, and verifies GitHub sync |
+| `make ready-to-submit-check` | Requires real metadata, a verified Git-tracked full MATH `manual_v1` table, and an updated report before building the final named package and verifying GitHub sync |
 | `experiments/finalize_submission.py --dry-run ...` | Previews final metadata lines and named package contents without writing |
 | `experiments/finalize_submission.py ...` | Requires a clean tracked worktree, builds and verifies a filled-metadata zip/PDF, checks report metadata inside the archive, then restores local `report/main.tex` and `report/main.pdf` placeholders unless `--keep-filled-report` is passed |
 

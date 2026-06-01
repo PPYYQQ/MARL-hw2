@@ -197,6 +197,12 @@ Verify that the collected full MATH `manual_v1` result table has the expected te
 make verify-math-manual-result
 ```
 
+After updating the report with that full-test result, check that the report no longer contains stale pending-run language:
+
+```bash
+make verify-final-report-ready
+```
+
 Fill the report author metadata before final packaging:
 
 ```bash

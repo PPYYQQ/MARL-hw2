@@ -25,6 +25,7 @@ PY_COMPILE_FILES = \
 	experiments/summarize_chunked_run.py \
 	experiments/verify_chunked_plan.py \
 	experiments/verify_result_table.py \
+	experiments/verify_final_report_ready.py \
 	experiments/verify_report_pdf.py \
 	experiments/verify_audit_warnings.py \
 	experiments/export_evidence.py \
@@ -39,7 +40,7 @@ PY_COMPILE_FILES = \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan verify-math-manual-result summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check ready-to-submit-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan verify-math-manual-result verify-final-report-ready summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check handoff-check post-push-check ready-to-submit-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -61,6 +62,9 @@ verify-math-manual-plan:
 
 verify-math-manual-result:
 	$(PYTHON) experiments/verify_result_table.py --table "$(MATH_MANUAL_OUTPUT)" --dataset MATH --method manual_v1 --split test --samples 486 --require-model kimi
+
+verify-final-report-ready:
+	$(PYTHON) experiments/verify_final_report_ready.py --table "$(MATH_MANUAL_OUTPUT)" --forbidden-phrase "main remaining experiment is the expensive full MATH" --forbidden-phrase "full MATH workflow evaluation should be rerun" --forbidden-phrase "no full-test \\texttt{manual\\_v1} chunk is reported yet" --forbidden-phrase "Current MATH workflow results are validation subsets and should not be interpreted as final benchmark gains" --forbidden-phrase "remaining core work is to resume the expensive full MATH workflow evaluation"
 
 summarize-math-manual-chunks:
 	$(PYTHON) experiments/summarize_chunked_run.py --dataset MATH --workflow manual_v1 --run-id "$(MATH_MANUAL_RUN_ID)"
@@ -129,6 +133,7 @@ ready-to-submit-check:
 	@test -f "$(MATH_MANUAL_OUTPUT)" || (echo "Missing $(MATH_MANUAL_OUTPUT); finish MATH manual_v1 chunks and run make collect-math-manual-chunked" && exit 1)
 	@git ls-files --error-unmatch "$(MATH_MANUAL_OUTPUT)" >/dev/null 2>&1 || (echo "$(MATH_MANUAL_OUTPUT) is not tracked by Git; run git add and commit it before final submission" && exit 1)
 	$(MAKE) verify-math-manual-result
+	$(MAKE) verify-final-report-ready
 	$(MAKE) handoff-check
 	$(MAKE) finalize-submission
 	$(MAKE) verify-github-sync

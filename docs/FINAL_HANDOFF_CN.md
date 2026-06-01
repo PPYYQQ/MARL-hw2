@@ -108,6 +108,12 @@ make collect-math-manual-chunked
 make verify-math-manual-result
 ```
 
+把 full-test 结果写进报告后，确认报告不再保留“仍需补跑”的旧表述：
+
+```bash
+make verify-final-report-ready
+```
+
 之后需要更新报告、重建 PDF、刷新证据、重跑交接 gate：
 
 ```bash
