@@ -156,6 +156,12 @@ Run the local submission audit without making API calls:
 python experiments/audit_submission.py
 ```
 
+Verify the assignment run matrix against tracked result and budget tables:
+
+```bash
+python experiments/verify_requirement_matrix.py
+```
+
 Use `--strict` before final packaging when the Kimi quota, student metadata, and local PDF build blockers have been resolved.
 
 Run the maintained Make gates before handoff or final submission:
@@ -163,6 +169,7 @@ Run the maintained Make gates before handoff or final submission:
 ```bash
 make handoff-check
 make post-push-check
+make verify-requirement-matrix
 make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```

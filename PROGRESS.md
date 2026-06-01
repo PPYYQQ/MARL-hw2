@@ -181,6 +181,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Tightened manifest verification to require exact `Git commit`, `Tracked files`, and `Optional files` lines instead of substring matches, and extended the package-verifier regression check for ambiguous values such as `2` versus `20`.
 - Extended package verification so `SUBMISSION_MANIFEST.txt` must also contain an exact `Output:` line matching the zip being verified, with regression coverage for ambiguous output paths.
 - Re-ran `make status-summary` and `make post-push-check` after the assignment run-matrix review. The worktree remained clean and synchronized with GitHub, the default package verified successfully, and the only warnings were the maintained external blockers: missing student metadata and the quota-blocked full MATH `manual_v1` test table.
+- Added `experiments/verify_requirement_matrix.py` and `make verify-requirement-matrix`, then wired the new no-API check into `make handoff-check` so the assignment requirement matrix is compared against tracked result tables, Kimi budget totals, and the current full MATH quota-blocked status.
 
 ## Next Steps
 

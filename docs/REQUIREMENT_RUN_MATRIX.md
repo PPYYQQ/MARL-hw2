@@ -33,6 +33,16 @@ This document maps the assignment's required experiments to the runs completed i
 
 说明：MATH 表格使用 `experiments/collect_results.py --rescore-math` 的当前 evaluator 重新评分；`report/evidence/` 中部分 CSV 文件名和 `raw_average_score` 反映的是原始 AFlow 评分，不是最终报告采用的重评分数。
 
+## 矩阵校验
+
+每次修改这个文件或重生成结果表后，运行：
+
+```bash
+make verify-requirement-matrix
+```
+
+该检查会把本文件的关键结果行和额度行对照 `report/tables/math_test_baselines.md`、`report/tables/math_validation50_results.md`、`report/tables/humaneval_test_results.md`、`report/tables/api_budget_summary.md`，并确认当前 full MATH `manual_v1` 状态仍然正确标记为 quota-blocked pending。
+
 ## 额度使用矩阵
 
 | 用途 | runs | calls | tokens | 估算 Kimi K2.5 成本 | 说明 |

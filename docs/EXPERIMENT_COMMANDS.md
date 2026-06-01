@@ -133,6 +133,7 @@ make refresh-evidence
 make build-report
 make verify-report-pdf
 make verify-metadata-validation
+make verify-requirement-matrix
 make verify-package-verifier
 make verify-math-manual-plan
 make verify-known-warnings
@@ -159,6 +160,7 @@ python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your
 cd report && conda run -n marl_hw2 tectonic main.tex
 python experiments/verify_report_pdf.py
 python experiments/verify_audit_warnings.py
+python experiments/verify_requirement_matrix.py
 python experiments/verify_package_verifier.py
 python experiments/audit_submission.py
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
@@ -172,6 +174,7 @@ python experiments/verify_git_sync.py
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
 `make finalize-dry-run` previews the final filled-metadata path with overrideable `FINALIZE_DRY_RUN_*` Make variables and writes no files.
 `make verify-metadata-validation` checks the final metadata validation rules without writing files.
+`make verify-requirement-matrix` checks that the assignment run matrix matches tracked result and budget tables.
 `make verify-package-verifier` checks the package verifier's manifest-count and active-key leak regression cases without writing project files.
 `make status-summary` prints the known-warning check, current MATH chunk status, and GitHub sync status without building packages.
 `make handoff-check` runs all local no-API gates: audit/dry-run packaging, known-warning verification, package-verifier regression checks, MATH chunk-plan verification, chunk status summary, finalization dry-run, and final package verification.

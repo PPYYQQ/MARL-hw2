@@ -77,6 +77,12 @@ make handoff-check
 
 This includes the known-warning gate, so new audit warnings fail the handoff path instead of being hidden among expected blockers.
 
+Verify the assignment run matrix against tracked result and budget tables:
+
+```bash
+make verify-requirement-matrix
+```
+
 For a shorter progress snapshot, run:
 
 ```bash
