@@ -171,6 +171,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Confirmed no API-consuming command should be run before Kimi quota is restored or a replacement `KIMI_API_KEY` is provided; the next MATH chunk remains chunk 0, indices 0-19.
 - Current no-API state remains ready for real-metadata current submission via `make current-submit-check FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."`.
 - Corrected `docs/KIMI_QUOTA_RECOVERY_CN.md` so the post-quota commit command no longer tries to `git add` the ignored local `report/main.pdf`; the PDF remains generated locally and included by packaging.
+- Refreshed `experiments/README.md` so it documents both ignored run-output directories and distinguishes `current-submit-check` for the current known-blocker package from `ready-to-submit-check` for the post-quota final package.
 
 ## Next Steps
 

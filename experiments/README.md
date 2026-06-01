@@ -1,6 +1,6 @@
 # Experiments
 
-This folder contains reproducible helpers for assignment experiments. Generated run outputs go under `experiments/runs/`, which is ignored by Git.
+This folder contains reproducible helpers for assignment experiments. Generated run outputs go under `experiments/runs/` and `experiments/chunked_runs/`, which are ignored by Git.
 
 For the final cited runs and submission commands, see `docs/EXPERIMENT_COMMANDS.md`.
 
@@ -124,6 +124,8 @@ Fill final report metadata:
 python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
 ```
 
+For final packaging, prefer `make finalize-submission-dry-run` and `make finalize-submission` so the filled report source, rebuilt PDF, named zip, and metadata verification stay in one path.
+
 Compare saved MATH runs at the problem level:
 
 ```bash
@@ -161,8 +163,11 @@ Run the maintained Make gates before handoff or final submission:
 ```bash
 make handoff-check
 make post-push-check
+make current-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
+
+Use `current-submit-check` for the current known-blocker package after real metadata is available. Use `ready-to-submit-check` only after the full MATH `manual_v1` table is generated, tracked, and reflected in the report.
 
 Create a submission zip from tracked files and an optional `report/main.pdf`:
 
