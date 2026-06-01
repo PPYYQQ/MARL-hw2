@@ -76,6 +76,12 @@ make handoff-check
 
 This includes the known-warning gate, so new audit warnings fail the handoff path instead of being hidden among expected blockers.
 
+For a shorter progress snapshot, run:
+
+```bash
+make status-summary
+```
+
 After pushing a key commit, confirm local `main` matches GitHub:
 
 ```bash

@@ -139,6 +139,7 @@ make finalize-dry-run
 make finalize-submission-dry-run FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 make finalize-submission FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 make final-package-check
+make status-summary
 make handoff-check
 make post-push-check
 make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
@@ -164,6 +165,7 @@ python experiments/verify_git_sync.py
 
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
 `make finalize-dry-run` previews the final filled-metadata path with overrideable `FINALIZE_DRY_RUN_*` Make variables and writes no files.
+`make status-summary` prints the known-warning check, current MATH chunk status, and GitHub sync status without building packages.
 `make handoff-check` runs all local no-API gates: audit/dry-run packaging, known-warning verification, MATH chunk-plan verification, chunk status summary, finalization dry-run, and final package verification.
 `make post-push-check` runs `make handoff-check` and then verifies local `main` is synchronized with GitHub.
 `make ready-to-submit-check` is the strict final gate after quota and metadata are resolved: it requires a Git-tracked full MATH `manual_v1` table, verifies the report no longer has stale pending-run language, builds the named package, and verifies GitHub sync.

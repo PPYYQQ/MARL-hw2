@@ -54,6 +54,12 @@ make handoff-check
 make verify-known-warnings
 ```
 
+如果只想快速看当前 warning、MATH chunk 进度和 GitHub 同步状态，运行：
+
+```bash
+make status-summary
+```
+
 每次关键提交 push 后，确认本地分支和 GitHub 同步：
 
 ```bash

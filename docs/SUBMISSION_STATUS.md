@@ -197,6 +197,12 @@ make handoff-check
 
 This also fails if `experiments/audit_submission.py` emits any warning outside the maintained known-blocker allowlist.
 
+Print a shorter current-status snapshot:
+
+```bash
+make status-summary
+```
+
 After pushing a key commit, verify that the local branch matches its GitHub upstream:
 
 ```bash

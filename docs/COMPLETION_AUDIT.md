@@ -52,6 +52,7 @@ This document maps the assignment requirements to the current repository evidenc
 | `make finalize-submission-dry-run FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` | Previews the final named package path using real metadata without writing files |
 | `make finalize-submission FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` | Builds and verifies the final named package once real student metadata is known |
 | `make final-package-check` | Creates the default zip and verifies it in one local gate |
+| `make status-summary` | Prints the known-warning check, current MATH chunk status, and GitHub sync status without building packages |
 | `make handoff-check` | Runs all local no-API handoff gates, including known-warning verification, in one target |
 | `make post-push-check` | Runs `make handoff-check` and then verifies the local branch matches its GitHub upstream |
 | `make ready-to-submit-check` | Requires real metadata, a verified Git-tracked full MATH `manual_v1` table, and an updated report before building the final named package and verifying GitHub sync |
