@@ -116,11 +116,13 @@ make handoff-check
 最后提交并推送相关改动：
 
 ```bash
-git add report/tables/math_test_manual_chunked.md report/main.tex report/main.pdf report/evidence PROGRESS.md
+git add report/tables/math_test_manual_chunked.md report/main.tex report/evidence PROGRESS.md
 git commit -m "Add full MATH manual workflow result"
 git push origin main
 make post-push-check
 ```
+
+`report/main.pdf` 是本地生成文件并被 `.gitignore` 忽略；提交包会在打包时包含当前 PDF。正常情况下不要把 PDF 加入 Git，除非课程明确要求仓库也跟踪 PDF。
 
 ## 最终提交
 
