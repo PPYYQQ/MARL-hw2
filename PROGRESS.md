@@ -132,6 +132,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `make finalize-dry-run` with overrideable test metadata variables so the finalization command path can be previewed without writing files.
 - Added `make handoff-check` to run all local no-API handoff gates in one command: final audit/package dry-run, MATH chunk-plan verification, finalization dry-run, and final package verification.
 - Refreshed `docs/SETUP.md` so the local validation section points at the maintained Makefile gates instead of an outdated hand-written `py_compile` command.
+- Added `docs/REQUIREMENT_RUN_MATRIX.md` to show the assignment-required experiment matrix, completed runs, status, and evidence paths in one place.
 
 ## Next Steps
 
