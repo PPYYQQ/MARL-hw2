@@ -152,6 +152,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Tightened `make ready-to-submit-check` so it validates final metadata variables before long checks and requires the full MATH `manual_v1` table to be tracked by Git, not just present locally.
 - Added `experiments/verify_result_table.py` and `make verify-math-manual-result` so the final gate validates the collected full MATH `manual_v1` Markdown table before packaging.
 - Added `experiments/verify_final_report_ready.py` and `make verify-final-report-ready` so the final gate also confirms the report includes the completed full MATH `manual_v1` result and no longer says that run is pending.
+- Refreshed `docs/EXPERIMENT_COMMANDS.md`, `experiments/README.md`, and `docs/CHUNKED_WORKFLOWS.md` so the command ledger includes the latest result-table, report-readiness, post-push, and final-submission gates.
 
 ## Next Steps
 

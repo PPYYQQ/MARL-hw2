@@ -126,3 +126,15 @@ Makefile shortcut:
 ```bash
 make collect-math-manual-chunked
 ```
+
+Verify the collected table before updating the final report:
+
+```bash
+make verify-math-manual-result
+```
+
+After the report is updated with that full-test row, verify that it contains the completed score/calls/tokens and no longer says the run is still pending:
+
+```bash
+make verify-final-report-ready
+```

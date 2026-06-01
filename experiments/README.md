@@ -95,6 +95,13 @@ python experiments/collect_results.py --runs-dir experiments/runs --latest-only 
 python experiments/collect_results.py --runs-dir experiments/chunked_runs --latest-only --rescore-math --dataset MATH --split test --output report/tables/math_test_manual_chunked.md
 ```
 
+After collecting the full MATH `manual_v1` chunked result, verify the table and the report before final packaging:
+
+```bash
+make verify-math-manual-result
+make verify-final-report-ready
+```
+
 Each new run also writes `llm_usage.json` next to `run_config.json`, with raw input/output token counts and call history. Prefer raw token counts over the `total_cost` field until Kimi pricing is added and verified.
 
 Summarize score and token-efficiency tradeoffs from tracked result tables:
@@ -148,6 +155,14 @@ python experiments/audit_submission.py
 ```
 
 Use `--strict` before final packaging when the Kimi quota, student metadata, and local PDF build blockers have been resolved.
+
+Run the maintained Make gates before handoff or final submission:
+
+```bash
+make handoff-check
+make post-push-check
+make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+```
 
 Create a submission zip from tracked files and an optional `report/main.pdf`:
 

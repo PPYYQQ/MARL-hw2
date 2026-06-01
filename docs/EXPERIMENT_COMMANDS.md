@@ -19,10 +19,15 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/analyze_efficiency.py \
   experiments/analyze_api_budget.py \
   experiments/estimate_math_manual_test.py \
+  experiments/summarize_chunked_run.py \
   experiments/verify_chunked_plan.py \
+  experiments/verify_result_table.py \
+  experiments/verify_final_report_ready.py \
   experiments/verify_report_pdf.py \
+  experiments/verify_audit_warnings.py \
   experiments/export_evidence.py \
   experiments/verify_evidence.py \
+  experiments/verify_git_sync.py \
   experiments/fill_report_metadata.py \
   experiments/finalize_submission.py \
   experiments/analyze_math_failures.py \
@@ -85,7 +90,10 @@ python experiments/collect_results.py --runs-dir experiments/runs --latest-only 
 python experiments/analyze_efficiency.py --output report/tables/efficiency_summary.md
 python experiments/analyze_api_budget.py --output report/tables/api_budget_summary.md
 python experiments/estimate_math_manual_test.py --output report/tables/math_manual_test_estimate.md
+make summarize-math-manual-chunks
 make collect-math-manual-chunked
+make verify-math-manual-result
+make verify-final-report-ready
 python experiments/verify_chunked_plan.py --dataset MATH --split test --chunk-size 20 --expect-total-indices 486 --expect-total-chunks 25 --expect-first-index 0 --expect-last-index 485 --expect-contiguous
 python experiments/verify_evidence.py --output report/tables/evidence_verification.md
 ```
@@ -123,12 +131,17 @@ make refresh-evidence
 make build-report
 make verify-report-pdf
 make verify-math-manual-plan
+make verify-known-warnings
 make final-check
 make package
 make verify-package
 make finalize-dry-run
+make finalize-submission-dry-run FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
+make finalize-submission FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 make final-package-check
 make handoff-check
+make post-push-check
+make ready-to-submit-check FINAL_NAME="Your Name" FINAL_STUDENT_ID="Your ID" FINAL_EMAIL="you@example.com"
 ```
 
 Equivalent expanded commands:
@@ -139,17 +152,21 @@ python experiments/verify_evidence.py --output report/tables/evidence_verificati
 python experiments/fill_report_metadata.py --name "Your Name" --student-id "Your ID" --email "you@example.com"
 cd report && conda run -n marl_hw2 tectonic main.tex
 python experiments/verify_report_pdf.py
+python experiments/verify_audit_warnings.py
 python experiments/audit_submission.py
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
 python experiments/verify_submission_package.py --package submission/MARL-hw2-submission.zip
 python experiments/verify_submission_package.py --package "submission/Your_ID_Your_Name_MARL-hw2.zip" --expect-name "Your Name" --expect-student-id "Your ID" --expect-email "you@example.com"
 python experiments/finalize_submission.py --name "Test Student" --student-id "TEST123" --email "test@example.com" --assignment "MARL-hw2" --dry-run
+python experiments/verify_git_sync.py
 ```
 
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
 `make finalize-dry-run` previews the final filled-metadata path with overrideable `FINALIZE_DRY_RUN_*` Make variables and writes no files.
-`make handoff-check` runs all local no-API gates: audit/dry-run packaging, MATH chunk-plan verification, finalization dry-run, and final package verification.
+`make handoff-check` runs all local no-API gates: audit/dry-run packaging, known-warning verification, MATH chunk-plan verification, chunk status summary, finalization dry-run, and final package verification.
+`make post-push-check` runs `make handoff-check` and then verifies local `main` is synchronized with GitHub.
+`make ready-to-submit-check` is the strict final gate after quota and metadata are resolved: it requires a Git-tracked full MATH `manual_v1` table, verifies the report no longer has stale pending-run language, builds the named package, and verifies GitHub sync.
 Default packaging refuses uncommitted tracked changes; use `experiments/finalize_submission.py` for the final filled-metadata archive because it allows only the temporary `report/main.tex` metadata edit.
 
 Equivalent one-command finalization after metadata is known:
