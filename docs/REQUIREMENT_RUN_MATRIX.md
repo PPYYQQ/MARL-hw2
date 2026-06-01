@@ -2,6 +2,32 @@
 
 This document maps the assignment's required experiments to the runs completed in this repository. It is meant as a quick answer to: what the homework asks for, what has been run, and what remains blocked by external inputs.
 
+## 中文交接矩阵
+
+| 作业要求 | 作业应该跑什么 | 已经跑了什么 | 当前状态 | 还需要什么支持 |
+| --- | --- | --- | --- | --- |
+| Direct baseline | MATH-500 和 HumanEval 的 direct prompting 基线 | MATH validate20、MATH validate50、MATH full test 486 题；HumanEval validate20、HumanEval full test 131 题 | 已完成 | 无 |
+| CoT baseline | MATH-500 和 HumanEval 的 chain-of-thought 基线 | MATH validate20、MATH validate50、MATH full test 486 题；HumanEval validate20、HumanEval full test 131 题 | 已完成 | 无 |
+| MATH 多智能体 workflow | 设计 workflow，并证明优于 direct 和 CoT | `manual_v1` 已跑 MATH validate20 和 validate50；validate50 分数 `0.98000`，高于 direct `0.96000` 和 CoT `0.94000` | 验证集完成；full test 未完成 | 需要 Kimi 余额或新 API key |
+| HumanEval 多智能体 workflow | 设计 workflow，并证明优于 base model | `manual_v1` 已跑 HumanEval full test；分数 `0.98473`，高于 direct `0.97710`，持平 CoT `0.98473` | 已完成，可写入报告 | 无 |
+| Ablation 消融 | 对最终 workflow 做简化版对比 | MATH `ablation_single`；HumanEval `ablation_no_public_test` | 已完成 | 无 |
+| Full benchmark comparison | 尽可能全量比较 direct、CoT、workflow、ablation | HumanEval 全量完成；MATH direct/CoT 全量完成；MATH workflow 仅完成 validate20/50 | 部分被 quota 卡住 | 需要补跑 MATH full `manual_v1` |
+| Token/efficiency analysis | 统计调用量、token 和精度/成本权衡 | `report/tables/efficiency_summary.md` 和 `report/tables/api_budget_summary.md` 已生成 | 已完成 | 无 |
+| Report/package | PDF 报告、代码、证据、提交 zip | 默认 PDF、证据、package builder、package verifier、默认 zip 都已准备 | 默认包完成 | 最终提交前需要姓名、学号、邮箱 |
+
+## 额度使用矩阵
+
+| 用途 | runs | calls | tokens | 估算 Kimi K2.5 成本 | 说明 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| 20-example validation experiments | 8 | 323 | 317,403 | CNY 3.73-4.20 | 小样本验证 direct、CoT、workflow、ablation |
+| 3-example smoke and ablation checks | 8 | 48 | 62,563 | CNY 0.78-0.87 | 环境/API/格式 smoke test |
+| HumanEval full test experiments | 4 | 958 | 607,392 | CNY 7.21-8.11 | HumanEval direct、CoT、`manual_v1`、ablation |
+| MATH 50-example validation experiments | 4 | 450 | 542,051 | CNY 6.32-7.14 | MATH 50 题 direct、CoT、`manual_v1`、ablation |
+| MATH full direct/CoT baselines | 2 | 972 | 884,182 | CNY 16.38-16.74 | MATH 486 题 direct 和 CoT 全量基线 |
+| Recorded subtotal | 26 | 2,751 | 2,413,591 | CNY 34.42-37.07 | 已记录 token 的主要实验 |
+| Stopped MATH `manual_v1` attempt estimate | 1 | 75 | 104,855 | CNY 1.06-1.25 | 一次未产出最终 CSV 的 full workflow 尝试估算 |
+| Remaining full MATH `manual_v1` estimate | 1 | 2,430 | 3,397,286 | CNY 34.35-40.36 | 还需要补跑的主要缺口；建议至少准备 CNY 50，CNY 80-100 更稳 |
+
 ## Requirement Matrix
 
 | Assignment requirement | Expected run coverage | Completed run coverage | Status |
