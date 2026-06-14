@@ -201,6 +201,8 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Added `experiments/package_latex_project.py` and `make package-latex-project` to create an Overleaf-ready LaTeX project zip from the English final-report source without compiling or including `report/main.pdf`.
 - Generated and checked `submission/MARL-hw2-overleaf-latex-project.zip`; the archive has `main.tex` at the root plus the required `.sty`, `.bst`, and `.bib` files, and no PDF or TeX build artifacts.
 - Refreshed `README.md`, `report/README.md`, `docs/SUBMISSION_STATUS.md`, and `docs/FINAL_HANDOFF_CN.md` so the documented report path matches the Overleaf-source submission workflow.
+- Updated the English LaTeX report so every table is wrapped in `\resizebox{\linewidth}{!}{...}` and the main result tables also have pgfplots bar charts for validation scores, MATH/HumanEval full-test scores, and token multipliers.
+- Rebuilt the report locally to verify the new pgfplots figures compile, then regenerated the Overleaf LaTeX project zip with the updated source and confirmed the archive still excludes PDF/build artifacts.
 
 ## Next Steps
 

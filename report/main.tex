@@ -3,9 +3,29 @@
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{pgfplots}
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage[accepted]{icml2022}
+\pgfplotsset{compat=1.18}
+\pgfplotsset{
+resultbar/.style={
+    ybar,
+    width=\linewidth,
+    height=0.58\linewidth,
+    ymin=0,
+    ymax=1.05,
+    ylabel={Score},
+    xtick=data,
+    x tick label style={rotate=30, anchor=east, font=\scriptsize},
+    tick label style={font=\scriptsize},
+    label style={font=\scriptsize},
+    ymajorgrids,
+    grid style={draw=gray!25},
+    nodes near coords,
+    every node near coord/.append style={font=\tiny, rotate=90, anchor=west},
+},
+}
 
 \icmltitlerunning{Multi-Agent Workflow Design with AFlow}
 
@@ -93,6 +113,7 @@ The implemented workflows are deliberately manual rather than produced by a full
 \begin{center}
 \begin{scriptsize}
 \setlength{\tabcolsep}{3pt}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}p{0.25\linewidth}p{0.68\linewidth}@{}}
 \toprule
 Workflow & Algorithm \\
@@ -102,7 +123,8 @@ MATH single & Generate one solution candidate; run the same boxed-answer cleanup
 HumanEval manual\_v1 & Generate two code candidates; execute public tests when available; repair failing candidates with reflection; fall back to ensemble selection if no tested candidate passes. \\
 HumanEval no public & Generate multiple candidates and select without public-test repair. This isolates candidate diversity from execution feedback. \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{scriptsize}
 \end{center}
 \end{table}
@@ -120,6 +142,7 @@ Table~\ref{tab:validation20} reports 20-sample validation subset tests using sam
 \begin{center}
 \begin{scriptsize}
 \setlength{\tabcolsep}{3pt}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}llrrr@{}}
 \toprule
 Dataset & Method & Score & Calls & Tokens \\
@@ -133,10 +156,31 @@ MATH & CoT & 0.95000 & 20 & 17,708 \\
 MATH & manual\_v1 & 1.00000 & 100 & 151,117 \\
 MATH & single candidate & 0.90000 & 40 & 54,945 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{scriptsize}
 \end{center}
 \end{table}
+
+\begin{figure}[t]
+\caption{Twenty-sample validation scores.}
+\label{fig:validation20scores}
+\vskip 0.08in
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    resultbar,
+    height=0.70\linewidth,
+    bar width=4pt,
+    xtick={1,2,3,4,5,6,7,8},
+    xticklabels={HE direct, HE CoT, HE manual, HE no public, MATH direct, MATH CoT, MATH manual, MATH single},
+    x tick label style={rotate=45, anchor=east, font=\tiny},
+]
+\addplot coordinates {(1,1.00000) (2,1.00000) (3,1.00000) (4,1.00000) (5,0.90000) (6,0.95000) (7,1.00000) (8,0.90000)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{figure}
 
 On MATH, CoT improves over direct prompting from 0.90 to 0.95. The full \texttt{manual\_v1} workflow reaches 1.00, while the single-candidate ablation remains at 0.90. This suggests that multi-candidate generation and self-consistency selection fixed failures not solved by a single direct or CoT sample on this subset. The gain comes with substantially higher token usage. On HumanEval, all methods score 1.00 on this validation subset, so the subset is saturated and cannot distinguish workflow quality. The no-public-test ablation is especially costly because it generates and selects among candidates without early execution-feedback filtering.
 
@@ -150,6 +194,7 @@ To check whether the MATH gain persists beyond the 20-sample subset, Table~\ref{
 \vskip 0.08in
 \begin{center}
 \begin{small}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
 Method & Score & Calls & Tokens \\
@@ -159,10 +204,28 @@ CoT & 0.94000 & 50 & 39,806 \\
 manual\_v1 & 0.98000 & 250 & 349,515 \\
 single candidate & 0.94000 & 100 & 114,590 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{small}
 \end{center}
 \end{table}
+
+\begin{figure}[t]
+\caption{MATH 50-sample validation scores.}
+\label{fig:math50scores}
+\vskip 0.08in
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    resultbar,
+    xtick={1,2,3,4},
+    xticklabels={direct, CoT, manual\_v1, single},
+]
+\addplot coordinates {(1,0.96000) (2,0.94000) (3,0.98000) (4,0.94000)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{figure}
 
 \begin{table}[t]
 \caption{HumanEval full test split results.}
@@ -170,6 +233,7 @@ single candidate & 0.94000 & 100 & 114,590 \\
 \vskip 0.08in
 \begin{center}
 \begin{small}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
 Method & Score & Calls & Tokens \\
@@ -179,10 +243,28 @@ CoT & 0.98473 & 131 & 120,573 \\
 manual\_v1 & 0.98473 & 287 & 134,751 \\
 no public test & 0.99237 & 409 & 303,127 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{small}
 \end{center}
 \end{table}
+
+\begin{figure}[t]
+\caption{HumanEval full test scores.}
+\label{fig:humanevalscores}
+\vskip 0.08in
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    resultbar,
+    xtick={1,2,3,4},
+    xticklabels={direct, CoT, manual\_v1, no public},
+]
+\addplot coordinates {(1,0.97710) (2,0.98473) (3,0.98473) (4,0.99237)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{figure}
 
 Table~\ref{tab:humanevaltest} reports full HumanEval test split results. The direct baseline is already strong at 0.97710. CoT and \texttt{manual\_v1} both improve to 0.98473, while the no-public-test ablation reaches 0.99237 through additional candidate generation and ensemble selection. A problem-level comparison shows that all three non-direct methods solve the three direct failures. CoT and \texttt{manual\_v1} each introduce two regressions on problems direct solved, while the no-public-test ablation introduces one regression. This result suggests that, on this Kimi setup, candidate diversity matters at least as much as execution-feedback repair for the tested HumanEval split, although the best ablation uses more than six times the direct baseline token count.
 
@@ -192,6 +274,7 @@ Table~\ref{tab:humanevaltest} reports full HumanEval test split results. The dir
 \vskip 0.08in
 \begin{center}
 \begin{small}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
 Method & Score & Calls & Tokens \\
@@ -200,10 +283,28 @@ direct & 0.88889 & 486 & 425,052 \\
 CoT & 0.89300 & 486 & 459,130 \\
 manual\_v1 & 0.91770 & 2,431 & 3,786,936 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{small}
 \end{center}
 \end{table}
+
+\begin{figure}[t]
+\caption{MATH full test scores.}
+\label{fig:mathtestscores}
+\vskip 0.08in
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    resultbar,
+    xtick={1,2,3},
+    xticklabels={direct, CoT, manual\_v1},
+]
+\addplot coordinates {(1,0.88889) (2,0.89300) (3,0.91770)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{figure}
 
 Table~\ref{tab:mathtest} reports full MATH test split results. CoT is slightly better than direct prompting, but the gap is small. The checkpointed \texttt{manual\_v1} run completed all 25 chunks and improves the full-test score to 0.91770, above direct at 0.88889 and CoT at 0.89300. This gain is expensive: the full workflow used 2,431 LLM calls and 3,786,936 tracked tokens, so the result is best interpreted as a quality--cost tradeoff rather than a free accuracy improvement.
 
@@ -216,6 +317,7 @@ The full workflow run used \path{experiments/run_chunked_workflows.py}. For MATH
 \begin{center}
 \begin{scriptsize}
 \setlength{\tabcolsep}{3pt}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}llrr@{}}
 \toprule
 Group & Method & $\Delta$ Score & Token $\times$ \\
@@ -228,10 +330,34 @@ HumanEval test & no public test & +0.01527 & 6.19 \\
 MATH test & CoT & +0.00411 & 1.08 \\
 MATH test & manual\_v1 & +0.02881 & 8.91 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{scriptsize}
 \end{center}
 \end{table}
+
+\begin{figure}[t]
+\caption{Token multipliers against direct prompting.}
+\label{fig:tokenmultipliers}
+\vskip 0.08in
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    resultbar,
+    ymin=0,
+    ymax=10,
+    ylabel={Token $\times$},
+    height=0.70\linewidth,
+    bar width=5pt,
+    xtick={1,2,3,4,5,6,7},
+    xticklabels={MATH50 CoT, MATH50 manual, HE CoT, HE manual, HE no public, MATH test CoT, MATH test manual},
+    x tick label style={rotate=45, anchor=east, font=\tiny},
+]
+\addplot coordinates {(1,1.04) (2,9.16) (3,2.46) (4,2.75) (5,6.19) (6,1.08) (7,8.91)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{figure}
 
 Table~\ref{tab:efficiency} summarizes the score and token tradeoff against direct prompting. The clearest MATH validation improvement, \texttt{manual\_v1}, costs 9.16 times the direct baseline tokens for a 0.02 absolute score gain on the 50-sample subset. The full MATH test result confirms the same direction with a larger 0.02881 absolute gain, but still costs 8.91 times the direct baseline tokens. On HumanEval, the no-public-test ablation has the highest score and fixes the most direct failures, but costs 6.19 times the direct baseline tokens.
 
