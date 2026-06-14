@@ -47,14 +47,14 @@ resultbar/.style={
 ]
 
 \begin{abstract}
-This report studies agentic workflow construction for large language model reasoning tasks using the AFlow codebase. The assignment goal is to understand AFlow's engineering structure, reproduce direct and chain-of-thought baselines, and design multi-agent workflows for MATH-500 and HumanEval. We imported AFlow, configured a Kimi K2.5-compatible OpenAI-style client, implemented reproducible experiment runners, and added manual multi-agent workflows for math and code tasks. The final experiments include MATH validation subsets, full HumanEval test runs, full MATH direct/CoT test baselines, and a checkpointed full MATH \texttt{manual\_v1} workflow run.
+This report studies whether explicit multi-agent workflows can improve large language model reasoning on MATH-500 and HumanEval compared with direct and chain-of-thought prompting. I design task-specific workflows that convert one-shot generation into candidate diversification, selection, and targeted repair. For MATH, the workflow samples independent reasoning paths, selects the most self-consistent answer, and canonicalizes the final boxed output. For HumanEval, the workflow combines code candidate diversity with public-test execution and reflection-based repair. On the full MATH test split, the proposed \texttt{manual\_v1} workflow improves accuracy from 0.88889 with direct prompting and 0.89300 with CoT to 0.91770. On HumanEval, \texttt{manual\_v1} improves over direct prompting and a no-public-test ablation reaches the best score, showing that candidate diversity is a major source of gain.
 \end{abstract}
 
 \section{Introduction}
 
 Large language model agents can improve reasoning by decomposing a task into multiple model calls, critiques, revisions, code execution steps, or ensemble decisions. AFlow formulates this idea as a search problem over code-represented agentic workflows, where reusable operators become nodes in a workflow graph and an optimizer searches for better graph structures \cite{zhang2025aflow}. Related work on multi-agent debate \cite{du2024debate} and optimizable agent graphs \cite{zhuge2024gptswarm} motivates comparing direct model calls against explicit multi-agent reasoning.
 
-The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. The project focuses on a reproducible engineering base: safe API configuration, benchmark runners, manual workflows, validation subsets, full-test result tables, and resumable execution for expensive workflow runs.
+The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks test symbolic and quantitative reasoning \cite{hendrycks2021math}; HumanEval tests executable Python function synthesis \cite{chen2021humaneval}. These two datasets expose different failure modes. MATH answers often fail because a single reasoning chain makes an early algebraic or combinatorial mistake. HumanEval answers often fail because generated code has a small syntax, entry-point, or semantic error that can be detected by execution. The central design question is therefore how to spend additional model calls so that they correct likely task-specific errors rather than merely lengthen the same reasoning trace.
 
 \section{Research Context}
 
@@ -62,49 +62,27 @@ The AFlow paper motivates the project by treating workflow design as an optimiza
 
 The multi-agent debate paper provides a complementary design intuition: multiple model instances can maintain diverse candidate answers and revise after seeing other candidates \cite{du2024debate}. The manual workflows in this project use a lower-cost version of that idea. MATH \texttt{manual\_v1} creates independent solution candidates and selects among them, while HumanEval combines candidate diversity with executable public-test feedback. The ablations are designed to test whether the observed gains come from candidate diversity, execution feedback, or simply spending more tokens.
 
-\section{AFlow Engineering Summary}
-
-The imported AFlow snapshot is stored under \path{AFlow/}. The main engineering components are:
-
-\begin{itemize}
-    \item \textbf{Nodes and LLM calls}: \path{scripts/async_llm.py} wraps OpenAI-compatible async chat completion APIs and tracks token usage.
-    \item \textbf{Operators}: \path{scripts/operators.py} and dataset-specific operator templates provide reusable calls such as generation, self-consistency ensemble, code generation, execution-based testing, and revision.
-    \item \textbf{Workflows}: \path{workspace/<Dataset>/workflows/<name>/graph.py} implements callable Python workflow graphs.
-    \item \textbf{Benchmarks}: \path{benchmarks/math.py} and \path{benchmarks/humaneval.py} evaluate model outputs against ground truth or executable tests.
-    \item \textbf{Optimization}: \path{run.py} wires datasets, operators, and the optimizer for automatic workflow search.
-\end{itemize}
-
-\section{Environment Setup}
-
-The environment follows AFlow's Python 3.9 recommendation:
-
-\begin{verbatim}
-conda create -n marl_hw2 python=3.9 -y
-conda install -n marl_hw2 pip=24.2 -y
-conda run -n marl_hw2 python -m pip install -r AFlow/requirements.txt
-\end{verbatim}
-
-Two dependency issues were found during setup. First, the imported downloader required \texttt{requests}, which was not listed in the snapshot requirements. Second, the local SOCKS proxy required \texttt{socksio} for \texttt{httpx}. MATH scoring also needed \texttt{antlr4-python3-runtime} for SymPy's LaTeX parser. These were added to \path{AFlow/requirements.txt}.
-
-The local Kimi configuration is created from \path{AFlow/config/config2.kimi.example.yaml}; \path{AFlow/config/config2.yaml} is ignored by Git and reads the secret from \texttt{KIMI\_API\_KEY}. Initial Kimi API smoke tests established the required non-thinking parameters \texttt{temperature=0.6} and \texttt{top\_p=0.95}. A separate \texttt{kimi-k2.5-thinking} alias is kept for model-side thinking experiments.
-
 \section{Baselines}
 
-The project implements reproducible baseline runners in \path{experiments/run_baselines.py}. Each run records the dataset, model, split, sample indices, concurrency, CSV path, and aggregate score in a generated \path{run_config.json}.
+I compare the proposed workflows against two base-model prompting strategies.
 
 \paragraph{Direct baseline.} The direct math baseline asks Kimi K2.5 to solve the problem and place the final answer in \texttt{\textbackslash boxed\{\}}. The direct HumanEval baseline asks for valid Python code defining the required entry point.
 
 \paragraph{CoT baseline.} The chain-of-thought baseline adds explicit step-by-step reasoning instructions. For HumanEval, the prompt allows analysis but asks the final answer to contain valid Python code, which the evaluator sanitizes before execution.
 
-\section{Manual Workflow Design}
+\section{Proposed Workflow Design}
 
-\paragraph{MATH manual\_v1.} The math workflow in \path{AFlow/workspace/MATH/workflows/manual_v1/} creates three independent solution candidates with different reasoning instructions. It then applies self-consistency selection and a final cleanup call that enforces a single \texttt{\textbackslash boxed\{\}} answer. The intended effect is to reduce single-sample reasoning errors while preserving compatibility with AFlow's answer extractor.
+The proposed workflows are manually designed multi-call agent graphs. They do not try to make every answer longer. Instead, they allocate extra calls to three targeted operations: \emph{diversify} the candidate set, \emph{select or repair} using task-specific signals, and \emph{standardize} the final output so the evaluator sees the intended answer.
 
-\paragraph{HumanEval manual\_v1.} The code workflow in \path{AFlow/workspace/HumanEval/workflows/manual_v1/} creates two independent code candidates. If public tests are available, it runs the dataset-specific \texttt{Test} operator and uses reflection repair for failing candidates. If no candidate passes public tests, the workflow falls back to self-consistency selection over the repaired candidates.
+\paragraph{MATH workflow.} A single MATH reasoning trace is brittle: if the model misreads a constraint or makes an early algebraic mistake, later steps often reinforce that wrong premise. The MATH \texttt{manual\_v1} workflow therefore generates three independent solution candidates under different reasoning instructions. One candidate emphasizes direct symbolic derivation, one emphasizes checking constraints and edge cases, and one emphasizes an alternative solution route. The workflow then extracts each candidate's final answer and uses a selection call to compare the candidate answers and their supporting arguments. The final cleanup call is deliberately narrow: it does not solve the problem again, but rewrites the selected answer into exactly one \texttt{\textbackslash boxed\{\}} expression. This design improves accuracy when at least one candidate avoids the dominant single-chain error and the selector can identify the better-supported answer.
 
-\section{Workflow Algorithm Details}
+\paragraph{HumanEval workflow.} HumanEval exposes an additional signal that math problems do not: code can be executed against public tests. The HumanEval \texttt{manual\_v1} workflow first generates two independent implementations. Each candidate is tested when public tests are available. If a candidate fails, a reflection step receives the failing test feedback and edits the code instead of starting from scratch. The workflow prefers a candidate that passes public tests. If no tested candidate passes, it falls back to ensemble-style selection among repaired candidates. This design improves over direct prompting because execution feedback catches local defects that are hard to spot from text alone, while candidate diversity reduces the chance that both attempts share the same implementation error.
 
-The implemented workflows are deliberately manual rather than produced by a full AFlow optimizer search. This keeps API spending controlled while still using AFlow's graph abstraction and reusable operators. Table~\ref{tab:workflowalgorithms} summarizes the algorithmic structure used in the final tracked workflows and ablations.
+\paragraph{Ablations.} The MATH single-candidate ablation removes candidate diversity while keeping the final formatting cleanup. The HumanEval no-public-test ablation removes execution-feedback repair while increasing candidate diversity. These ablations separate two possible sources of improvement: better search over multiple candidates and explicit feedback from tests.
+
+\section{Algorithmic Rationale}
+
+Table~\ref{tab:workflowalgorithms} summarizes the algorithmic structure used in the final tracked workflows and ablations.
 
 \begin{table}[t]
 \caption{Manual workflow algorithm structures.}
@@ -129,7 +107,7 @@ HumanEval no public & Generate multiple candidates and select without public-tes
 \end{center}
 \end{table}
 
-The design choice for MATH is to spend calls on independent reasoning paths because symbolic mistakes often arise from early false assumptions. The final cleanup call is intentionally narrow: it does not solve the problem again, but makes the selected answer compatible with the benchmark extractor. The HumanEval design instead prioritizes executable feedback, because public tests can identify syntax, entry-point, and simple semantic errors before final scoring. The no-public-test ablation is retained because its full-test result shows that extra candidate diversity can outperform the execution-feedback variant on this Kimi setup, albeit at higher token cost.
+The design choice for MATH is to spend calls on independent reasoning paths because symbolic mistakes often arise from early false assumptions. The final cleanup call is intentionally narrow: it does not solve the problem again, but makes the selected answer compatible with the benchmark extractor. The HumanEval design instead prioritizes executable feedback, because public tests can identify syntax, entry-point, and simple semantic errors before final scoring. The no-public-test ablation is retained because its full-test result shows that extra candidate diversity can outperform the execution-feedback variant for this model, albeit at higher token cost.
 
 \section{Validation Results}
 
@@ -266,7 +244,7 @@ no public test & 0.99237 & 409 & 303,127 \\
 \end{center}
 \end{figure}
 
-Table~\ref{tab:humanevaltest} reports full HumanEval test split results. The direct baseline is already strong at 0.97710. CoT and \texttt{manual\_v1} both improve to 0.98473, while the no-public-test ablation reaches 0.99237 through additional candidate generation and ensemble selection. A problem-level comparison shows that all three non-direct methods solve the three direct failures. CoT and \texttt{manual\_v1} each introduce two regressions on problems direct solved, while the no-public-test ablation introduces one regression. This result suggests that, on this Kimi setup, candidate diversity matters at least as much as execution-feedback repair for the tested HumanEval split, although the best ablation uses more than six times the direct baseline token count.
+Table~\ref{tab:humanevaltest} reports full HumanEval test split results. The direct baseline is already strong at 0.97710. CoT and \texttt{manual\_v1} both improve to 0.98473, while the no-public-test ablation reaches 0.99237 through additional candidate generation and ensemble selection. A problem-level comparison shows that all three non-direct methods solve the three direct failures. CoT and \texttt{manual\_v1} each introduce two regressions on problems direct solved, while the no-public-test ablation introduces one regression. This result suggests that candidate diversity matters at least as much as execution-feedback repair for the tested HumanEval split, although the best ablation uses more than six times the direct baseline token count.
 
 \begin{table}[t]
 \caption{MATH full test split baseline results.}
@@ -308,7 +286,7 @@ manual\_v1 & 0.91770 & 2,431 & 3,786,936 \\
 
 Table~\ref{tab:mathtest} reports full MATH test split results. CoT is slightly better than direct prompting, but the gap is small. The checkpointed \texttt{manual\_v1} run completed all 25 chunks and improves the full-test score to 0.91770, above direct at 0.88889 and CoT at 0.89300. This gain is expensive: the full workflow used 2,431 LLM calls and 3,786,936 tracked tokens, so the result is best interpreted as a quality--cost tradeoff rather than a free accuracy improvement.
 
-The full workflow run used \path{experiments/run_chunked_workflows.py}. For MATH test with chunk size 20, it plans 25 chunks, skips completed chunks when rerun with the same \texttt{run-id}, and refreshes an aggregate CSV/config after every completed chunk. This checkpointing avoided losing completed work during quota and long-wait interruptions.
+The full MATH workflow was evaluated in 25 checkpointed chunks of 20 examples or fewer. This does not change the algorithm, but it makes the expensive evaluation reliable: completed chunks are retained, and the final score is computed from the aggregate of all 486 examples.
 
 \begin{table}[t]
 \caption{Efficiency tradeoffs against direct prompting.}
@@ -373,11 +351,11 @@ The required experiment set is complete except for final student metadata. Optio
 
 \section{Limitations}
 
-The manual workflows increase token usage and latency, especially for MATH. The full MATH \texttt{manual\_v1} run improves accuracy but uses 2,431 calls and 3,786,936 tracked tokens, which is 5.00 times the direct baseline calls and 8.91 times the direct baseline tokens. Because the imported AFlow cost table does not price Kimi K2.5, the repository separately records a Kimi budget summary in \path{report/tables/api_budget_summary.md}. Using Kimi K2.5 prices checked on 2026-06-01, the full MATH \texttt{manual\_v1} workflow alone is estimated at CNY 38.73--45.36, and the recorded required API subtotal is estimated at CNY 73.15--82.43. Further full-test ablations would require additional API budget.
+The manual workflows increase token usage and latency, especially for MATH. The full MATH \texttt{manual\_v1} run improves accuracy but uses 2,431 calls and 3,786,936 tracked tokens, which is 5.00 times the direct baseline calls and 8.91 times the direct baseline tokens. Using the Kimi K2.5 price schedule checked on 2026-06-01, the full MATH \texttt{manual\_v1} workflow alone is estimated at CNY 38.73--45.36, and the recorded required API subtotal is estimated at CNY 73.15--82.43. Further full-test ablations would require additional API budget. The main limitation is therefore not whether multi-agent decomposition can improve accuracy, but whether the improvement is worth the extra calls for a given deployment budget.
 
 \section{Conclusion}
 
-The project now has a reproducible AFlow-based implementation path: safe Kimi configuration, dataset download, direct and CoT baselines, manual multi-agent workflows, ablations, token-aware validation tables, MATH full-test results, HumanEval full-test workflow results, checkpointed workflow execution, a compiled report PDF, and submission packaging. The remaining required work is to fill the real student metadata and rebuild the final named package; further experiments are optional cost-reduction studies for the MATH workflow.
+The experiments show that task-specific multi-agent workflow design can improve over direct and CoT prompting when the extra calls target concrete failure modes. On MATH, independent reasoning candidates plus answer selection improve the full-test score to 0.91770, above both direct prompting and CoT. On HumanEval, candidate generation and execution-aware repair improve over direct prompting, while the no-public-test ablation shows that candidate diversity itself is also a strong contributor. The cost analysis shows the tradeoff clearly: the proposed MATH workflow is more accurate, but much more expensive. Future work should therefore focus on cheaper selectors, adaptive candidate counts, and verification calls only for examples that appear uncertain.
 
 \bibliography{references}
 \bibliographystyle{icml2022}

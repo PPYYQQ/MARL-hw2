@@ -42,7 +42,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `report/main.pdf`: locally compiled report PDF, included in generated submission packages when present.
 - `report/evidence/`: raw CSV/config/log/token-summary evidence for the cited final runs.
 - `PROGRESS.md`: chronological implementation and experiment log.
-- Report coverage includes research context, AFlow engineering structure, environment setup, baseline prompts, workflow algorithm details, validation/test results, ablations, failure analysis, efficiency analysis, limitations, and optional follow-up work.
+- Report coverage includes research context, baseline prompts, proposed workflow design, algorithmic rationale, validation/test results, ablations, failure analysis, efficiency analysis, limitations, and optional follow-up work.
 
 ## Current Results
 

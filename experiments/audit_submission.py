@@ -118,11 +118,9 @@ PYTHON_FILES = [
 REPORT_SECTIONS = [
     r"\section{Introduction}",
     r"\section{Research Context}",
-    r"\section{AFlow Engineering Summary}",
-    r"\section{Environment Setup}",
     r"\section{Baselines}",
-    r"\section{Manual Workflow Design}",
-    r"\section{Workflow Algorithm Details}",
+    r"\section{Proposed Workflow Design}",
+    r"\section{Algorithmic Rationale}",
     r"\section{Validation Results}",
     r"\section{Optional Follow-up Experiments}",
     r"\section{Limitations}",

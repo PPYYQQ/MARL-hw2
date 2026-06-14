@@ -203,12 +203,13 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Refreshed `README.md`, `report/README.md`, `docs/SUBMISSION_STATUS.md`, and `docs/FINAL_HANDOFF_CN.md` so the documented report path matches the Overleaf-source submission workflow.
 - Updated the English LaTeX report so every table is wrapped in `\resizebox{\linewidth}{!}{...}` and the main result tables also have pgfplots bar charts for validation scores, MATH/HumanEval full-test scores, and token multipliers.
 - Rebuilt the report locally to verify the new pgfplots figures compile, then regenerated the Overleaf LaTeX project zip with the updated source and confirmed the archive still excludes PDF/build artifacts.
+- Reworked the report toward a final-PDF style: removed the `AFlow Engineering Summary` and `Environment Setup` sections from `report/main.tex`, expanded `Proposed Workflow Design` and `Algorithmic Rationale`, and explained concretely how candidate diversity, answer selection, public-test repair, and output canonicalization improve over baselines.
 
 ## Next Steps
 
 1. Provide the final student name, student ID, and email.
-2. Upload `submission/MARL-hw2-overleaf-latex-project.zip` to Overleaf if the course wants a LaTeX source project instead of a local PDF.
-3. Run `make ready-to-submit-check FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` if a verified local named submission zip with filled metadata is still needed.
+2. Rebuild the final PDF after filling metadata with `make ready-to-submit-check FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."`.
+3. Upload the generated final PDF if the course only asks for a PDF.
 4. Use `docs/KIMI_QUOTA_RECOVERY_CN.md` only for optional reproduction, prompt tuning, or follow-up ablations.
 5. Keep pushing each new key commit to GitHub after local validation.
 

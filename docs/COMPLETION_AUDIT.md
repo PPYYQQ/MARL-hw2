@@ -6,8 +6,8 @@ This document maps the assignment requirements to the current repository evidenc
 
 | Requirement | Current status | Evidence |
 | --- | --- | --- |
-| Read and explain AFlow paper/code | Complete | `report/main.tex` sections `Research Context` and `AFlow Engineering Summary`; `docs/PAPER_NOTES.md` |
-| Record environment setup | Complete | `report/main.tex` section `Environment Setup`; `docs/SETUP.md` |
+| Read and explain workflow context | Complete | `report/main.tex` sections `Research Context`, `Proposed Workflow Design`, and `Algorithmic Rationale`; `docs/PAPER_NOTES.md` |
+| Record environment setup | Complete outside the final report | `docs/SETUP.md`; `AFlow/config/config2.kimi.example.yaml` |
 | Configure base model safely | Complete | `AFlow/config/config2.kimi.example.yaml`; `AFlow/scripts/async_llm.py`; local `AFlow/config/config2.yaml` ignored |
 | Run direct baseline | Complete for MATH validation/test and HumanEval test | `experiments/run_baselines.py`; `report/tables/validation20_results.md`; `report/tables/math_validation50_results.md`; `report/tables/humaneval_test_results.md`; `report/tables/math_test_baselines.md` |
 | Run CoT baseline | Complete for MATH validation/test and HumanEval test | Same baseline runner and result tables as above |
