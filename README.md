@@ -1,12 +1,12 @@
 # MARL HW2: Multi-Agent Workflow Design with AFlow
 
-This repository contains the implementation, experiment runners, evidence, and report draft for the multi-agent workflow assignment.
+This repository contains the implementation, experiment runners, evidence, and English final-report source for the multi-agent workflow assignment.
 
 ## What Is Included
 
 - `AFlow/`: imported AFlow codebase plus local assignment workflow additions.
 - `experiments/`: reproducible runners, table collectors, analysis utilities, audit checks, evidence export, and packaging helpers.
-- `report/main.tex`: ICML-style report draft.
+- `report/main.tex`: ICML-style English final-report source.
 - `report/tables/`: tracked report tables and analysis summaries.
 - `report/evidence/`: copied CSV/config/log/token-summary artifacts for the cited final runs.
 - `docs/`: setup notes, ablation notes, experiment command ledger, paper notes, chunked-run guide, completion audit, and submission status.
@@ -67,6 +67,12 @@ Create and verify the default local submission zip in one step:
 
 ```bash
 make final-package-check
+```
+
+Create an Overleaf-ready LaTeX project zip without compiling or including a PDF:
+
+```bash
+make package-latex-project
 ```
 
 Run every local no-API handoff gate:

@@ -42,10 +42,11 @@ PY_COMPILE_FILES = \
 	experiments/analyze_humaneval_failures.py \
 	experiments/audit_submission.py \
 	experiments/package_submission.py \
+	experiments/package_latex_project.py \
 	experiments/verify_submission_package.py \
 	AFlow/benchmarks/math.py
 
-.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan verify-math-manual-result verify-final-report-ready summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-metadata-validation verify-requirement-matrix verify-package-verifier verify-known-warnings audit refresh-evidence build-report package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check status-summary handoff-check post-push-check current-submit-check ready-to-submit-check
+.PHONY: py-compile verify-evidence verify-github-sync estimate-math-manual analyze-api-budget verify-math-manual-plan verify-math-manual-result verify-final-report-ready summarize-math-manual-chunks dry-run-math-manual-chunks resume-math-manual-chunk collect-math-manual-chunked verify-report-pdf verify-metadata-validation verify-requirement-matrix verify-package-verifier verify-known-warnings audit refresh-evidence build-report package-latex-project package-dry-run package verify-package finalize-dry-run finalize-submission-dry-run finalize-submission final-package-check final-check status-summary handoff-check post-push-check current-submit-check ready-to-submit-check
 
 py-compile:
 	$(PYTHON) -m py_compile $(PY_COMPILE_FILES)
@@ -107,6 +108,9 @@ refresh-evidence:
 
 build-report:
 	cd report && $(TECTONIC) main.tex
+
+package-latex-project:
+	$(PYTHON) experiments/package_latex_project.py
 
 package-dry-run:
 	$(PYTHON) experiments/package_submission.py --dry-run

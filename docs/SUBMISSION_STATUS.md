@@ -30,6 +30,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `experiments/analyze_humaneval_failures.py`: problem-level HumanEval run comparison utility.
 - `experiments/audit_submission.py`: no-API submission readiness checker.
 - `experiments/package_submission.py`: tracked-file submission zip builder with optional student/name/assignment output naming.
+- `experiments/package_latex_project.py`: Overleaf-ready LaTeX source zip builder that excludes the compiled PDF.
 - `experiments/verify_submission_package.py`: validates generated zip contents against tracked files, clean tracked worktree state, manifest commit, manifest output path, manifest file counts, PDF inclusion, archive/filesystem checksums, zero-failure audit summary, forbidden paths, and active `KIMI_API_KEY` leakage when available.
 - `docs/COMPLETION_AUDIT.md`: requirement-by-requirement handoff audit with evidence paths and remaining external inputs.
 - `docs/REQUIREMENT_RUN_MATRIX.md`: matrix of assignment-required experiment coverage, completed runs, remaining submission steps, and evidence files.
@@ -37,7 +38,7 @@ This document tracks what is ready for submission, what is reproducible, and wha
 - `docs/KIMI_QUOTA_RECOVERY_CN.md`: Chinese checkpoint runbook for reproducing or extending the full MATH workflow.
 - `docs/EXPERIMENT_COMMANDS.md`: command ledger for API runs, table generation, analysis, evidence export, audit, and packaging.
 - `docs/PAPER_NOTES.md`: notes linking AFlow and multi-agent debate ideas to the implemented workflows.
-- `report/main.tex`: ICML-style draft report with current methods and result tables.
+- `report/main.tex`: ICML-style English final-report source with current methods and result tables.
 - `report/main.pdf`: locally compiled report PDF, included in generated submission packages when present.
 - `report/evidence/`: raw CSV/config/log/token-summary evidence for the cited final runs.
 - `PROGRESS.md`: chronological implementation and experiment log.
@@ -92,6 +93,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
   experiments/package_submission.py \
+  experiments/package_latex_project.py \
   experiments/verify_submission_package.py \
   AFlow/benchmarks/math.py
 ```
@@ -204,6 +206,12 @@ Create and verify the default zip in one command:
 
 ```bash
 make final-package-check
+```
+
+Create an Overleaf-ready LaTeX project zip without compiling or including a PDF:
+
+```bash
+make package-latex-project
 ```
 
 Run all local no-API handoff gates:

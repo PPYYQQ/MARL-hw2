@@ -196,12 +196,19 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Rechecked the handoff state after resuming the goal: the worktree was clean, `make status-summary` passed, GitHub sync reported `main` at `081bae6`, and the chunked MATH summary still showed 25/25 chunks complete with score `0.91770`.
 - Confirmed the only required external input still missing is final student metadata: name, student ID, and email. No required API experiment remains.
 
+### 2026-06-14
+
+- Added `experiments/package_latex_project.py` and `make package-latex-project` to create an Overleaf-ready LaTeX project zip from the English final-report source without compiling or including `report/main.pdf`.
+- Generated and checked `submission/MARL-hw2-overleaf-latex-project.zip`; the archive has `main.tex` at the root plus the required `.sty`, `.bst`, and `.bib` files, and no PDF or TeX build artifacts.
+- Refreshed `README.md`, `report/README.md`, `docs/SUBMISSION_STATUS.md`, and `docs/FINAL_HANDOFF_CN.md` so the documented report path matches the Overleaf-source submission workflow.
+
 ## Next Steps
 
 1. Provide the final student name, student ID, and email.
-2. Run `make ready-to-submit-check FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` to rebuild the filled report, create the named zip, verify it, and confirm GitHub sync.
-3. Use `docs/KIMI_QUOTA_RECOVERY_CN.md` only for optional reproduction, prompt tuning, or follow-up ablations.
-4. Keep pushing each new key commit to GitHub after local validation.
+2. Upload `submission/MARL-hw2-overleaf-latex-project.zip` to Overleaf if the course wants a LaTeX source project instead of a local PDF.
+3. Run `make ready-to-submit-check FINAL_NAME="..." FINAL_STUDENT_ID="..." FINAL_EMAIL="..."` if a verified local named submission zip with filled metadata is still needed.
+4. Use `docs/KIMI_QUOTA_RECOVERY_CN.md` only for optional reproduction, prompt tuning, or follow-up ablations.
+5. Keep pushing each new key commit to GitHub after local validation.
 
 ## Open Issues
 

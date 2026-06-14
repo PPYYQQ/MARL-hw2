@@ -36,6 +36,7 @@ conda run -n marl_hw2 python -m py_compile \
   experiments/analyze_humaneval_failures.py \
   experiments/audit_submission.py \
   experiments/package_submission.py \
+  experiments/package_latex_project.py \
   experiments/verify_submission_package.py \
   AFlow/benchmarks/math.py
 ```
@@ -138,6 +139,7 @@ make verify-package-verifier
 make verify-math-manual-plan
 make verify-known-warnings
 make final-check
+make package-latex-project
 make package
 make verify-package
 make finalize-dry-run
@@ -163,6 +165,7 @@ python experiments/verify_audit_warnings.py
 python experiments/verify_requirement_matrix.py
 python experiments/verify_package_verifier.py
 python experiments/audit_submission.py
+python experiments/package_latex_project.py
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2" --dry-run
 python experiments/package_submission.py --student-id "Your ID" --name "Your Name" --assignment "MARL-hw2"
 python experiments/verify_submission_package.py --package submission/MARL-hw2-submission.zip
@@ -172,6 +175,7 @@ python experiments/verify_git_sync.py
 ```
 
 `make final-package-check` is the default-package equivalent of running `make package` followed by `make verify-package`.
+`make package-latex-project` creates `submission/MARL-hw2-overleaf-latex-project.zip` with only the LaTeX source files needed by Overleaf; it does not include `report/main.pdf`.
 `make finalize-dry-run` previews the final filled-metadata path with overrideable `FINALIZE_DRY_RUN_*` Make variables and writes no files.
 `make verify-metadata-validation` checks the final metadata validation rules without writing files.
 `make verify-requirement-matrix` checks that the assignment run matrix matches tracked result and budget tables.

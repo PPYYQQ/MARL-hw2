@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | 作业代码 | 已整理并提交到 GitHub | `AFlow/`, `experiments/`, `Makefile` |
 | 报告 PDF | 已本地编译，可进入默认提交包 | `report/main.pdf` |
+| Overleaf LaTeX 源码 zip | 可直接上传 Overleaf，不包含 PDF | `submission/MARL-hw2-overleaf-latex-project.zip` |
 | 实验结果表 | 已生成并写入报告 | `report/tables/` |
 | 原始证据 | 已导出被报告引用的 CSV/config/log/token summary | `report/evidence/` |
 | 默认提交 zip | 已可生成并验证 | `submission/MARL-hw2-submission.zip` |
@@ -48,6 +49,14 @@ make handoff-check
 ```
 
 预期结果是 0 failures，warning 只应来自学生信息占位符，以及当前 shell 没有设置 `KIMI_API_KEY` 时的环境提示。`handoff-check` 还会运行 known-warning 门禁，如果出现其他 warning 会失败，避免把新问题混在已知外部缺口里。拿到学生信息后再运行最终打包命令。
+
+如果只需要上传 Overleaf 的英文 LaTeX project，不需要本地编译 PDF，运行：
+
+```bash
+make package-latex-project
+```
+
+这个 zip 的入口是 `main.tex`，只包含 LaTeX 源码和样式/参考文献文件，不包含 `main.pdf`。
 
 如果已经拿到真实姓名学号邮箱，可以用一个命令完成当前版本 gate、实名 zip、GitHub 同步检查：
 
