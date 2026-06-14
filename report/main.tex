@@ -32,19 +32,21 @@ resultbar/.style={
 \begin{document}
 
 \twocolumn[
-\icmltitle{Multi-Agent Workflow Design with AFlow for Mathematical and Code Reasoning}
+\icmltitle{Multi-Agent Workflow Design with AFlow}
 
 \begin{icmlauthorlist}
-\icmlauthor{Student Name}{pku}
+\icmlauthor{Yongqian Peng}{pku}
 \end{icmlauthorlist}
 
-\icmlaffiliation{pku}{Student ID: TODO; Course: Multi-Agent Reinforcement Learning}
-\icmlcorrespondingauthor{Student Name}{TODO@example.com}
+\icmlaffiliation{pku}{Student ID: 2100017731; Course: Multi-Agent Reinforcement Learning}
+\icmlcorrespondingauthor{Yongqian Peng}{yqpeng@stu.pku.edu.cn}
 
 \icmlkeywords{multi-agent systems, large language models, workflow optimization, AFlow}
 
 \vskip 0.3in
 ]
+
+\printAffiliationsAndNotice{}
 
 \begin{abstract}
 This report studies whether explicit multi-agent workflows can improve large language model reasoning on MATH-500 and HumanEval compared with direct and chain-of-thought prompting. I design task-specific workflows that convert one-shot generation into candidate diversification, selection, and targeted repair. For MATH, the workflow samples independent reasoning paths, selects the most self-consistent answer, and canonicalizes the final boxed output. For HumanEval, the workflow combines code candidate diversity with public-test execution and reflection-based repair. On the full MATH test split, the proposed \texttt{manual\_v1} workflow improves accuracy from 0.88889 with direct prompting and 0.89300 with CoT to 0.91770. On HumanEval, \texttt{manual\_v1} improves over direct prompting and a no-public-test ablation reaches the best score, showing that candidate diversity is a major source of gain.
@@ -61,6 +63,19 @@ The assignment requires experiments on MATH-500 and HumanEval. MATH-style tasks 
 The AFlow paper motivates the project by treating workflow design as an optimization problem over code-represented agent graphs \cite{zhang2025aflow}. In that formulation, LLM calls are nodes, edges encode execution logic, reusable operators provide common patterns such as ensemble or review-revise, and the optimizer searches over candidate workflow code using execution feedback. This assignment uses the same engineering abstraction but stops short of a full optimizer search because the available Kimi budget is the limiting resource.
 
 The multi-agent debate paper provides a complementary design intuition: multiple model instances can maintain diverse candidate answers and revise after seeing other candidates \cite{du2024debate}. The manual workflows in this project use a lower-cost version of that idea. MATH \texttt{manual\_v1} creates independent solution candidates and selects among them, while HumanEval combines candidate diversity with executable public-test feedback. The ablations are designed to test whether the observed gains come from candidate diversity, execution feedback, or simply spending more tokens.
+
+\section{Environment Installation}
+
+The experiments were run in a Python 3.9 Conda environment following the dependency assumptions of AFlow. The basic installation procedure was:
+
+\begin{verbatim}
+conda create -n marl_hw2 python=3.9 -y
+conda install -n marl_hw2 pip=24.2 -y
+conda run -n marl_hw2 python -m pip install -r AFlow/requirements.txt
+conda run -n marl_hw2 python -m pip install requests socksio antlr4-python3-runtime
+\end{verbatim}
+
+The extra packages were needed during reproduction: \texttt{requests} for dataset download utilities, \texttt{socksio} for the local HTTP proxy used by \texttt{httpx}, and \texttt{antlr4-python3-runtime} for robust MATH answer parsing through SymPy's LaTeX parser. The Kimi K2.5 endpoint was accessed through an OpenAI-compatible chat-completion interface. The API key was supplied through the shell environment as \texttt{KIMI\_API\_KEY}; it was not written into the report, code, or tracked configuration files.
 
 \section{Baselines}
 
@@ -84,15 +99,15 @@ The proposed workflows are manually designed multi-call agent graphs. They do no
 
 Table~\ref{tab:workflowalgorithms} summarizes the algorithmic structure used in the final tracked workflows and ablations.
 
-\begin{table}[t]
+\begin{table*}[ht!]
 \caption{Manual workflow algorithm structures.}
 \label{tab:workflowalgorithms}
 \vskip 0.08in
-\begin{center}
+\centering
 \begin{scriptsize}
 \setlength{\tabcolsep}{3pt}
-\resizebox{\linewidth}{!}{%
-\begin{tabular}{@{}p{0.25\linewidth}p{0.68\linewidth}@{}}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{0.25\textwidth}p{0.68\textwidth}@{}}
 \toprule
 Workflow & Algorithm \\
 \midrule
@@ -104,8 +119,7 @@ HumanEval no public & Generate multiple candidates and select without public-tes
 \end{tabular}%
 }
 \end{scriptsize}
-\end{center}
-\end{table}
+\end{table*}
 
 The design choice for MATH is to spend calls on independent reasoning paths because symbolic mistakes often arise from early false assumptions. The final cleanup call is intentionally narrow: it does not solve the problem again, but makes the selected answer compatible with the benchmark extractor. The HumanEval design instead prioritizes executable feedback, because public tests can identify syntax, entry-point, and simple semantic errors before final scoring. The no-public-test ablation is retained because its full-test result shows that extra candidate diversity can outperform the execution-feedback variant for this model, albeit at higher token cost.
 
@@ -339,9 +353,19 @@ MATH test & manual\_v1 & +0.02881 & 8.91 \\
 
 Table~\ref{tab:efficiency} summarizes the score and token tradeoff against direct prompting. The clearest MATH validation improvement, \texttt{manual\_v1}, costs 9.16 times the direct baseline tokens for a 0.02 absolute score gain on the 50-sample subset. The full MATH test result confirms the same direction with a larger 0.02881 absolute gain, but still costs 8.91 times the direct baseline tokens. On HumanEval, the no-public-test ablation has the highest score and fixes the most direct failures, but costs 6.19 times the direct baseline tokens.
 
+\section{Observations and Reflections}
+
+My first observation is that candidate diversity is more useful than simply asking for longer reasoning. On the full MATH test split, CoT only improves direct prompting by 0.00411, while \texttt{manual\_v1} improves it by 0.02881. The important difference is not just that \texttt{manual\_v1} spends more tokens, but that the extra tokens are spent on independent reasoning paths. This gives the workflow a chance to recover when one path makes an early false assumption. The 50-sample failure analysis supports this: \texttt{manual\_v1} fixes CoT failures on rectangle counting and probability problems without introducing CoT-relative regressions on that subset.
+
+My second observation is that execution feedback helps HumanEval, but it is not the only source of improvement. The \texttt{manual\_v1} HumanEval workflow improves over direct prompting by using public tests and repair. However, the no-public-test ablation scores even higher in the tracked full test. I interpret this as evidence that public tests are useful but incomplete: they catch obvious local bugs, yet they may not cover enough behavior to dominate the benefit of sampling more diverse implementations. For code tasks, the best workflow may therefore need both stronger test generation and candidate diversity, rather than relying only on the provided public tests.
+
+My third observation is that evaluation format matters for agent workflows. Several MATH failures were not model failures at first, but extraction or normalization mismatches such as text answers, percent signs, nested boxed expressions, or multiple boxed reference answers. This matters because a workflow can generate a correct mathematical answer and still lose credit if the final answer is not canonicalized. The final cleanup step in the MATH workflow is therefore not cosmetic; it protects the answer selected by the workflow from avoidable formatting errors.
+
+Finally, the experiments make the accuracy--cost tradeoff explicit. The MATH workflow improves the full-test score, but it costs about five times as many calls and almost nine times as many tokens as direct prompting. My view is that multi-agent workflows should be adaptive: use direct or CoT for easy problems, trigger candidate diversity only when uncertainty is high, and reserve expensive selection or verification calls for cases where the expected accuracy gain justifies the cost.
+
 \section{Optional Follow-up Experiments}
 
-The required experiment set is complete except for final student metadata. Optional follow-up experiments would mainly test whether the MATH accuracy gain can be retained at lower cost:
+The required experiment set is complete. Optional follow-up experiments would mainly test whether the MATH accuracy gain can be retained at lower cost:
 
 \begin{enumerate}
     \item Use the 50-sample MATH failure analysis to decide whether the shared arc-length failure can be addressed without increasing the already high token budget.
@@ -351,7 +375,7 @@ The required experiment set is complete except for final student metadata. Optio
 
 \section{Limitations}
 
-The manual workflows increase token usage and latency, especially for MATH. The full MATH \texttt{manual\_v1} run improves accuracy but uses 2,431 calls and 3,786,936 tracked tokens, which is 5.00 times the direct baseline calls and 8.91 times the direct baseline tokens. Using the Kimi K2.5 price schedule checked on 2026-06-01, the full MATH \texttt{manual\_v1} workflow alone is estimated at CNY 38.73--45.36, and the recorded required API subtotal is estimated at CNY 73.15--82.43. Further full-test ablations would require additional API budget. The main limitation is therefore not whether multi-agent decomposition can improve accuracy, but whether the improvement is worth the extra calls for a given deployment budget.
+The manual workflows increase token usage and latency, especially for MATH. The full MATH \texttt{manual\_v1} run improves accuracy but uses 2,431 calls and 3,786,936 tracked tokens, which is 5.00 times the direct baseline calls and 8.91 times the direct baseline tokens. Using the Kimi K2.5 price schedule checked on 2026-06-01, the full MATH \texttt{manual\_v1} workflow alone is estimated at CNY 38.73--45.36, and the recorded required API subtotal is estimated at CNY 73.15--82.43. The main limitation is therefore not whether multi-agent decomposition can improve accuracy, but whether the improvement is worth the extra calls for a given deployment budget.
 
 \section{Conclusion}
 

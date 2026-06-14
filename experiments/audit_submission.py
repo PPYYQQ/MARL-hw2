@@ -118,10 +118,12 @@ PYTHON_FILES = [
 REPORT_SECTIONS = [
     r"\section{Introduction}",
     r"\section{Research Context}",
+    r"\section{Environment Installation}",
     r"\section{Baselines}",
     r"\section{Proposed Workflow Design}",
     r"\section{Algorithmic Rationale}",
     r"\section{Validation Results}",
+    r"\section{Observations and Reflections}",
     r"\section{Optional Follow-up Experiments}",
     r"\section{Limitations}",
     r"\section{Conclusion}",

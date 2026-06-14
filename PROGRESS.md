@@ -204,6 +204,7 @@ Complete as much of the assignment as possible with a reproducible Git history. 
 - Updated the English LaTeX report so every table is wrapped in `\resizebox{\linewidth}{!}{...}` and the main result tables also have pgfplots bar charts for validation scores, MATH/HumanEval full-test scores, and token multipliers.
 - Rebuilt the report locally to verify the new pgfplots figures compile, then regenerated the Overleaf LaTeX project zip with the updated source and confirmed the archive still excludes PDF/build artifacts.
 - Reworked the report toward a final-PDF style: removed the `AFlow Engineering Summary` and `Environment Setup` sections from `report/main.tex`, expanded `Proposed Workflow Design` and `Algorithmic Rationale`, and explained concretely how candidate diversity, answer selection, public-test repair, and output canonicalization improve over baselines.
+- Added an `Environment Installation` section back into the final report with the actual Conda/Python dependency setup, and added `Observations and Reflections` to discuss candidate diversity, execution feedback, answer canonicalization, and the accuracy-cost tradeoff in the experiment results.
 
 ## Next Steps
 
